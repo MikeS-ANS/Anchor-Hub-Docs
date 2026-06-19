@@ -17,9 +17,11 @@
 * [Company Mapping](tool-guides/company-mapping.md)
 * [Contract Changes](tool-guides/contract-changes.md)
 * [Duo Management](tool-guides/duo-management.md)
+* [Project Profitability](tool-guides/project-profitability.md)
 
 ## What's New
 
 * [Roadmap & Coming Soon](whats-new/roadmap.md)
+* [v1.4.3 — Project Profitability](whats-new/v1.4.3.md)
 * [v1.4.2 — Fuzzy Match & Push History](whats-new/v1.4.2.md)
 * [v1.4.1 — Duo Management](whats-new/v1.4.1.md)

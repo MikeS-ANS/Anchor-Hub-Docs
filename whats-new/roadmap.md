@@ -25,5 +25,6 @@ This page tracks what's being worked on and what's planned next for Anchor Hub.
 
 See the release notes below for what's already been built.
 
+- [v1.4.3 — Project Profitability](v1.4.3.md)
 - [v1.4.2 — Fuzzy Match & Push History](v1.4.2.md)
 - [v1.4.1 — Duo Management](v1.4.1.md)
