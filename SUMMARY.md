@@ -22,6 +22,7 @@
 ## What's New
 
 * [Roadmap & Coming Soon](whats-new/roadmap.md)
+* [v1.4.4 — Project Profitability Improvements](whats-new/v1.4.4.md)
 * [v1.4.3 — Project Profitability](whats-new/v1.4.3.md)
 * [v1.4.2 — Fuzzy Match & Push History](whats-new/v1.4.2.md)
 * [v1.4.1 — Duo Management](whats-new/v1.4.1.md)
