@@ -18,9 +18,11 @@
 * [Contract Changes](tool-guides/contract-changes.md)
 * [Duo Management](tool-guides/duo-management.md)
 * [Project Profitability](tool-guides/project-profitability.md)
+* [Blackpoint / CompassOne](tool-guides/blackpoint.md)
 
 ## What's New
 
+* [v1.5.2 — Blackpoint Billing Automation](whats-new/v1.5.2.md)
 * [v1.5.0 — Modular Architecture](whats-new/v1.5.0.md)
 * [Roadmap & Coming Soon](whats-new/roadmap.md)
 * [v1.4.4 — Project Profitability Improvements](whats-new/v1.4.4.md)
