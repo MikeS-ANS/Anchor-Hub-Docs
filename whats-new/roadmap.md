@@ -2,30 +2,52 @@
 
 This page tracks what's being worked on and what's planned next for Anchor Hub.
 
+---
+
 ## In Progress
 
-- **Company Directory** — A unified view of all clients across Pax8, Autotask, and other platforms. Will eventually replace the current Company Mapping tool with a smarter, centralized client record.
+- **Brian's tools (~5 total, 1 done)** — Flask port of Brian's toolset into Anchor Hub
+- **Contract Name column — Project Time Summary** — Adding contract name visibility to PTS table
 
-## Coming Soon
+---
 
-### Invoice Processor
-- **QBO Auto-Push** — Post invoice totals directly to QuickBooks Online accounts, eliminating the manual QBO entry step
-- **Centralized Company Mappings** — Move confirmed Pax8→Autotask mappings to shared storage so mappings confirmed by one user apply for everyone (currently per-machine)
+## Platform Priorities
 
-### Integrations
-- **Microsoft Graph** — Email invoice summaries, post to Teams channels, read SharePoint lists
-- **QuickBooks Online** — Direct integration for invoice posting and reconciliation
+These are ordered. Do EV cert + Sentry first. Restructure after Brian's tools. SSO after restructure.
 
-### Infrastructure
-- **Azure SQL Client Directory** — Long-term home for all client data and cross-platform relationships
+| Priority | Item | Notes |
+|---|---|---|
+| P1 | EV Code Signing Cert | Fixes SmartScreen / AV false positives on install |
+| P1 | Sentry Error Monitoring | Crash/error reporting infrastructure |
+| P2 | Modular File Restructure | Split main.js / app.js into modules — after Brian's tools land |
+| P2 | Intune / MDM Deployment | Push app via Intune instead of manual install |
+| P3 | Microsoft SSO / Entra ID | Single sign-on — requires restructure first |
+| P3 | Audit Trail / Action Log | Log of actions taken in the app per user |
+
+---
+
+## Ideas & Backlog
+
+### Home Screen
+- **Tool run schedule & status badges** — Set a run frequency per tool; badge turns red when overdue (On time / Due soon / Overdue)
+- **Notifications center** — Bell icon with badge; overdue alerts, release notes, and announcements
+- **In-app idea submission** — Button for employees to submit tool ideas without messaging Mike directly
+
+### Access
+- **Role-based tool access** — Requires SSO first
+- **Central API key revocation** — Revoke credentials from one place
+
+### Tools
+- **New employee onboarding checklist** — Guided checklist for new hires
+- **In-app bug reporter** — Let users report issues from inside the app
 
 ---
 
 ## Recently Shipped
 
-See the release notes below for what's already been built.
-
 - [v1.4.4 — Project Profitability Improvements](v1.4.4.md)
 - [v1.4.3 — Project Profitability](v1.4.3.md)
 - [v1.4.2 — Fuzzy Match & Push History](v1.4.2.md)
 - [v1.4.1 — Duo Management](v1.4.1.md)
+
+**All shipped tools:** Subscription Audit, Invoice Monitor, Margin Analyzer, Company Mapping, Kaseya Invoice Processor, Invoice Processor, Contract Changes, Contract Renewals, BlackPoint / CompassOne, Project Time Summary, MSC Agreements, Project Profitability, Sidebar Customization
