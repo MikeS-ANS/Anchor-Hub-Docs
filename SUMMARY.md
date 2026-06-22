@@ -21,6 +21,7 @@
 
 ## What's New
 
+* [v1.5.0 — Modular Architecture](whats-new/v1.5.0.md)
 * [Roadmap & Coming Soon](whats-new/roadmap.md)
 * [v1.4.4 — Project Profitability Improvements](whats-new/v1.4.4.md)
 * [v1.4.3 — Project Profitability](whats-new/v1.4.3.md)
