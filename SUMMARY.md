@@ -8,6 +8,7 @@
 * [Logging In](getting-started/logging-in.md)
 * [Configuring Your Settings](getting-started/configuring-settings.md)
 * [First-Run Checklist](getting-started/first-run-checklist.md)
+* [Roles & Permissions](getting-started/roles-and-permissions.md)
 
 ## Tool Guides
 
@@ -22,6 +23,7 @@
 
 ## What's New
 
+* [v1.5.3–v1.5.6 — Role-Based Access & Permissions](whats-new/v1.5.4.md)
 * [v1.5.2 — Blackpoint Billing Automation](whats-new/v1.5.2.md)
 * [v1.5.0 — Modular Architecture](whats-new/v1.5.0.md)
 * [Roadmap & Coming Soon](whats-new/roadmap.md)
