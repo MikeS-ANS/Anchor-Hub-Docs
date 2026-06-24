@@ -1,4 +1,4 @@
-# Blackpoint / CompassOne
+# BlackPoint Usage
 
 Automates monthly Blackpoint billing reconciliation against Autotask. Load the Account Usage Report CSV from SharePoint, compare it to current Autotask contract units, and push adjustments — all without leaving Anchor Hub.
 

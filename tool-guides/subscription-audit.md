@@ -1,6 +1,6 @@
-# Subscription Audit
+# M365 Subscription Comparison
 
-The Subscription Audit compares your active Pax8 subscriptions against Autotask contract services and flags anything that doesn't line up — clients being billed for the wrong quantity, services in Pax8 with no matching contract line, or vice versa.
+The M365 Subscription Comparison compares your active Pax8 subscriptions against Autotask contract services and flags anything that doesn't line up — clients being billed for the wrong quantity, services in Pax8 with no matching contract line, or vice versa.
 
 ## Running an Audit
 

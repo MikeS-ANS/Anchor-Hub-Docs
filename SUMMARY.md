@@ -12,14 +12,19 @@
 
 ## Tool Guides
 
-* [Invoice Processor](tool-guides/invoice-processor.md)
-* [Subscription Audit](tool-guides/subscription-audit.md)
-* [Margin Analyzer](tool-guides/margin-analyzer.md)
+* [M365 Subscription Comparison](tool-guides/subscription-audit.md)
+* [Pax8 Invoice Processor](tool-guides/invoice-processor.md)
+* [Pax8 Invoice Comparison](tool-guides/pax8-invoice-comparison.md)
+* [M365 Margin Analyzer](tool-guides/margin-analyzer.md)
 * [Company Mapping](tool-guides/company-mapping.md)
-* [Contract Changes](tool-guides/contract-changes.md)
+* [Kaseya Invoice Processor](tool-guides/kaseya-invoice-processor.md)
+* [Project Time Summary](tool-guides/project-time-summary.md)
+* [Autotask Contract Changes](tool-guides/contract-changes.md)
+* [Autotask Contract Renewals](tool-guides/contract-renewals.md)
+* [BlackPoint Usage](tool-guides/blackpoint.md)
+* [MSC Agreements](tool-guides/msc-agreements.md)
 * [Duo Management](tool-guides/duo-management.md)
 * [Project Profitability](tool-guides/project-profitability.md)
-* [Blackpoint / CompassOne](tool-guides/blackpoint.md)
 
 ## What's New
 

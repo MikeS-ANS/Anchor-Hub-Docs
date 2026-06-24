@@ -1,6 +1,6 @@
-# Invoice Processor
+# Pax8 Invoice Processor
 
-The Invoice Processor is the core billing tool. It loads your monthly Pax8 invoice, breaks it down by service and client, and pushes updated pricing and seat counts directly to Autotask contracts — replacing the manual process of copying numbers between systems.
+The Pax8 Invoice Processor is the core billing tool. It loads your monthly Pax8 invoice, breaks it down by service and client, and pushes updated pricing and seat counts directly to Autotask contracts — replacing the manual process of copying numbers between systems.
 
 ## Loading an Invoice
 
