@@ -28,6 +28,7 @@
 
 ## What's New
 
+* [v1.5.7 — Home Screen, Help Page & Bug Fixes](whats-new/v1.5.7.md)
 * [v1.5.3–v1.5.6 — Role-Based Access & Permissions](whats-new/v1.5.4.md)
 * [v1.5.2 — Blackpoint Billing Automation](whats-new/v1.5.2.md)
 * [v1.5.0 — Modular Architecture](whats-new/v1.5.0.md)
