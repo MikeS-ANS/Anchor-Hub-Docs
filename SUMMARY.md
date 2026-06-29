@@ -21,13 +21,14 @@
 * [Project Time Summary](tool-guides/project-time-summary.md)
 * [Autotask Contract Changes](tool-guides/contract-changes.md)
 * [Autotask Contract Renewals](tool-guides/contract-renewals.md)
-* [BlackPoint Usage](tool-guides/blackpoint.md)
+* [BlackPoint Invoice Processor](tool-guides/blackpoint.md)
 * [MSC Agreements](tool-guides/msc-agreements.md)
 * [Duo Management](tool-guides/duo-management.md)
 * [Project Profitability](tool-guides/project-profitability.md)
 
 ## What's New
 
+* [v1.6.0 — Company Directory v2, Multi-Service Mappings & Bug Fixes](whats-new/v1.6.0.md)
 * [v1.5.9 — Centralized Hub Company Directory](whats-new/v1.5.9.md)
 * [v1.5.8 — Kaseya Invoice Processor: Full Rebuild + Bundled Billing](whats-new/v1.5.8.md)
 * [v1.5.7 — Home Screen, Help Page & Bug Fixes](whats-new/v1.5.7.md)
