@@ -23,11 +23,13 @@
 * [Autotask Contract Renewals](tool-guides/contract-renewals.md)
 * [BlackPoint Invoice Processor](tool-guides/blackpoint.md)
 * [MSC Agreements](tool-guides/msc-agreements.md)
+* [Meraki Admin Management](tool-guides/meraki-admin.md)
 * [Duo Management](tool-guides/duo-management.md)
 * [Project Profitability](tool-guides/project-profitability.md)
 
 ## What's New
 
+* [v1.7.0 — Meraki Admin Management](whats-new/v1.7.0.md)
 * [v1.6.0 — Company Directory v2, Multi-Service Mappings & Bug Fixes](whats-new/v1.6.0.md)
 * [v1.5.9 — Centralized Hub Company Directory](whats-new/v1.5.9.md)
 * [v1.5.8 — Kaseya Invoice Processor: Full Rebuild + Bundled Billing](whats-new/v1.5.8.md)
