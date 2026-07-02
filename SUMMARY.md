@@ -24,11 +24,13 @@
 * [BlackPoint Invoice Processor](tool-guides/blackpoint.md)
 * [MSC Agreements](tool-guides/msc-agreements.md)
 * [Meraki Admin Management](tool-guides/meraki-admin.md)
+* [Meraki License & EoL Expiration Report](tool-guides/meraki-expiration.md)
 * [Duo Management](tool-guides/duo-management.md)
 * [Project Profitability](tool-guides/project-profitability.md)
 
 ## What's New
 
+* [v1.8.0 — Meraki License & EoL Expiration Report](whats-new/v1.8.0.md)
 * [v1.7.0 — Meraki Admin Management](whats-new/v1.7.0.md)
 * [v1.6.0 — Company Directory v2, Multi-Service Mappings & Bug Fixes](whats-new/v1.6.0.md)
 * [v1.5.9 — Centralized Hub Company Directory](whats-new/v1.5.9.md)
