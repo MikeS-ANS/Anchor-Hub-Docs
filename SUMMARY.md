@@ -30,6 +30,7 @@
 
 ## What's New
 
+* [v1.9.0 — Company Directory Extension](whats-new/v1.9.0.md)
 * [v1.8.0 — Meraki License & EoL Expiration Report](whats-new/v1.8.0.md)
 * [v1.7.0 — Meraki Admin Management](whats-new/v1.7.0.md)
 * [v1.6.0 — Company Directory v2, Multi-Service Mappings & Bug Fixes](whats-new/v1.6.0.md)
