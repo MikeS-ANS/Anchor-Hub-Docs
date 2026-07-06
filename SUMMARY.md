@@ -27,9 +27,11 @@
 * [Meraki License & EoL Expiration Report](tool-guides/meraki-expiration.md)
 * [Duo Management](tool-guides/duo-management.md)
 * [Project Profitability](tool-guides/project-profitability.md)
+* [HR & Resources Portal](tool-guides/hr-portal.md)
 
 ## What's New
 
+* [v2.0.0 — HR & Resources Portal with Hatz AI](whats-new/v2.0.0.md)
 * [v1.9.0 — Company Directory Extension](whats-new/v1.9.0.md)
 * [v1.8.0 — Meraki License & EoL Expiration Report](whats-new/v1.8.0.md)
 * [v1.7.0 — Meraki Admin Management](whats-new/v1.7.0.md)
