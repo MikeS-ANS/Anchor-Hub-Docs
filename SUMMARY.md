@@ -27,6 +27,7 @@
 * [Meraki License & EoL Expiration Report](tool-guides/meraki-expiration.md)
 * [Duo Management](tool-guides/duo-management.md)
 * [Project Profitability](tool-guides/project-profitability.md)
+* [Project Analysis](tool-guides/project-analysis.md)
 * [HR & Resources Portal](tool-guides/hr-portal.md)
 
 ## What's New
