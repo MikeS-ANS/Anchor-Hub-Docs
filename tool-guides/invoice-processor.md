@@ -10,10 +10,12 @@ Navigate to **Invoice Processor** in the left sidebar.
 Click **Load Most Recent Invoice** to automatically fetch and process the latest Pax8 invoice. This is what you'll use every month.
 
 ### Browse Past Invoices
-Click **Browse Past Invoices** to select a specific month from a dropdown. Each entry shows the month and total dollar amount. Use this to review historical invoices.
+Click **Browse Past Invoices** to select a specific month from a dropdown. Each entry shows the month and the Pax8 invoice total.
+
+> **Caching:** The first time you load a past invoice via the API, the raw line items are saved to SharePoint automatically. The next time anyone on the team opens the same invoice, it loads from that cache instantly — no API call required. A banner appears at the top of the results showing when the data was last fetched, with a **↺ Reprocess** button to force a fresh pull from Pax8 if needed.
 
 ### Browse CSV
-Fallback option if the Pax8 API is unavailable. Export a CSV from the Pax8 portal and load it manually here.
+Fallback option if the Pax8 API is unavailable. Export a CSV from the Pax8 portal and load it manually here. CSV loads are not cached.
 
 ---
 
@@ -21,9 +23,9 @@ Fallback option if the Pax8 API is unavailable. Export a CSV from the Pax8 porta
 
 After loading, the results show:
 
-**Metrics strip** — Total partner cost and key category totals at a glance.
+**Metrics strip** — Total partner cost (the sum of all partner pricing across every line item) and the total number of invoice lines.
 
-**QBO Breakdown** — The dollar amounts to enter in QuickBooks Online, organized by account.
+**QBO Breakdown** — The dollar amounts to enter in QuickBooks Online, organized by account. The TOTAL row at the bottom matches the metric strip.
 
 **Azure** — Per-client Azure costs with your calculated sell price and margin. You can adjust margins inline before pushing.
 
@@ -33,15 +35,16 @@ After loading, the results show:
 
 ---
 
-## Company Auto-Match
+## Company Mapping
 
-When you load an invoice, Anchor Hub automatically tries to match each Pax8 client to their Autotask company — this is what makes the push buttons work.
+Invoice results rely on mapping each Pax8 company to its Autotask counterpart. All mappings are managed through the **Company Directory** and stored in SharePoint — any company you link there is automatically recognised the next time an invoice is processed.
 
-- **Green banner** — Companies that were matched automatically (high confidence). No action needed.
-- **Yellow "Need Confirmation" panel** — Companies where the match is likely but not certain. Review the suggested match and click **Confirm** to save it. The push button for that client becomes active immediately.
-- **No banner** — All companies were already mapped from a previous session.
+When you load an invoice, the processor checks for any unmapped Pax8 companies and tries to match them automatically:
 
-Confirmed matches are saved permanently so they apply to all future invoices automatically.
+- **High-confidence match (≥ 85%)** — saved silently to the Company Directory.
+- **Medium-confidence suggestion** — shown in the **Needs Confirmation** panel at the bottom of the results. Review the suggested match and click **Confirm** to save it.
+
+Confirmed matches persist to SharePoint and apply to all future invoices automatically.
 
 ---
 
@@ -94,6 +97,9 @@ Click **Export to Excel** to download the full invoice breakdown as a formatted 
 
 ## Troubleshooting
 
+**Results show "Loaded from cache" but mappings look outdated**
+Click **↺ Reprocess** in the banner at the top. This deletes the cached copy and fetches fresh line items from Pax8, then re-runs mapping against the current Company Directory.
+
 **Push buttons are grayed out / missing**
 Your Autotask write key isn't configured. Go to Settings → Autotask PSA and add your credentials.
 
@@ -101,7 +107,7 @@ Your Autotask write key isn't configured. Go to Settings → Autotask PSA and ad
 The contract in Autotask is probably named differently than expected. Check that the contract name contains "Azure" (for Azure/Nerdio) or "Managed Cloud" (for Exclaimer, Ironscales, Printix). Contact Mike if it needs to be updated.
 
 **Client shows "no AT mapping"**
-The Pax8 company isn't linked to Autotask yet. Run **Company Mapping** → Sync, or wait for auto-match on the next invoice load.
+The Pax8 company isn't linked to Autotask yet. Open **Company Directory**, find the company, and link it to the correct Autotask account. The link is picked up automatically on the next invoice load or reprocess.
 
 **Invoice fails to load**
 Check your internet connection. If the error mentions credentials, the Pax8 API keys in Azure Key Vault may need to be refreshed — contact Mike.
