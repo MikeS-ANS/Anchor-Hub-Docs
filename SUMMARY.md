@@ -32,6 +32,7 @@
 
 ## What's New
 
+* [v2.2.0 — Invoice Processor Overhaul & PTS Improvements](whats-new/v2.2.0.md)
 * [v2.1.0 — Project Analysis Chart Overhaul](whats-new/v2.1.0.md)
 * [v2.0.0 — HR & Resources Portal with Hatz AI](whats-new/v2.0.0.md)
 * [v1.9.0 — Company Directory Extension](whats-new/v1.9.0.md)
