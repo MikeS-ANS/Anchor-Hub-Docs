@@ -21,6 +21,10 @@ Each row shows a Pax8 subscription alongside its matched Autotask contract servi
 
 Click **Export** to download the discrepancies as a spreadsheet for review or to share with the billing team.
 
+## Subscription Cache (v2.4.0+)
+
+The Pax8 subscription list is cached to SharePoint per billing month, since it's stable once the month is underway and re-fetching it on every run is one of the slower calls in the Hub. A banner above the log shows whether the current run loaded from cache or fetched live, along with when it was cached. Click **Refresh** to force a live re-fetch and overwrite the cache — useful if subscriptions changed mid-month. Company Directory changes (exclusions, mappings) are never cached and always apply fresh.
+
 ---
 
 > **Guide in progress.** More detail will be added here as the tool evolves.

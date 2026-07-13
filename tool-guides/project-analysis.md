@@ -15,8 +15,9 @@ The Project Analysis tool takes a single Autotask project number and an optional
 1. Open **Project Analysis** from the left nav
 2. Enter the **project number** (e.g. `P20250826-0001`) and click **Fetch**
 3. Optionally attach a **scope of work PDF** — paste a SharePoint URL or use the file picker to browse locally
-4. Select the **AI model** to use (models are pulled live from Hatz AI)
-5. Click **Run Analysis**
+4. Select the **AI model** to use (models are pulled live from Hatz AI) — your last choice is remembered automatically
+5. Optionally click **Custom instructions** to add extra context for this run (e.g. "also weigh public effort-estimate data for similar work before concluding the project was under-scoped") — appended to the default prompt, never replacing it, and shown in the report so anyone reading it later knows the analysis was steered
+6. Click **Run Analysis**
 
 The fetch step takes 5–15 seconds. The AI analysis takes another 10–20 seconds depending on the model.
 
@@ -30,7 +31,7 @@ The banner at the top shows the AI's one-line verdict color-coded by severity: g
 
 | Card | What It Shows |
 |---|---|
-| Billing type | Fixed Price, T&M, Block Hours, etc. |
+| Billing type | Fixed Price, T&M, Block Hours, etc. — read from the contract name's `-FF`/`-TM` suffix, since ANS sometimes bills T&M-style engagements through Fixed Price contracts to use milestones. If no suffix is present, the card falls back to the raw contract type and flags it ("inferred from contract type, verify") instead of guessing silently. |
 | Contract value | Agreed amount (from contract or milestone total) |
 | Invoiced | Amount billed from completed milestones |
 | Cost of labor | Actual hours × blended labor rate |
@@ -52,7 +53,7 @@ The charts card has four tabs:
 | **By Category** | Hours by billing code from AT time entries (falls back to AI-inferred grouping) |
 | **By Week** | Hours logged per calendar week — zero-activity weeks are shown as dimmed rows |
 
-Hover any row for a tooltip with full task name, exact hours, and variance detail.
+Hover any row for a tooltip with full task name, exact hours, and variance detail. Hovering a week also breaks that week's hours down **by category and by resource**, so a week that looks fully worked but was actually 100% project management with no technical work is visible at a glance — not just the total. The same per-week breakdown is printed in the exported report under each week's bar.
 
 ### Task Breakdown Table
 
