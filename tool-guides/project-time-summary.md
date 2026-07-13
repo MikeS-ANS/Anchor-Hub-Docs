@@ -118,6 +118,17 @@ After the table loads, Anchor Hub automatically generates an executive summary u
 
 To regenerate after adding or editing notes, click **Re-run with Notes** in the AI card. This sends the current notes alongside the project data for a more contextual summary.
 
+### AI Prompt
+
+Sent to Hatz.ai's `/chat/completions` endpoint (`main/ipc/projectTimeSummary.js`, `runHatzSummaryCore`). Model comes from the **AI Model** dropdown in Email Settings.
+
+**System prompt:**
+> You are analyzing a weekly project time summary for a managed service provider's Professional Services team. Write a concise 3-4 sentence executive summary highlighting: total active projects, any projects where worked hours exceed estimated hours (over budget), any at-risk projects where worked hours are 50% or more of estimated, and any notable week-over-week changes (delta hours). If a project has a "note" field, treat it as additional context from the project manager and incorporate relevant details. Be direct and professional. Return only the summary paragraph, no headers or preamble.
+
+**User message:** a JSON array, one object per project — `{ project, client, lead, estimatedHours, workedHours, last7Days, deltaThisWeek, weeksRemaining, note? }` (the `note` field is only included when you've added one for that project).
+
+If the Hatz.ai call fails for any reason (missing API key, network error, non-2xx response), the AI Summary card is silently omitted — no error is shown.
+
 ---
 
 ## Sending the Report

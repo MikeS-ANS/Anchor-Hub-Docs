@@ -14,7 +14,7 @@ The Project Analysis tool takes a single Autotask project number and an optional
 
 1. Open **Project Analysis** from the left nav
 2. Enter the **project number** (e.g. `P20250826-0001`) and click **Fetch**
-3. Optionally attach a **scope of work PDF** — paste a SharePoint URL or use the file picker to browse locally
+3. Optionally attach a **scope of work PDF** — paste a SharePoint URL or use the file picker to browse locally. The file picker supports selecting multiple PDFs at once (or clicking it again to add more) — the first is treated as the Scope of Work and every additional file as Change Order 1, 2, etc. Drag the ⠿ handle on any attached file to reorder the list if the labels come out wrong (e.g. after a multi-select where the OS didn't return files in the order you expect)
 4. Select the **AI model** to use (models are pulled live from Hatz AI) — your last choice is remembered automatically
 5. Optionally click **Custom instructions** to add extra context for this run (e.g. "also weigh public effort-estimate data for similar work before concluding the project was under-scoped") — appended to the default prompt, never replacing it, and shown in the report so anyone reading it later knows the analysis was steered
 6. Click **Run Analysis**
@@ -22,6 +22,10 @@ The Project Analysis tool takes a single Autotask project number and an optional
 The fetch step takes 5–15 seconds. The AI analysis takes another 10–20 seconds depending on the model.
 
 ## Reading the Report
+
+### Report Header
+
+Shows the project number/name, client, and an **Open Project ↗** button that opens the project directly in Autotask's web UI — no extra lookup, it's derived from the project ID and Autotask zone already resolved during the fetch.
 
 ### Status Banner
 
@@ -57,7 +61,7 @@ Hover any row for a tooltip with full task name, exact hours, and variance detai
 
 ### Task Breakdown Table
 
-A full table of every task with estimated hours, actual hours, variance %, status, and the AI's one-to-two sentence note about what happened on that task.
+A full table of every task with estimated hours, actual hours, variance %, status, and the AI's one-to-two sentence note about what happened on that task. Each task's **phase** is shown as a sub-line under its title (in both this table and the By Task chart) since the same task name can appear under multiple phases on a project.
 
 ### Findings & Recommendations
 
@@ -79,6 +83,36 @@ Click **Settings** to configure:
 ## Recent Runs
 
 The tool keeps a history of your last 20 analyses. Click any entry in the **Recent Runs** panel to reload the full report without re-fetching from Autotask or re-running AI.
+
+## AI Prompt
+
+Sent to Hatz.ai's `/chat/completions` endpoint (`main/ipc/projectAnalysis.js`, `pa-run-analysis` handler). Model is user-selectable (see Settings below).
+
+**System prompt:**
+> You are analyzing a completed IT project for an MSP. You are given (a) the signed scope of work — which may be followed by one or more Change Order sections that modify or extend the original scope, each clearly labeled — and (b) structured actuals from the PSA (tasks, estimated vs. actual hours, time-entry notes, billing type, and contract value if available). If change orders are present, treat the combined (original + change orders) scope as the baseline to compare actuals against — do not judge the project as under-scoped for work that a change order already accounted for. Compare what was scoped against what actually happened. Identify where the budget/hours were exceeded and why, where work went well, whether the project was under-scoped, over-billed, or lost time to unplanned issues. If a contract value is present, factor in the financial impact of any overrun. Base every statement on the provided data — do not invent facts. Assign each task to a small set of work categories.
+>
+> Return ONLY a valid JSON object with exactly these fields — no preamble, no markdown fences, no extra text:
+> ```json
+> {
+>   "overallStatus":    "short verdict line",
+>   "statusSeverity":   "good | caution | warning | danger",
+>   "summaryNarrative": "2–4 sentence plain-English summary",
+>   "categoryGrouping": [ { "category": "string", "taskIds": [ <taskId numbers> ] } ],
+>   "perTaskNotes":     { "<taskId>": "1–2 sentence explanation" },
+>   "findings": [
+>     { "severity": "critical | warning | good | info", "title": "short title", "body": "1–2 sentences" }
+>   ],
+>   "recommendations": [
+>     { "title": "short action title", "body": "1–2 sentences on what to do differently on the next similar project" }
+>   ]
+> }
+> ```
+
+If you filled in **Custom Instructions** for the run, it's appended after this (never replacing it): `ADDITIONAL INSTRUCTIONS FOR THIS ANALYSIS (apply on top of the above, do not replace it):` followed by your text.
+
+**User message:** `SCOPE OF WORK:` followed by the extracted scope text (or `(No scope document provided)`), then `PROJECT DATA:` followed by the full project data object (tasks, time entries, hours, billing info, etc.) as pretty-printed JSON.
+
+The response is expected as raw JSON (markdown fences are stripped defensively if present) and parsed directly into the report.
 
 ## Tips
 
