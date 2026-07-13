@@ -29,9 +29,11 @@
 * [Project Profitability](tool-guides/project-profitability.md)
 * [Project Analysis](tool-guides/project-analysis.md)
 * [HR & Resources Portal](tool-guides/hr-portal.md)
+* [User Audit Report](tool-guides/user-audit-report.md)
 
 ## What's New
 
+* [v2.3.0 — User Audit Report](whats-new/v2.3.0.md)
 * [v2.2.0 — Invoice Processor Overhaul & PTS Improvements](whats-new/v2.2.0.md)
 * [v2.1.0 — Project Analysis Chart Overhaul](whats-new/v2.1.0.md)
 * [v2.0.0 — HR & Resources Portal with Hatz AI](whats-new/v2.0.0.md)
