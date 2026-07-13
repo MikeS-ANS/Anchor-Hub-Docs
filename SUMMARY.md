@@ -9,6 +9,7 @@
 * [Configuring Your Settings](getting-started/configuring-settings.md)
 * [First-Run Checklist](getting-started/first-run-checklist.md)
 * [Roles & Permissions](getting-started/roles-and-permissions.md)
+* [Roadmap](getting-started/roadmap.md)
 
 ## Tool Guides
 
@@ -51,7 +52,6 @@
 * [v1.5.3–v1.5.6 — Role-Based Access & Permissions](whats-new/v1.5.4.md)
 * [v1.5.2 — Blackpoint Billing Automation](whats-new/v1.5.2.md)
 * [v1.5.0 — Modular Architecture](whats-new/v1.5.0.md)
-* [Roadmap & Coming Soon](whats-new/roadmap.md)
 * [v1.4.4 — Project Profitability Improvements](whats-new/v1.4.4.md)
 * [v1.4.3 — Project Profitability](whats-new/v1.4.3.md)
 * [v1.4.2 — Fuzzy Match & Push History](whats-new/v1.4.2.md)
