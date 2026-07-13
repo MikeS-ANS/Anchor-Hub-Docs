@@ -41,19 +41,20 @@
 | Meraki Admin Management — audit, gap analysis, bulk fix, org matching tab | v1.7.0 |
 | Meraki License & EoL Expiration Report — scan, tickets, AT sync, scheduled auto-scan | v1.8.0 |
 | Company Directory Extension — MSC/CIPP matching tabs, GWS flag, sharepointFolder, CIPP API | v1.9.0 |
+| HR & Resources Portal — flip-card benefits, HR contacts, Hatz.ai agent chat, admin edit mode (Key Vault-backed) | v2.0.0 |
+| Project Analysis — scope-vs-actuals AI analysis, charts, exportable report (initial release) | v2.0.0 |
+| Project Analysis — chart overhaul (By Task/Resource/Category/Week, hover detail) | v2.1.0 |
+| Invoice Processor overhaul + Project Time Summary improvements | v2.2.0 |
+| User Audit Report — AT × M365 (CIPP) join, client-facing Excel, write-back, Account Manager dashboard | v2.3.0 |
+| Hub Directory migration (retired local mapping cache), Meraki scheduler fix, Pax8/billing accuracy fixes | v2.4.0 |
+| Values & Norms — daily home screen widget + library, AI-enriched blurb, SharePoint-backed content | v2.5.0 |
+| Project Analysis — multi-PDF change order support, task phase display, Open Project button, billing-type fix | v2.6.0 |
 
 ---
 
 ## 🔄 Next Up
 
 These tools have detailed specs written and are ready to build. See the `Idea MD Files/` folder for the full spec on each.
-
-- [ ] **User Audit Report** *(spec: `USER_AUDIT_REPORT_TOOL_SPEC.md`)*
-  Joins Autotask contacts with live M365 data (via CIPP) to surface users licensed in M365 but missing from Autotask. Generates a client-facing Excel for review. Includes write-back: upload the client's returned file, preview all classification changes, confirm → updates Autotask contact UDFs and posts an account note. Replaces the manual every-other-month user audit process.
-  *Depends on: Company Directory Extension (v1.9.0 ✅), CIPP integration (v1.9.0 ✅)*
-
-- [ ] **Project Analysis** *(spec: `PROJECT_ANALYSIS_TOOL_SPEC.md`)*
-  Port of Brian's Flask proof-of-concept. Enter a project number and provide the signed scope-of-work PDF. Fetches all Autotask project data (tasks, time entries, resources), runs an AI analysis via Hatz.ai comparing scope vs. actuals, and renders an on-screen HTML report with charts, task breakdown, and key findings. Read-only against Autotask.
 
 - [ ] **Timesheet Review Tool** *(spec: `TIMESHEET_REVIEW_TOOL_SPEC.md`)*
   Manager-facing tool that pulls Autotask time entries for a resource or team and computes a client-facing utilization % (target: 70%). Runs deterministic data-quality checks (under-8h days, gaps, overlaps, late entries, thin notes) and an opt-in AI note-quality pass via Hatz.ai. Scoped by Graph direct reports. Links to Autotask for actual approval — no in-Hub approval (Autotask API limitation).
@@ -62,11 +63,10 @@ These tools have detailed specs written and are ready to build. See the `Idea MD
   Compose and send formatted internal company newsletters from within the Hub. Section-based form (Announcements, Team Highlights, Project Wins, Tech Tips, etc.), live HTML preview, and delivery via Microsoft Graph `Mail.Send` to a distribution group. Stores sent history with duplicate-and-edit support.
   *`Mail.Send` Graph scope is already active ✅*
 
-- [ ] **Values & Norms Daily Feature** *(spec: `VALUES_NORMS_SPEC.md`)*
-  Home screen widget featuring one of ANS's 5 Core Values or 27 Cultural Norms each day (same item for all users, deterministic date-based cycle). AI-generated contextual blurb via Hatz.ai. "Surprise Me" button for random item. Full library view with card flip, filter bar, and search. Content stored in a SharePoint List; Hub reads and caches via Graph.
+- [ ] **Employee Scorecard** *(spec being written — see below, do not resume the old branch until it lands)*
+  Replaces the manual monthly Excel scorecard (7 employee tabs). Intended to pull metrics from Autotask and Strety per employee, prompt for any metrics that can't be auto-pulled (CE credits, client touches), and send each person their scorecard on a schedule (email/Teams).
 
-- [ ] **Employee Scorecard** *(WIP — core layout and Strety integration in progress)*
-  Replaces the manual monthly Excel scorecard (7 employee tabs). Pulls metrics from Autotask and Strety per employee, prompts for any metrics that can't be auto-pulled (CE credits, client touches), and sends each person their scorecard. Periods as rows, metrics as columns layout with 8wk/12mo/4qtr/4yr views. All periods editable inline; goal row visible alongside actuals.
+  A partial implementation exists on `feature/employee-scorecard` (Strety OAuth + a generic editable metrics grid, no Autotask pull, no per-role metric definitions, no delivery scheduling) but it's unmerged and ~15 releases stale. **A proper spec is in progress with Mike before any further build work** — see `!Idea MD Files/EMPLOYEE_SCORECARD_STATUS_REPORT.md` for the full reconciliation of what exists vs. what was ever specified.
 
   | Employee | Key Metrics |
   |---|---|
@@ -77,9 +77,6 @@ These tools have detailed specs written and are ready to build. See the `Idea MD
   | WSD (Michael Nolan) | CSAT (≥98%), tickets, hours |
   | Service Desk Mgr (Patrick Kiah) | CSAT, tickets, hours, certifications |
   | Cybersecurity (Andy Harper) | Project survey avg, site reviews, tickets, onboard projects |
-
-- [ ] **HR Portal** *(WIP — flip card benefits grid and admin edit mode in progress)*
-  Internal HR reference hub for ANS staff. Benefits summary as flip cards (front = plan name/summary, back = full details), HR contacts, quick links to HR systems, and key dates (open enrollment, review cycles, etc.). Content managed by `hub.admin` via edit mode — changes persist to Key Vault so all users see updates without a release.
 
 ---
 
