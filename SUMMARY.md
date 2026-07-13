@@ -30,9 +30,11 @@
 * [Project Analysis](tool-guides/project-analysis.md)
 * [HR & Resources Portal](tool-guides/hr-portal.md)
 * [User Audit Report](tool-guides/user-audit-report.md)
+* [Values & Norms](tool-guides/values-norms.md)
 
 ## What's New
 
+* [v2.5.0 — Values & Norms](whats-new/v2.5.0.md)
 * [v2.4.0 — Hub Directory Migration, Scheduler Fix & Billing Accuracy](whats-new/v2.4.0.md)
 * [v2.3.0 — User Audit Report](whats-new/v2.3.0.md)
 * [v2.2.0 — Invoice Processor Overhaul & PTS Improvements](whats-new/v2.2.0.md)
