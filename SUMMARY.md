@@ -34,6 +34,7 @@
 
 ## What's New
 
+* [v2.6.0 — Project Analysis Change Orders & Fixes](whats-new/v2.6.0.md)
 * [v2.5.0 — Values & Norms](whats-new/v2.5.0.md)
 * [v2.4.0 — Hub Directory Migration, Scheduler Fix & Billing Accuracy](whats-new/v2.4.0.md)
 * [v2.3.0 — User Audit Report](whats-new/v2.3.0.md)
