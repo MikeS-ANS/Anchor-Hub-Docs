@@ -53,6 +53,8 @@ The AI assistant is powered by the Anchor HR Guide agent in Hatz AI, which has b
 
 Chat history persists between sessions so you can scroll back to previous answers. Use the trash icon to clear history.
 
+**AI Prompt:** unlike the Hub's other AI features, there's no hardcoded system prompt in the Hub's source for this one (`main/ipc/hr.js`, `hr-hatz-chat` handler). The Hub just looks up the **Anchor HR Guide** agent by name via Hatz.ai's `/chat/agents` endpoint and forwards the chat's message history to `/chat/completions` with `model: agent:{agentId}` — the agent's instructions and knowledge (uploaded documents) live entirely in the Hatz.ai console, not in code. To change how it answers, edit the agent in Hatz.ai directly (see "Keeping the AI Agent Current" below), not the Hub's source.
+
 ## For Admins
 
 ### Editing Portal Content

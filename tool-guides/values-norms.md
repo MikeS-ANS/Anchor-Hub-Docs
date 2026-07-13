@@ -24,6 +24,23 @@ Open **Values & Norms** from the left sidebar to see all 27 items as a card grid
 
 A **Refresh** button appears in the library header for `hub.admin` users only. All content (titles, descriptions, active/inactive status) is managed directly in the "Hub Values & Norms" SharePoint list — the Hub is read-only. After editing an item there, click Refresh to clear the local cache and pull the latest version immediately, instead of waiting for the once-a-day automatic refresh.
 
+## AI Prompt
+
+Sent to Hatz.ai (Claude Haiku, via the `/v1/anthropic/messages` endpoint — `main/ipc/valuesNorms.js`, `generateBlurb`) once per day for the featured item. No model picker — single hardcoded model, matching the "no settings tab" v1 scope.
+
+**Prompt (built fresh per day, for the current cycle item):**
+> You are helping reinforce the culture of Anchor Network Solutions, a managed service provider (MSP) in Denver, CO with ~35 staff.
+>
+> Today's featured {Value/Norm} is: "{Title}"
+>
+> Definition: "{FullDescription}"
+>
+> Write exactly 2–3 sentences (no more) that bring this to life for today. Connect it to something practical and relatable — it could relate to MSP work, client relationships, team dynamics, or a current professional theme. Be specific, warm, and actionable. Do not repeat the definition verbatim. Do not use corporate jargon. Write as if you're a thoughtful colleague, not a policy document.
+>
+> Output plain prose only — no title, no heading, no markdown formatting (no #, *, -, or bullet points), just the 2–3 sentences.
+
+The response also gets a defensive strip in code in case the model prepends a markdown heading anyway. If generation fails, the widget falls back to the item's `ShortDescription` — never generated for Surprise Me selections, only the daily cycle item.
+
 ## Notes
 
 - Deactivating an item in SharePoint (`Active` = No) removes it from the rotation and the library without deleting it.
