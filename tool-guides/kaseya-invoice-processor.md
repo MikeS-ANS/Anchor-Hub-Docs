@@ -52,12 +52,14 @@ Nine data tables give you a full picture of the invoice:
 ## Bundled Billing
 
 ### Workplace Bundle Overrides
-For clients with contracted bundled Workplace/DFP seats, configure overrides in **Settings → Workplace Bundle Overrides**:
+For clients with contracted bundled Workplace/DFP seats, overrides live in **Settings → Workplace Bundle Overrides**:
 
-- Add a row per client/product with the contracted bundled seat count
+- One row per client/product with the contracted bundled seat count
 - Supported products: all six DWP and DFP license types
 - Bundled seats are deducted from the billable count before pushing to Autotask
 - QBO bundled amount = bundled seats × avg rate from that invoice (not a percentage)
+
+> This is a shared, centrally-managed list (see **Settings** below) — adding or editing a row currently requires Mike or a `hub.admin` to apply the change.
 
 ### SaaS Bundled Clients
 Mark clients as bundled in the **Datto SaaS Usage** table:
@@ -134,7 +136,7 @@ Unchanged items are filtered out — you only see what moved.
 
 ## Settings
 
-Navigate to **Settings** within the tool to configure:
+Navigate to **Settings** within the tool to view:
 
 | Setting | What it controls |
 |---|---|
@@ -143,4 +145,6 @@ Navigate to **Settings** within the tool to configure:
 | IT Glue splits | % split of IT Glue costs |
 | Workplace Bundle Overrides | Per-client contracted bundled seats per product |
 
-Splits must total 100% per product. The QBO journal entries recalculate immediately when you save settings.
+Splits must total 100% per product.
+
+> **Global setting — shared by everyone.** All four are stored together as one centrally-managed value in Azure App Configuration, not per-machine. The Settings screen shows the current values but the Save button won't apply a change — contact Mike (or whoever holds the `hub.admin` role) to update a split percentage **or** to add/edit a per-client Workplace Bundle Override.

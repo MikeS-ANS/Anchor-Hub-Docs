@@ -16,7 +16,7 @@ Most of this tool reads from the **Company Directory** so it doesn't hit the API
 | **SharePoint folder** | Company Mapping → Companies | The client's folder in the **ANS-Clients** library where reports are saved. |
 | **Time project/task** | Company Mapping → Time Projects | Links each client's *Client Time Tracking* project + *User Audits* task so time entries can be logged. Use **Auto-match**, or enter IDs manually, and **Re-sync** after the new-year projects are created. |
 
-> **Settings are shared.** Everything under the tool's **Settings** tab (supported classifications, license lists, service-account patterns, email text, billing options, digest schedule) is stored centrally — a change applies to **everyone**.
+> **Global setting — shared by everyone.** Everything under the tool's **Settings** tab (supported classifications, license lists, service-account patterns, email text, billing options, digest schedule) is centrally managed via Azure App Configuration. The Settings screen shows the current values but the Save button won't apply a change — contact Mike (or whoever holds the `hub.admin` role) to update anything here.
 
 **Autotask keys:** reading uses the shared read-only key automatically. Anything that **writes** to Autotask (write-back, contact creation, notes, time entries, dispositions) requires **your personal Autotask API key** in Settings → Autotask.
 

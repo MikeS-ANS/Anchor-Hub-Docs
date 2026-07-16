@@ -22,6 +22,16 @@ Clients with red or yellow margins are candidates for a price review in the Invo
 
 Click **Export** to download the full margin report as a spreadsheet.
 
+## Settings
+
+Click **Settings** to view:
+
+- **Azure Contract Name** — the contract-name keyword used to identify Azure contracts (default: "Microsoft Azure Cloud Services")
+- **Azure Service ID** — the Autotask service ID for Azure line items
+- **Scheduled analysis** — day-of-month and enabled/disabled toggle for the automatic monthly run
+
+> **Global setting — shared by everyone.** All four are centrally managed via Azure App Configuration. The Settings screen shows the current values but the Save button won't apply a change — contact Mike (or whoever holds the `hub.admin` role) to update one.
+
 ---
 
 > **Guide in progress.** More detail will be added here as the tool evolves.

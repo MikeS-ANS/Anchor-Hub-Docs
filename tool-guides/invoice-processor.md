@@ -95,6 +95,14 @@ Click **Export to Excel** to download the full invoice breakdown as a formatted 
 
 ---
 
+## Settings
+
+**Prompt Templates** (Settings → Prompt Templates) hold the AI prompt headers used when generating the Autotask update prompt for Azure pricing and for seat-count services — shared with Kaseya Invoice Processor's prompt template.
+
+> **Global setting — shared by everyone.** Centrally managed via Azure App Configuration. The Settings screen shows the current templates but the Save button won't apply a change — contact Mike (or whoever holds the `hub.admin` role) to update one.
+
+---
+
 ## Troubleshooting
 
 **Results show "Loaded from cache" but mappings look outdated**

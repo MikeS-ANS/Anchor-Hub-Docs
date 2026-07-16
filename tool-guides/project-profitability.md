@@ -55,13 +55,13 @@ The **stat cards** at the top show totals across all projects: total invoiced, t
 
 ## Configuring Settings
 
-Click **Settings** at the top of the tool to adjust:
+Click **Settings** at the top of the tool to view:
 
-- **Blended Labor Rate** — your average fully-loaded cost per billable hour (default: $83.50/hr)
+- **Blended Labor Rate** — your average fully-loaded cost per billable hour (default: $83.50/hr) — shared with Project Analysis's setting of the same name
 - **Standard Billable Rate** — your rack rate, used for comparison (default: $200/hr)
 - **Margin Warning Threshold** — projects below this % show in amber/red (default: 20%)
 
-Changes save immediately and apply to the current results without re-running.
+> **Global setting — shared by everyone.** These values are centrally managed via Azure App Configuration, not stored per-machine. The Settings screen shows the current values but the Save button won't apply a change — contact Mike (or whoever holds the `hub.admin` role) to update a rate or threshold for the whole team.
 
 ## Exporting
 

@@ -75,10 +75,12 @@ The exported report has a **light/dark mode toggle** in the top-right corner. Yo
 
 ## Settings
 
-Click **Settings** to configure:
+Click **Settings** to view:
 
-- **Blended Labor Rate** — used to calculate cost of labor and gross margin (default: $83.50/hr)
+- **Blended Labor Rate** — used to calculate cost of labor and gross margin (default: $83.50/hr) — shared with the same setting in Project Profitability
 - **Default AI Model** — pre-selects the model each time you open the tool
+
+> **Blended Labor Rate is a global setting — shared by everyone**, centrally managed via Azure App Configuration. The Save button won't apply a change to it — contact Mike (or whoever holds the `hub.admin` role) to update it. **Default AI Model is per-user** — it's remembered on your machine only, and saves normally.
 
 ## Recent Runs
 

@@ -11,12 +11,18 @@ The Autotask Contract Renewals tool scans all active Autotask contracts and surf
 
 ---
 
-## Configuration
+## Look-Ahead Window
 
-Before running, confirm your renewal window in **Settings → Contract Renewals**:
+Before running, pick your look-ahead window using the **30 / 60 / 90 days** tabs at the top of the tool — this is a per-run choice, not a saved setting, so it's remembered only for your current session.
 
-- **Look-ahead days** — How far ahead to scan (e.g. 60 days shows contracts expiring within the next 60 days)
-- **Contract types** — Filter to specific contract types if needed (e.g. Managed Services only)
+## Settings
+
+The tool's **Settings** tab holds two shared items:
+
+- **Eligible Services for % Price Increase** — a list of service-name phrases (partial match, one per line); any matching service shows the % increase column at renewal
+- **Renewal Info Prompt** — an AI prompt override used elsewhere in the renewal workflow
+
+> **Global setting — shared by everyone.** Both are centrally managed via Azure App Configuration. The Settings screen shows the current values but the Save button won't apply a change — contact Mike (or whoever holds the `hub.admin` role) to update either one.
 
 ---
 

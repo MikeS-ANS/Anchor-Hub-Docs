@@ -97,10 +97,10 @@ Click the **⚙** gear icon to open the Expiration Report settings.
 | Setting | Description |
 |---------|-------------|
 | **Warning threshold** | Days until expiry that triggers a Warning badge (default: 90) |
-| **Scheduled scan** | Enable automatic scans on a daily or weekly schedule |
-| **Scan day / time** | For weekly schedules, which day and time to run |
 
-The scheduled scan runs in the background. A desktop notification appears when it starts and completes. If the Hub was closed during the scheduled window, the scan runs automatically on the next launch.
+> **Global setting — shared by everyone.** Centrally managed via Azure App Configuration. The Settings screen shows the current threshold but the Save button won't apply a change — contact Mike (or whoever holds the `hub.admin` role) to update it.
+
+The scan itself runs automatically every **Monday at 9:00 AM Denver time** — this schedule is fixed in the app and isn't user-configurable (a per-user schedule toggle used to exist but caused the scan to silently stop firing if everyone happened to leave it unchecked; a single fixed schedule guarantees it always runs). A desktop notification appears when it starts and completes. If the Hub was closed during the scheduled window, the scan runs automatically on the next launch.
 
 ---
 
