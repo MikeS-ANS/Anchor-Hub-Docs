@@ -52,6 +52,7 @@
 | Repo privacy prep — tenant config extraction, private-repo-aware auto-updater | v2.7.0 |
 | SharePoint installer mirror, Open Project button fixes, Client Time Tracking project creation | v2.8.0 |
 | **Sprint 2 — Azure backend migration**: shared storage (Company Directory, per-tool run history/snapshots, User Audit history, cross-tool audit log) moved from SharePoint-JSON files to Azure SQL via a dedicated Azure Functions API, authenticated per-user via Entra ID; centrally-managed settings moved to Azure App Configuration with an admin-gated write path (`hub.admin`); Application Insights telemetry confirmed live | v3.0.0 |
+| **Ideas & Bug Tracker** — first Hub feature built purely against the Sprint 2 Azure SQL + Functions pattern (not a migration). Pinned in the sidebar between Help and Settings. Any signed-in user can submit, vote on, comment on, and view ideas/bugs; `hub.admin` can change status, post Official comments, merge duplicates, and delete items (admin cleanup utility, not in the original spec). In-app notifications bell for status changes/comments on things you follow. Attachments upload directly to SharePoint via Graph. Built from Claude Design's mockup handoff — the first feature to go through the Claude Design → Claude Code pipeline | v3.1.0 |
 
 ---
 

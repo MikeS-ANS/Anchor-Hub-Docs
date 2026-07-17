@@ -32,9 +32,11 @@
 * [HR & Resources Portal](tool-guides/hr-portal.md)
 * [User Audit Report](tool-guides/user-audit-report.md)
 * [Values & Norms](tool-guides/values-norms.md)
+* [Ideas & Bug Tracker](tool-guides/ideas-bug-tracker.md)
 
 ## What's New
 
+* [v3.1.0 — Ideas & Bug Tracker](whats-new/v3.1.0.md)
 * [v3.0.0 — Azure Backend Migration](whats-new/v3.0.0.md)
 * [v2.6.0 — Project Analysis Change Orders & Fixes](whats-new/v2.6.0.md)
 * [v2.5.0 — Values & Norms](whats-new/v2.5.0.md)
