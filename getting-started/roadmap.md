@@ -49,6 +49,9 @@
 | Hub Directory migration (retired local mapping cache), Meraki scheduler fix, Pax8/billing accuracy fixes | v2.4.0 |
 | Values & Norms — daily home screen widget + library, AI-enriched blurb, SharePoint-backed content | v2.5.0 |
 | Project Analysis — multi-PDF change order support, task phase display, Open Project button, billing-type fix | v2.6.0 |
+| Repo privacy prep — tenant config extraction, private-repo-aware auto-updater | v2.7.0 |
+| SharePoint installer mirror, Open Project button fixes, Client Time Tracking project creation | v2.8.0 |
+| **Sprint 2 — Azure backend migration**: shared storage (Company Directory, per-tool run history/snapshots, User Audit history, cross-tool audit log) moved from SharePoint-JSON files to Azure SQL via a dedicated Azure Functions API, authenticated per-user via Entra ID; centrally-managed settings moved to Azure App Configuration with an admin-gated write path (`hub.admin`); Application Insights telemetry confirmed live | v3.0.0 |
 
 ---
 
@@ -102,21 +105,14 @@ These tools have detailed specs written and are ready to build. See the `Idea MD
   `main/ipc/` is fully split into per-tool files. `main.js` is under 200 lines.
 
 - [ ] **Intune / MDM deployment**
-  Package as Win32 app and push via Intune. Solves Windows SmartScreen for all managed employee machines immediately — no cert required for internal distribution.
-
-- [ ] **Datto RMM Quick Job — Install / Update Anchor Hub**
-  PowerShell script that downloads the latest installer from the GitHub release and runs it silently. Can be targeted to specific sites or devices from the RMM console for on-demand installs without having to walk someone through it manually.
-  - Download URL pulled from `latest.yml` on the GitHub release so it always gets the current version
-  - Silent install: `Anchor-Hub-Setup-x.x.x.exe /S`
-  - Works alongside auto-update — use this for first installs or forced re-installs; the app handles its own updates from there
-  - Once repo is private, script will need a PAT with `Contents: read` to download the asset
+  Package as Win32 app and push via Intune so it auto-installs on every new employee computer. Solves Windows SmartScreen for all managed employee machines immediately — no cert required for internal distribution. (Datto RMM Quick Job deployment was considered and dropped — tenant sharing policy blocks anonymous SharePoint links needed for unattended downloads; manual SharePoint download covers the personal-device case, Intune covers new-computer provisioning.)
 
 - [ ] **Make GitHub repo private + extract sensitive config**
-  The public repo currently contains ANS's Azure AD Tenant ID, Client ID, SharePoint hostname, and internal email addresses in plain text. Plan:
-  1. Extract `MSAL_CLIENT_ID`, `MSAL_TENANT_ID`, `SP_HOST`, and `SUPPORT_TO` into a `config.js` file
-  2. Add `config.js` to `.gitignore`
-  3. Flip repo to private in GitHub settings
-  4. Configure electron-updater with a read-only fine-grained PAT for update checks
+  The public repo currently contains ANS's Azure AD Tenant ID, Client ID, SharePoint hostname, and internal email addresses in plain text.
+  - [x] Extract `MSAL_CLIENT_ID`, `MSAL_TENANT_ID`, `SP_HOST`, `SUPPORT_TO`, and a scoped GitHub PAT into a gitignored `config.js` *(v2.7.0)*
+  - [x] Configure electron-updater to use the PAT once the repo goes private *(v2.7.0 — shipped ahead of the flip so every installed app has the PAT-aware code before visibility changes)*
+  - [x] SharePoint installer mirror for first-time installs on machines with no GitHub access (personal devices, no RMM/Intune) *(v2.7.0)*
+  - [ ] Flip repo to private in GitHub settings — waiting for v2.7.0 to propagate to all installs first
 
 ---
 
@@ -124,22 +120,37 @@ These tools have detailed specs written and are ready to build. See the `Idea MD
 
 Replace remaining local-only storage with a proper centralized backend.
 
+**Planned in detail** — see [`!Idea MD Files/SPRINT_2_BACKEND_SPEC.md`](!Idea%20MD%20Files/SPRINT_2_BACKEND_SPEC.md) (full spec: verified storage placement per file, SQL schema, Functions endpoints, App Config keys, auth model, and a 7-phase migration order), backed by the read-only [`SPRINT_2_STORAGE_INVENTORY.md`](!Idea%20MD%20Files/SPRINT_2_STORAGE_INVENTORY.md). Decided: **Azure SQL** (not Cosmos) for shared records; Functions is the **SQL/data layer only** (vendor API calls + scheduled jobs stay client-side); Autotask personal operator creds stay in keytar. Mike's provisioning prerequisites are in [`SPRINT_2_PHASE_0_SETUP.md`](!Idea%20MD%20Files/SPRINT_2_PHASE_0_SETUP.md).
+
 | Current (prototype) | Replace with |
 |---|---|
-| Per-machine keytar for write keys | **Azure SQL** (encrypted per Entra identity) — Sprint 2 |
-| Local JSON settings files | **Azure App Configuration** — push config to all users instantly |
-| Local run history | **Azure SQL or Cosmos DB** — queryable, reportable |
+| Local JSON settings files + `margin_*` keytar | **Azure App Configuration** — push config to all users instantly |
+| SharePoint-JSON bridges + local run history | **Azure SQL** — queryable, reportable, concurrency-safe |
 | No monitoring | **Application Insights** — native to Azure tenant |
-| No notifications | **Azure Function + DB** — admin posts, all users see it |
-| Email idea submissions | **Microsoft Graph → Teams channel or Planner** |
+| No notifications | **Azure Function + SQL** — admin posts, all users see it (Sprint 3) |
 
 Specific items:
 - [x] **Azure Key Vault** *(complete)* — All shared API credentials in Key Vault: Pax8, Autotask (shared read-only), CIPP, Datto RMM, Meraki. HR Portal content also persisted via KV. Central, audited, revocable.
 
-- [ ] **Azure App Configuration** — centralize tool settings. Admin changes a value, all machines pick it up.
-- [ ] **Azure SQL / Cosmos DB** — run history, notifications, announcements, idea submissions, audit trail.
-- [ ] **Application Insights** — replaces any current logging. Already in the Azure ecosystem.
-- [ ] **Azure Functions** — serverless API layer between the Electron app and the Azure data services.
+- [x] **Phase 0 — Azure provisioning** *(complete)* — SQL DB, Functions app (Entra token validation), App Configuration store. See `SPRINT_2_PHASE_0_SETUP.md`.
+- [x] **Phase 0b — Functions scaffold + health check** *(complete, v3.0.0)* — token validation, managed-identity SQL pool, `hubApi.js` client.
+- [x] **Phase 1 — Azure App Configuration (read path)** *(complete, v3.0.0)* — 8 settings sources re-pointed with App Config → stale local → hardcoded default fallback. **Read-only for now** — Settings "Save" buttons for fully-migrated tools correctly show a "centrally managed" error instead of a silent no-op.
+- [x] **Phase 2 — Audit backbone** *(complete + verified, v3.0.0)* — `activity_log` + `installs` tables; Meraki audit, User Audit log, Blackpoint push-log, and Invoice push-log all write through the central audit stream (Invoice Processor's Push History was per-machine before — now shared). Install/version heartbeat on launch. Verified live in SQL.
+- [x] **Phase 3 — User Audit history → SQL** *(complete + verified, v3.0.0)* — `ua_runs`/`ua_writebacks`/`ua_sends`/`ua_reviews` tables replace the single `hub-user-audit-history.json` SharePoint blob. No fallback — SQL is the only source of truth; a Hub API failure surfaces a clear "Failed to load" error instead of showing stale/incomplete history. Existing history backfilled.
+- [x] **Phase 4 — Per-tool snapshots & run caches → SQL** *(complete + verified, v3.0.0)* — Project Analysis runs (now unbounded, was capped at 20/machine), Project Time Summary daily worked-hours snapshots, Kaseya invoice-month snapshots, Blackpoint agent-count snapshots — all four now shared across the team instead of per-machine. Same no-fallback principle as Phase 3: reads degrade to empty/null on a Hub API outage rather than a second stale copy; writes that matter (saving a Project Analysis run) surface a clear error in the UI if they fail.
+- [x] **Phase 5 — Central directory → SQL** *(complete + verified, v3.0.0)* — `hub-company-mappings.json` → `companies`/`company_platforms`/`service_mappings`. The flagship migration (7 consumer files) shipped with **zero changes to any of those 7 files** — `hubDirectory.js`'s `loadHubDirectory()`/`saveHubDirectory()` keep their exact original shape/contract; the Functions layer reassembles/accepts the same JSON shape underneath. `company_platforms` stores each platform entry as JSON (not fixed columns) since shape varies by platform (Pax8 has `id`/`source`, others don't) — `name` is extracted only for lookups. Company Directory's badge corrected to "Azure SQL ✓". Backfilled: 146 companies, 391 platform mappings, 16 service mappings (7 legacy no-name/no-atId entries correctly skipped). Also fixed two pre-existing dead tabs (MSC Clients, CIPP Tenants) found while verifying — never-defined render functions, unrelated to the migration itself.
+- [x] **App Config write path** *(complete)* — `PUT /config/{key}` (`{value}` to set, `{delete:true}` to clear back to the stale-local/hardcoded default), gated by `hub.admin` checked server-side against the `roles` claim on the caller's validated token (same app registration used for both interactive sign-in and this API's `access_as_user` scope, so no extra Graph/SharePoint round trip needed). Every change writes an `activity_log` row (`tool: 'config'`, old→new in `detailJson`). Wired up all 7 Settings Save buttons that were showing the "centrally managed, contact Mike" rejection (Profitability, Renewals, Kaseya cost-split, Prompt Templates, Margin Analyzer, Meraki expiration threshold, User Audit settings — two more than the original spec's "5" since Meraki/User Audit were migrated to App Config later in the sprint). Required a one-time Portal grant (Function App's managed identity → App Configuration Data Owner) — done.
+- [x] **Application Insights** *(complete)* — Function App was already linked to an Application Insights resource (`anchorhub-api`); no code changes needed. Confirmed live via Live Metrics: request rate, dependency calls, and traces (e.g. `Functions.directory`, `Functions.installsHeartbeat`) all flowing.
+- [x] **Cleanup** *(complete, v3.0.0)* — Removed the dead `pax8_client_id`/`pax8_client_secret` keytar reads from `creds-check` (real client uses Key Vault; nothing in the UI ever wrote these keys). Turned up an actual live bug while checking usage: the credentials-warning banner (`checkCredsWarning()`) hid itself only when `pax8 && autotask` were both true — since `pax8` was always `false` (Key Vault-backed, not per-user keytar), this banner has likely been showing a false "API credentials not configured" warning to **every** user regardless of real configuration. Now checks `autotask` only, the one credential that's genuinely per-user. The remaining `loadHubFile`/`saveHubFile` call sites (Meraki/User Audit settings fallback tier, User Audit history's one-time backfill, the confirmed-stays-as-cache paths) turned out to all be intentional, not leftovers — no further retirement needed there.
+- [x] **Regression pass fixes** *(complete, pending SQL migration)* — An 8-angle diff review of the whole branch turned up one real correctness bug plus several cleanup items, all fixed:
+  - **Blackpoint same-day rerun bug** — `bp_snapshots`' `(snapshotDate, tenantId)` primary key meant re-running the endpoint-usage scan twice in one day silently overwrote that day's row before a delta could be computed against it. Replaced with an append-only `bp_snapshot_runs` table (one row per tenant per run, sharing a `capturedAt` timestamp) — GET now finds the true previous run via `MAX(capturedAt)`, matching the original "diff against whatever ran last" behavior regardless of same-day reruns. **Requires running `functions/sql/phase6-fixes.sql` in the Portal Query Editor** (creates the new table, migrates existing history, drops the old one) before redeploying.
+  - **`projectAnalysisRuns` POST** now `MERGE`s instead of a plain `INSERT` — a retried/duplicate save no longer throws a `UNIQUE` constraint violation on `runId`.
+  - **`syncDirectory` now deletes companies removed from the payload** (not just those flagged `excluded`) — the old SharePoint save was a full-file overwrite, which implicitly dropped removed entries; the SQL upsert-only sync left them behind forever. Platform rows are deleted first (FK dependency).
+  - **`pts_snapshots` now trims to 90 days** on every write — the old per-machine JSON file had no unbounded-growth risk; SQL does.
+  - **Shared `withAuth()` wrapper** (`functions/src/lib/auth.js`) and **`unwrapSqlError()` helper** (`functions/src/lib/db.js`) replace the `requireCaller` try/catch and mssql transaction-error-unmasking boilerplate that had been copy-pasted across all 12 Functions route files.
+  - **`ptsSnapshots`/`blackpointSnapshot` writes** now go through a staging-temp-table + set-based `MERGE`/`INSERT` (the pattern `directory.js`'s `syncDirectory` already proved out) instead of one round trip per project/tenant.
+  - Removed the dead `fs` import from `main/ipc/blackpoint.js` (local snapshot file/SharePoint push-log bridge were retired in favor of the Hub API earlier in this sprint).
+  - Deliberately **not** touched: `blackpoint.js`/`kaseyaProcessor.js`/`projectAnalysis.js`/`projectTimeSummary.js` still catch-and-return-empty on a Hub API read failure rather than throwing like `userAudit.js` does — flagged as an inconsistency with the "SQL only, no fallback" principle, but changing it touches renderer error-handling across 4 tools with no way to test live tonight, so left alone pending a follow-up pass.
 
 ---
 

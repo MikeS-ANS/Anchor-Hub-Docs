@@ -33,6 +33,16 @@ Roles are assigned via **Azure AD Dynamic Groups**. Each Hub role has a correspo
 
 ---
 
+## Admin-only: centrally-managed settings (v3.0.0+)
+
+As of v3.0.0, `hub.admin` can also **edit centrally-managed settings directly from the app** — Profitability, Renewals, Kaseya cost-split, Prompt Templates, Margin Analyzer, Meraki's expiration threshold, and User Audit settings. Open the relevant tool's Settings panel and save as normal.
+
+This is enforced by the backend, not just hidden in the UI — the server checks your `hub.admin` App Role on every save, so a non-admin can't force it through even by calling the API directly. Every change is recorded to the shared activity log (who changed what, old value → new value).
+
+Previously these settings could only be changed by editing the value directly in Azure App Configuration.
+
+---
+
 ## Managing access
 
 ### Update which roles can see a tool
