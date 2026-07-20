@@ -33,6 +33,7 @@
 * [User Audit Report](tool-guides/user-audit-report.md)
 * [Values & Norms](tool-guides/values-norms.md)
 * [Ideas & Bug Tracker](tool-guides/ideas-bug-tracker.md)
+* [Timesheet Review](tool-guides/timesheet-review.md)
 
 ## What's New
 
