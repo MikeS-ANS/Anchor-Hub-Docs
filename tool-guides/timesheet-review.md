@@ -1,5 +1,7 @@
 # Timesheet Review
 
+> **Beta.** Marked Beta in the sidebar and in the tool itself (v3.2.0) while we gather feedback from managers before general release. The note-mismatch keyword table and the pattern-tiering rate thresholds are both provisional — see [Notes & limits](#notes--limits) below.
+
 Timesheet Review pulls a manager's (or admin's) team roster from Autotask time entries, classifies every entry as **client-facing**, **internal**, or **time off**, runs a set of deterministic data-quality checks against it, and layers three separate AI features on top for narrative review and free-form Q&A. It's read-only against Autotask — there's no in-Hub "approve" action; approval still happens in Autotask itself.
 
 ---

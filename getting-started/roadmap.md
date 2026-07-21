@@ -53,15 +53,13 @@
 | SharePoint installer mirror, Open Project button fixes, Client Time Tracking project creation | v2.8.0 |
 | **Sprint 2 — Azure backend migration**: shared storage (Company Directory, per-tool run history/snapshots, User Audit history, cross-tool audit log) moved from SharePoint-JSON files to Azure SQL via a dedicated Azure Functions API, authenticated per-user via Entra ID; centrally-managed settings moved to Azure App Configuration with an admin-gated write path (`hub.admin`); Application Insights telemetry confirmed live | v3.0.0 |
 | **Ideas & Bug Tracker** — first Hub feature built purely against the Sprint 2 Azure SQL + Functions pattern (not a migration). Pinned in the sidebar between Help and Settings. Any signed-in user can submit, vote on, comment on, and view ideas/bugs; `hub.admin` can change status, post Official comments, merge duplicates, and delete items (admin cleanup utility, not in the original spec). In-app notifications bell for status changes/comments on things you follow. Attachments upload directly to SharePoint via Graph. Built from Claude Design's mockup handoff — the first feature to go through the Claude Design → Claude Code pipeline | v3.1.0 |
+| **Timesheet Review Tool** *(marked Beta in-app — gathering manager feedback before general release)* — pulls Autotask time entries for a resource or team, computes client-facing utilization %, and runs deterministic data-quality checks (Gap/Overlap/Late/Thin Note/After Hours/Note-Duration Mismatch, all admin-configurable thresholds). AI Addendum pattern-tiering layer classifies each check's recurrence as CONCERN/WATCH/NORMAL via fixed thresholds computed once per scan — Manager Review, Team Review, and Ask AI all narrate those same tiers instead of independently judging severity, so results are consistent across features. Scoped by Graph direct reports (`hub.admin` sees everyone); results cached in Azure SQL so reopening a previously-scanned period is instant. Links out to Autotask for actual timesheet approval — no in-Hub approval (Autotask API limitation) | v3.2.0 |
 
 ---
 
 ## 🔄 Next Up
 
 These tools have detailed specs written and are ready to build. See the `Idea MD Files/` folder for the full spec on each.
-
-- [ ] **Timesheet Review Tool** *(spec: `TIMESHEET_REVIEW_TOOL_SPEC.md`)*
-  Manager-facing tool that pulls Autotask time entries for a resource or team and computes a client-facing utilization % (target: 70%). Runs deterministic data-quality checks (under-8h days, gaps, overlaps, late entries, thin notes) and an opt-in AI note-quality pass via Hatz.ai. Scoped by Graph direct reports. Links to Autotask for actual approval — no in-Hub approval (Autotask API limitation).
 
 - [ ] **Newsletter Builder** *(spec: `NEWSLETTER_BUILDER_SPEC.md`)*
   Compose and send formatted internal company newsletters from within the Hub. Section-based form (Announcements, Team Highlights, Project Wins, Tech Tips, etc.), live HTML preview, and delivery via Microsoft Graph `Mail.Send` to a distribution group. Stores sent history with duplicate-and-edit support.
