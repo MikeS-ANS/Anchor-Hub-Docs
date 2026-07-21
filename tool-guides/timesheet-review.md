@@ -12,6 +12,8 @@ Timesheet Review pulls a manager's (or admin's) team roster from Autotask time e
 - Everyone else sees only their own **Entra direct reports**, matched to Autotask resources by email (checks both `@anchornetworksolutions.com` and `@anchorns.com`).
 - **Excluded resources** — service accounts, contractors, anyone not a real employee to review — are hidden everywhere in this tool via Settings → Excluded resources. This is scoped to Timesheet Review only, not the Company Directory.
 
+> **First time using this as a manager?** If you get a permissions error opening the roster, **sign out and sign back in once** — v3.2.1 added the `User.ReadBasic.All` Graph permission needed to read your direct reports (a non-admin account can't read other users' data with just the default `User.Read` scope, even under "/me"). You may see a one-time consent prompt.
+
 ---
 
 ## Loading data — cache vs. live pull
