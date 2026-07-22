@@ -32,3 +32,7 @@ Complete these steps when setting up Anchor Hub for the first time.
 ## You're All Set
 
 Once the invoice loads successfully, Anchor Hub is fully configured. The app updates itself automatically — you'll see a prompt when a new version is available.
+
+## Moving to a New Computer or Reinstalling?
+
+Your sidebar layout and personal quick links live on this machine only, not tied to your login — reinstalling or switching computers loses them by default. **Before you do either**, export them from Settings → Customize on your current install, then import the file on the new one. See [Configuring Your Settings](configuring-settings.md#sidebar-customization-export--import) for the full steps.
