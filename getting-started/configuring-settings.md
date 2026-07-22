@@ -37,6 +37,10 @@ To carry your setup over:
 
 This brings over your sidebar layout (visible tools, groups, order, which groups are collapsed) and your personal quick links in one step — no need to redo either by hand. Do this **before** you start rebuilding your customization from scratch; there's no undo once you've reconfigured everything manually.
 
+## Installs (`hub.admin` only)
+
+Settings → **Installs** lists everyone who's launched the Hub: name, machine, app version, and when they were last (and first) seen — sorted most-recent-first. Useful for confirming everyone's updated past a given version, or spotting a machine that hasn't checked in in a while. Only visible to Hub Admins; hidden entirely for everyone else.
+
 ## Other Settings
 
 Other settings (margins, excluded companies, etc.) are tool-specific and covered in each tool's guide. Most users won't need to change them.

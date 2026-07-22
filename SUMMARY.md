@@ -37,6 +37,7 @@
 
 ## What's New
 
+* [v3.3.1 — Who's Using the App](whats-new/v3.3.1.md)
 * [v3.3.0 — Ideas & Bug Tracker improvements + fixes](whats-new/v3.3.0.md)
 * [v3.2.2 — Bug fix batch + Ideas/Bugs export + sidebar export/import](whats-new/v3.2.2.md)
 * [v3.2.1 — Timesheet Review: team scoping fix](whats-new/v3.2.1.md)
