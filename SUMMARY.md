@@ -37,6 +37,7 @@
 
 ## What's New
 
+* [v3.2.2 — Bug fix batch + Ideas/Bugs export + sidebar export/import](whats-new/v3.2.2.md)
 * [v3.2.1 — Timesheet Review: team scoping fix](whats-new/v3.2.1.md)
 * [v3.2.0 — Timesheet Review Tool (Beta)](whats-new/v3.2.0.md)
 * [v3.1.0 — Ideas & Bug Tracker](whats-new/v3.1.0.md)

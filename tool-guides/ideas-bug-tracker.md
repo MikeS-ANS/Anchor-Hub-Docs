@@ -29,6 +29,10 @@ Status changes also show up in the comment thread as a system-generated line (e.
 
 Attach a screenshot or file from an item's detail page (not the initial submit modal — the item needs to exist first since attachments are stored per-item). Files upload directly to SharePoint (`ANS-Company Shared → Anchor Hub → feedback-attachments/`); clicking an attachment opens it in your browser.
 
+## Export
+
+Check the box on any row (or **Select all**) to build a Markdown export of those items — the button shows a count once you've selected at least one. Each exported item includes its title, status, submitter(s), vote count, full description, attachments (as clickable links to their SharePoint file), and the complete comment thread in order. Useful for sharing a set of items outside the Hub or archiving a batch before a cleanup.
+
 ## Notifications
 
 The 🔔 bell in the toolbar shows updates on anything you're following — anything you submitted, anything merged into an item you're attached to, or anything you've commented on yourself. It covers new comments and status changes from other people (not your own actions). A red badge on the bell and on the sidebar nav item shows the unread count; click **Mark all read** to clear it.
