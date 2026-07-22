@@ -15,7 +15,13 @@ Each has its own status lifecycle:
 
 ## Voting
 
-Click the vote arrow on any item to add your vote — click again to remove it. One vote per person per item; this is a priority signal ("+1"), not a like/approval. Lists sort by vote count (**Priority**) by default, or switch to **Newest** via the sort control.
+Click the vote arrow on any item to add your vote — click again to remove it. One vote per person per item; this is a priority signal ("+1"), not a like/approval.
+
+## Sorting, closed items, and hiding
+
+- **Sort** — the dropdown in the toolbar offers **Priority** (vote count, default), **Newest**, **Status**, **Alphabetical**, and **Created By**.
+- **Closed section** — items in a terminal status (Shipped/Declined/Duplicate for ideas; Fixed/Won't Fix/Duplicate for bugs) automatically move into a collapsed **Closed** section below the active list, so resolved items don't clutter what you're actively tracking. Click to expand.
+- **Hide** — click the eye-slash icon on any row to hide it from your own view. This is **local to your machine only** — not synced across devices, not visible to anyone else, and doesn't affect the item itself in any way. A **Hidden** section (same collapsed pattern) lets you bring hidden items back into view.
 
 ## Comments
 
