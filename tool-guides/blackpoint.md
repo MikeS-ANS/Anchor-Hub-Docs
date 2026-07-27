@@ -7,7 +7,7 @@ Automates monthly Blackpoint billing reconciliation against Autotask. Load the A
 ## Prerequisites
 
 - Sign into Anchor Hub with your Microsoft account (SSO required — the tool reads from SharePoint)
-- The monthly Account Usage Report CSV must be exported from Blackpoint and saved to `ANS-Vendors/Blackpoint/invoices/{year}/` in SharePoint
+- The monthly Account Usage Report CSV must be exported from Blackpoint and either saved to `ANS-Vendors/Blackpoint/invoices/{year}/` in SharePoint yourself, or uploaded directly from the tool (see below)
 
 ---
 
@@ -15,9 +15,13 @@ Automates monthly Blackpoint billing reconciliation against Autotask. Load the A
 
 ### 1. Load a file
 
+**If the CSV is already in SharePoint:**
+
 1. Select a **Year** from the dropdown — years are pulled live from SharePoint
 2. Select the **CSV file** for the month you're reconciling
 3. Click **Load & Compare**
+
+**If you have the CSV on your computer:** drag it onto the upload zone above the selectors (or click the zone to browse for it). It uploads straight into the correct SharePoint year folder — creating that year's folder automatically if it's the first invoice of a new year — and is automatically selected once the upload finishes.
 
 The tool downloads the CSV, then loads all active Autotask Managed Security Services contracts and unit counts in a single bulk query. Expect 30–60 seconds on first load; subsequent runs in the same session are faster because AT data is cached for 30 minutes.
 
