@@ -37,6 +37,7 @@
 
 ## What's New
 
+* [v3.5.2 — Strety widget: Connect button now shows on any reconnect signal](whats-new/v3.5.2.md)
 * [v3.5.1 — Strety widget: refresh-token race + dead-end fix](whats-new/v3.5.1.md)
 * [v3.5.0 — Strety Rocks & To-Dos homepage widget](whats-new/v3.5.0.md)
 * [v3.4.3 — User Audit Report write-back duplicate-contact safeguard](whats-new/v3.4.3.md)
