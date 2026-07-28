@@ -37,6 +37,7 @@
 
 ## What's New
 
+* [v3.4.3 — User Audit Report write-back duplicate-contact safeguard](whats-new/v3.4.3.md)
 * [v3.4.2 — Meraki single-client refresh](whats-new/v3.4.2.md)
 * [v3.4.1 — Kaseya Invoice Processor billing fixes + SharePoint upload](whats-new/v3.4.1.md)
 * [v3.3.1 — Who's Using the App](whats-new/v3.3.1.md)

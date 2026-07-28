@@ -51,11 +51,18 @@ When the client returns their workbook:
 2. The preview shows **only the changed rows** (current → new), plus a **"New Autotask contacts to create"** list for any M365-only rows the client re-classified (with a per-row classification drop-down and bulk-set).
 3. Add an optional account note, choose whether to post it as a CRM To-Do, and **Confirm**.
 
+**⚠ Possible existing contact.** M365-only rows are also checked by name against the client's own Autotask contacts (not just email) — a person whose Autotask email has drifted from their current M365 address still has the same name, and email-only matching would miss that and create a duplicate. A likely name match shows an orange warning badge with the matched contact's name and email, and the row requires an explicit per-row choice instead of a checkbox:
+- **Update existing** — updates the matched Autotask contact's classification, and sets its email to the M365 address (moving the old address to the secondary email slot if that slot isn't already in use — if it is, the email is left alone and flagged as needing manual resolution).
+- **Create new anyway** — creates a new contact as normal, for when the name match is a coincidence (e.g. two different people with the same surname).
+
+Leaving neither option selected excludes that row from the write-back, the same as leaving an ordinary row's checkbox unchecked.
+
 On confirm, the tool:
 - Updates each changed contact's **Support Classification** UDF.
 - **Deactivates** contacts set to "No Longer Active"; **reactivates** contacts set to a supported classification.
-- **Creates** the checked M365-only contacts (and, if a contact with that email already exists — active or inactive — updates it instead of making a duplicate).
-- Posts an **account note** summarizing confirmed vs. contracted users and the detected changes.
+- **Creates** the checked M365-only contacts (and, if a contact with that email already exists — active or inactive — updates it instead of making a duplicate), or **updates** the linked contact for rows resolved as "Update existing" above.
+- Runs one more **live check** against Autotask's current contacts immediately before each create — not just against the possibly-stale generated report — so a name match that only exists in Autotask today (created after the report was generated, say) is never silently duplicated. These are skipped with a **needs-review** status in the progress list and counted separately in the summary; resolve them manually and re-run write-back for just that person next cycle.
+- Posts an **account note** summarizing confirmed vs. contracted users, the detected changes, and any matched-and-updated or needs-review counts.
 
 ---
 
@@ -90,6 +97,6 @@ Role-gated to finance/admin. A roll-up of **contracted vs. supported users** per
 
 ## Notes & limits
 
-- **Matching is by email** (M365 UPN/mail ↔ Autotask contact email). A contact whose Autotask email differs from both won't auto-match.
+- **Matching is by email** (M365 UPN/mail ↔ Autotask contact email) for the main report. Write-back adds a name-based safety net on top (see **Write-back** above) to catch a drifted-email duplicate, but it's a review-flag heuristic, not a source of truth — always confirm the flagged match is actually the same person before choosing "Update existing."
 - Reports and lifecycle data are stored in SharePoint and shared across the team; history is retained long-term.
 - Time entries, notes, and dispositions post as **To-Do items assigned to whoever records them** (a property of the "User Count Audit" Action Type). The Action Type ID is set in Settings.
