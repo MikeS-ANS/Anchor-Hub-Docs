@@ -37,6 +37,7 @@
 
 ## What's New
 
+* [v3.5.1 — Strety widget: refresh-token race + dead-end fix](whats-new/v3.5.1.md)
 * [v3.5.0 — Strety Rocks & To-Dos homepage widget](whats-new/v3.5.0.md)
 * [v3.4.3 — User Audit Report write-back duplicate-contact safeguard](whats-new/v3.4.3.md)
 * [v3.4.2 — Meraki single-client refresh](whats-new/v3.4.2.md)
