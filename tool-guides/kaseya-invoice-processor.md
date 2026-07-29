@@ -6,12 +6,16 @@ The Kaseya Invoice Processor ingests your monthly Kaseya/Datto XLS invoices dire
 
 ## Loading an Invoice
 
+**If the invoice is already in SharePoint:**
+
 1. Navigate to **Kaseya Invoice Processor** in the sidebar
 2. Select the **year folder** from the dropdown
 3. Select the **invoice file** — grand totals from prior runs are shown next to each file
 4. Click **Process Invoice**
 
-Invoices are loaded directly from SharePoint (ANS-Vendors → Kaseya/Invoices). No local file storage or manual downloads needed.
+**If you have a new invoice file on your computer:** drag it onto the upload zone below the selectors (or click the zone to browse for it). It uploads straight into the correct SharePoint year folder — creating that year's folder automatically if it's the first invoice of a new year — and is automatically selected once the upload finishes, ready to process.
+
+Invoices live in SharePoint (ANS-Vendors → Kaseya/Invoices). No local file storage — even a freshly uploaded file goes straight there, not onto your machine.
 
 The processor auto-detects the Details sheet and all column positions (Company, Module, Qty, Rate, Total, etc.) even if Kaseya changes their column layout.
 

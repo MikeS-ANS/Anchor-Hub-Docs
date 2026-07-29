@@ -74,3 +74,7 @@
 * [v1.4.3 — Project Profitability](whats-new/v1.4.3.md)
 * [v1.4.2 — Fuzzy Match & Push History](whats-new/v1.4.2.md)
 * [v1.4.1 — Duo Management](whats-new/v1.4.1.md)
+
+## About
+
+* [How Anchor Hub Gets Built](about/how-this-gets-built.md)

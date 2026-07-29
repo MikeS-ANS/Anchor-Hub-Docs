@@ -19,6 +19,8 @@ The scan checks every device across all mapped Meraki orgs and classifies each o
 | **EoS** | Hardware end-of-support date is within range |
 | **CO-TERM** | Organization uses co-term licensing — one shared expiry for all devices |
 
+**Shelf spares** — unclaimed devices sitting in inventory with no license assigned are tagged "Shelf spare" and excluded from the Expired/Critical/Warning/Notice counts in the top summary banner and the Severity filter chips, since an unassigned spare isn't an actual license problem. They still show up under the **Status** filter group (**Shelf spare**) if you want to see them.
+
 ---
 
 ## Running a Scan
@@ -26,6 +28,21 @@ The scan checks every device across all mapped Meraki orgs and classifies each o
 Click **Re-scan All Orgs** in the toolbar. A progress bar tracks the scan org by org (typically 30–90 seconds for 70+ orgs). Results are written to a shared cache in SharePoint so all Hub users see the same data without re-scanning.
 
 **Last scanned** timestamp is shown at the top. The scheduler (configured in Settings) can run this automatically on a daily or weekly basis.
+
+---
+
+## Refreshing a Single Client
+
+Waiting through a full 70+-org scan just to check one thing (a license you just claimed, an org setting you just fixed) is slow. Two faster paths update just that one org, in place, without touching anyone else's data or blocking the page:
+
+- **↻ Refresh button** — every org card header has one, next to **+ License** and **🎫 Ticket**. Click it to rescan just that org.
+- **"Refresh one client:" picker** — next to **Expand all / Collapse all**. Use this for an org that isn't currently showing as a row (hidden by an active filter or search) — pick it from the dropdown and click **↻ Refresh**.
+
+Either way, only that org's entry in the shared scan cache is updated — the rest of the report stays exactly as you left it (filters, search, other expanded cards). There's no full-page scanning screen; a small status message next to the control shows progress and confirms when it's done.
+
+A busy-guard prevents starting a second single-client refresh while one is already running in the same window. It does **not** protect against two refreshes (or a refresh and a full Re-scan All) started from different Hub instances/machines at the same moment — same shared-cache-file limitation as assigning unused licenses or syncing an AT warranty date elsewhere in this tool.
+
+Single-client refreshes are logged to the Audit Log (see below) as their own entry, separate from full scans.
 
 ---
 
@@ -87,6 +104,12 @@ You can exclude devices or entire orgs from the report without removing them fro
 **Exclude an org:** click **···** → Exclude Org. The entire org is skipped during scanning.
 
 Exclusions are stored per-company in the Hub Company Directory and shared across all Hub users. To remove an exclusion, open **Settings → Exclusions** within the tool.
+
+---
+
+## Audit Log
+
+Click **⚙** → **Audit** to see a history of activity for this tool: scan started/completed, client refreshed, license renewed, AT date synced, ticket created, and exclusions added/removed. A single-client refresh (see above) records its own **↻ Client refreshed** entry, distinct from the **✅ Scan completed** entry a full Re-scan All produces.
 
 ---
 
