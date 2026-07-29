@@ -38,6 +38,7 @@
 
 ## What's New
 
+* [v3.6.1 — Duo Management access fix](whats-new/v3.6.1.md)
 * [v3.6.0 — Client Touch Aging Report](whats-new/v3.6.0.md)
 * [v3.5.3 — Strety widget: access token going invalid mid-session](whats-new/v3.5.3.md)
 * [v3.5.2 — Strety widget: Connect button now shows on any reconnect signal](whats-new/v3.5.2.md)
