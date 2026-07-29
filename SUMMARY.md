@@ -34,9 +34,18 @@
 * [Values & Norms](tool-guides/values-norms.md)
 * [Ideas & Bug Tracker](tool-guides/ideas-bug-tracker.md)
 * [Timesheet Review](tool-guides/timesheet-review.md)
+* [Client Touch Aging](tool-guides/client-touch-aging.md)
 
 ## What's New
 
+* [v3.6.0 — Client Touch Aging Report](whats-new/v3.6.0.md)
+* [v3.5.3 — Strety widget: access token going invalid mid-session](whats-new/v3.5.3.md)
+* [v3.5.2 — Strety widget: Connect button now shows on any reconnect signal](whats-new/v3.5.2.md)
+* [v3.5.1 — Strety widget: refresh-token race + dead-end fix](whats-new/v3.5.1.md)
+* [v3.5.0 — Strety Rocks & To-Dos homepage widget](whats-new/v3.5.0.md)
+* [v3.4.3 — User Audit Report write-back duplicate-contact safeguard](whats-new/v3.4.3.md)
+* [v3.4.2 — Meraki single-client refresh](whats-new/v3.4.2.md)
+* [v3.4.1 — Kaseya Invoice Processor billing fixes + SharePoint upload](whats-new/v3.4.1.md)
 * [v3.3.1 — Who's Using the App](whats-new/v3.3.1.md)
 * [v3.3.0 — Ideas & Bug Tracker improvements + fixes](whats-new/v3.3.0.md)
 * [v3.2.2 — Bug fix batch + Ideas/Bugs export + sidebar export/import](whats-new/v3.2.2.md)
