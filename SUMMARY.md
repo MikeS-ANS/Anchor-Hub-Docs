@@ -38,6 +38,7 @@
 
 ## What's New
 
+* [v3.6.2 — Company Directory Rebuild](whats-new/v3.6.2.md)
 * [v3.6.1 — Duo Management access fix](whats-new/v3.6.1.md)
 * [v3.6.0 — Client Touch Aging Report](whats-new/v3.6.0.md)
 * [v3.5.3 — Strety widget: access token going invalid mid-session](whats-new/v3.5.3.md)
