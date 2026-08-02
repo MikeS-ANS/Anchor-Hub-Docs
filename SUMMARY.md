@@ -35,9 +35,11 @@
 * [Ideas & Bug Tracker](tool-guides/ideas-bug-tracker.md)
 * [Timesheet Review](tool-guides/timesheet-review.md)
 * [Client Touch Aging](tool-guides/client-touch-aging.md)
+* [Block Hour Report](tool-guides/block-hour-report.md)
 
 ## What's New
 
+* [v3.7.0 — Block Hour Client Report](whats-new/v3.7.0.md)
 * [v3.6.2 — Company Directory Rebuild](whats-new/v3.6.2.md)
 * [v3.6.1 — Duo Management access fix](whats-new/v3.6.1.md)
 * [v3.6.0 — Client Touch Aging Report](whats-new/v3.6.0.md)
