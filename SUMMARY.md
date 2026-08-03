@@ -39,6 +39,7 @@
 
 ## What's New
 
+* [v3.7.2 — Block Hour Report: Regenerate + monthly hours-used fix](whats-new/v3.7.2.md)
 * [v3.7.1 — Block Hour Report fixes](whats-new/v3.7.1.md)
 * [v3.7.0 — Block Hour Client Report](whats-new/v3.7.0.md)
 * [v3.6.2 — Company Directory Rebuild](whats-new/v3.6.2.md)
