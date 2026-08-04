@@ -1,6 +1,6 @@
 # Meraki Admin Management
 
-Audit and manage Cisco Meraki dashboard administrators across all client organizations. Requires the **hub.it** or **hub.admin** role.
+Audit and manage Cisco Meraki dashboard administrators across all client organizations. Access is controlled entirely by the **Hub Role Matrix** SharePoint list — see [Roles & Permissions](../getting-started/roles-and-permissions.md) — with no separate role hardcoded into the tool itself.
 
 ---
 
@@ -8,7 +8,7 @@ Audit and manage Cisco Meraki dashboard administrators across all client organiz
 
 The audit runs a gap analysis against the **Organization Template** org, which defines the standard set of ANS admins every client org should have.
 
-Click **Refresh** to fetch all orgs and their admins from the Meraki API. This takes 30–60 seconds depending on the number of orgs.
+Click **Refresh** to fetch all orgs and their admins from the Meraki API. This takes 30–60 seconds depending on the number of orgs. If any orgs fail to fetch (transient rate-limiting or network issues), the summary bar shows a count in red and a **Retry Failed** button appears — click it to re-fetch just those orgs instead of running a full re-scan. If the **Organization Template** baseline org itself fails to fetch, the summary bar shows a warning and missing/extra comparisons are disabled for every org until it's retried successfully — this avoids flagging real ANS admins as "extra" against an empty baseline.
 
 Once loaded, the table shows each org with:
 
@@ -28,7 +28,7 @@ Once loaded, the table shows each org with:
 
 Click any row to expand it. The expanded view shows:
 
-- **Missing ANS Admins** — chips with a green **+ Add** button per admin, plus **+ Add All Missing** to add them all at once
+- **Missing ANS Admins** — chips with a green **+ Add** button per admin, plus **+ Add All Missing** to add them all at once (a summary alert lists any that failed, so partial failures aren't silent)
 - **Extra ANS Admins** — chips with an amber **Remove** button, plus **Remove All Extra**
 - **Full admin table** — Name, Email, Role, Last Active, Type (ANS/Client), with a **Remove** button per row
 - **+ Add Admin to this org** — inline form to add a one-off admin (email + name, always full access)
@@ -37,7 +37,7 @@ Click any row to expand it. The expanded view shows:
 
 ### Fix All Missing
 
-The **Fix All Missing** toolbar button adds every missing ANS admin across every org with gaps in one operation. Requires a confirmation click. Use this after onboarding a new ANS employee.
+The **Fix All Missing** toolbar button adds every missing ANS admin across every org with gaps in one operation. Requires a confirmation click. Use this after onboarding a new ANS employee. If any individual add fails, a summary alert lists exactly which org/admin failed and why — re-run the button to retry just what's left.
 
 ---
 

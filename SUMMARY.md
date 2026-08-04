@@ -39,6 +39,7 @@
 
 ## What's New
 
+* [v3.7.4 — Meraki Admin Management: access-control fix + audit/bulk-op reliability](whats-new/v3.7.4.md)
 * [v3.7.3 — Block Hour Report: monthly work-items date scoping fix](whats-new/v3.7.3.md)
 * [v3.7.2 — Block Hour Report: Regenerate + monthly hours-used fix](whats-new/v3.7.2.md)
 * [v3.7.1 — Block Hour Report fixes](whats-new/v3.7.1.md)
