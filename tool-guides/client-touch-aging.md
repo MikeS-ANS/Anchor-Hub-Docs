@@ -23,9 +23,10 @@ Both paths run the identical sync logic, so there's exactly one code path to tru
 
 - **Layouts.** A segmented switcher toggles between **Table**, **Cards**, and **By Account Manager** — whichever you pick is remembered per-user (stored in your browser's local storage), so it stays your default next time.
 - **Scope.** **My clients / All clients**, defaulting to **My clients**. "Mine" resolves your signed-in identity to an Autotask resource and shows only clients whose Account Manager is you. If Anchor Hub can't resolve an Autotask resource for your email, you'll see an explicit warning rather than a silently empty list — switch to "All clients" or ask an admin.
-- **Search & filter.** Filter by client name, or by Account Manager via a dropdown populated from whoever actually owns a currently-flagged client.
+- **Search & filter.** Filter by client name, by Account Manager via a dropdown populated from whoever actually owns a currently-flagged client, and — new — by **Technologist** and **TAM** via their own dropdowns, populated the same way. Picking a name narrows the list to that person's clients, exactly like the Account Manager filter. See [Technologist & TAM columns and filters](#technologist--tam-columns-and-filters) below.
 - **Metric strip.** Now five tiles: Flagged / Never touched / Note overdue / Meeting overdue / **Due soon** — counts reflect whatever the current scope + search + filter combination is showing. See [Due-soon early-warning tier](#due-soon-early-warning-tier) below.
 - **Priority column (Table view).** Every row shows a computed **Priority** score and the column is sortable. See [Priority score](#priority-score) below.
+- **Technologist & TAM columns (Table/Cards views).** Both views show a Technologist and a TAM column alongside Account Manager. See [Technologist & TAM columns and filters](#technologist--tam-columns-and-filters) below.
 - **Client names link out** directly to that client's Autotask company record.
 - **Log a touch.** Any flagged row has a **"+ Log touch"** button. See [Log a touch (write-back)](#log-a-touch-write-back) below.
 - **Breaching and due-soon clients are listed; current clients are not.** A client that's current on both a Note/Quick Note and a Client Meeting, and not within the due-soon window on either, never appears in the report at all. If everyone in the current scope is current, you get a quiet green **"Every client is current"** message instead of an empty table.
@@ -64,6 +65,16 @@ This required a new Azure SQL table, `company_priority_signals`, and two new dai
 
 ---
 
+## Technologist & TAM columns and filters
+
+Table and Cards views show two new columns — **Technologist** and **TAM** (Technical Account Manager) — alongside the existing Account Manager info. Both are sourced from Autotask's **Associations → Account Team** (the `CompanyTeams` entity), joined against each team member's `Resource.title`. This is a **different** Autotask concept from the **Account Manager / Owner** field used everywhere else in this report — a client's Account Manager and its Account Team members are tracked independently in Autotask, so don't assume they're the same person or that one implies the other.
+
+Each column has its own filter dropdown, populated from whoever is currently assigned to a flagged client — same interaction pattern as the existing Account Manager filter: pick a name from the dropdown, and the list narrows to just that person's clients.
+
+Because Autotask job titles are free text rather than a fixed picklist, which titles count as "Technologist" vs. "TAM" is admin-editable rather than hardcoded — see **Account Team Roles** in the [Settings tab](#settings-tab) below.
+
+---
+
 ## Log a touch (write-back)
 
 Client Touch Aging was originally spec'd as read-only by explicit design. **This is a deliberate, explicitly-confirmed exception to that design**, not a scope-creep add.
@@ -89,6 +100,7 @@ Settings mixes admin-only and open sections. Admin sections carry an **Admin** p
 |---|---|---|
 | **Thresholds** | `hub.admin` | Months before a Note/Quick Note counts as overdue (default 3) and before a Client Meeting counts as overdue (default 12), plus how many days out the [due-soon early-warning tier](#due-soon-early-warning-tier) starts flagging an approaching threshold (`dueSoonDays`, default 14). |
 | **Touch Types** | `hub.admin` | Which Autotask CompanyNotes action types count as a "Note/Quick Note" vs. a "Client Meeting" — picked from a live picklist of actual Autotask action types (via `autotask_get_field_info`), not raw ID entry. |
+| **Account Team Roles** | `hub.admin` | Two free-text job-title lists that control which Autotask job titles count as **Technologist** (`technologistTitles`, default `Technology Strategist` **and** `Director of Client Success`) vs. **TAM** (`tamTitles`, default `Technical Account Manager`) when resolving the [Technologist & TAM columns and filters](#technologist--tam-columns-and-filters) above. Matching is **case-insensitive substring**, not exact — e.g. "Senior Technical Account Manager" still matches the TAM list. Editable because Account Team job titles are free text in Autotask, not a fixed picklist the way CompanyNotes action types are — a title can change over time without notice. |
 | **Excluded Clients** | `hub.admin` | Search-and-exclude list of MSC clients. An excluded client is fully hidden from the report — not just deprioritized. |
 | **Daily Sync** | `hub.admin` | What time (24-hour, local) the daily sync job runs. |
 | **Scheduled Digest** | **Any signed-in user** | Recipients and cadence (Off / Weekly / Monthly) for an emailed summary of every currently-flagged client. This is the one deliberate exception to Anchor Hub's usual "every Settings section is `hub.admin`-only" pattern — digest recipients/cadence needed to stay editable by anyone, since it's personal notification config, not shared business logic. |
@@ -131,3 +143,4 @@ Flagged here deliberately rather than left silent — open questions/trade-offs 
 - SQL schema migrations: `functions/sql/phase10-client-touch-aging-schema.sql` (base tables — `company_touches`, `touch_sync_state`), `functions/sql/phase11-client-touch-aging-snippet.sql`, and `functions/sql/phase12-client-touch-aging-priority.sql` (v2 — adds `company_priority_signals`, backing the Priority score's two new daily-sync sub-jobs: batched Autotask Contracts and Tickets queries, same no-fan-out pattern as the existing CompanyNotes sync).
 - Two shared helpers were extracted during this build so User Audit Report and Client Touch Aging share code instead of duplicating it: `main/shared/accountManager.js` (Account Manager resolution) and generalized Autotask deep-link helpers in `app.js` (`atAccountUrl` / `atClientLink` / `wireAtLinks`, with the old `ua*`-prefixed names kept as thin wrappers for backward compatibility).
 - v2's "Log a touch" write-back gate follows the same personal-Autotask-key pattern as User Audit Report's write-back (`main/ipc/userAudit.js`) rather than introducing a new credential-check pattern.
+- A sibling `resolveAccountTeam()` helper in `main/ipc/clientTouchAging.js` resolves the Technologist/TAM columns from Autotask's `CompanyTeams` entity (Associations → Account Team) joined against each member's `Resource.title` — a live, batched lookup with a 10-minute in-memory cache, the same architecture as the Account Manager resolver above, rather than going through the daily Azure SQL sync. Account Team membership is current-state, not historical, so it's deliberately not persisted into the sync tables the way touches/priority signals are.
