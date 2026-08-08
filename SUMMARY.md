@@ -23,6 +23,7 @@
 * [Autotask Contract Changes](tool-guides/contract-changes.md)
 * [Autotask Contract Renewals](tool-guides/contract-renewals.md)
 * [BlackPoint Invoice Processor](tool-guides/blackpoint.md)
+* [Cytracom Invoice Processor](tool-guides/cytracom-invoice-processor.md)
 * [MSC Agreements](tool-guides/msc-agreements.md)
 * [Meraki Admin Management](tool-guides/meraki-admin.md)
 * [Meraki License & EoL Expiration Report](tool-guides/meraki-expiration.md)
@@ -39,6 +40,7 @@
 
 ## What's New
 
+* [v3.8.0 — Cytracom Invoice Processor](whats-new/v3.8.0.md)
 * [v3.7.5 — Client Touch Aging: Technologist & TAM columns/filters](whats-new/v3.7.5.md)
 * [v3.7.4 — Meraki Admin Management: access-control fix + audit/bulk-op reliability](whats-new/v3.7.4.md)
 * [v3.7.3 — Block Hour Report: monthly work-items date scoping fix](whats-new/v3.7.3.md)
