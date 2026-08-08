@@ -28,6 +28,26 @@ Opening the tool is **not** a live Autotask call every time:
 
 ---
 
+## Automatic refresh
+
+Cached data used to sit unchanged until someone clicked ↻ Refresh, with nothing on screen showing its age. Two things now keep it current without anyone having to remember to click Refresh:
+
+**Refresh on open.** Cached data still appears instantly the moment you open the tool — that part hasn't changed. But if that cached data is older than the "Refresh on open" threshold (Settings, default **12 hours**) *and* the period it belongs to is still recent enough that people could still be logging time against it, the tool quietly re-scans in the background and swaps in the updated data when it lands:
+
+- While it's working, the header shows **"· refreshing…"** next to the last-loaded time.
+- If the background refresh can't complete (network issue, Autotask unavailable), the header instead shows **"· refresh failed"** — the data already on screen stays exactly as it was; nothing is cleared or blanked out.
+- A period that's old enough to be considered settled (more than the "Keep refreshing a period" window past its end date, default **14 days**) is left alone regardless of how old its cached data is — closed periods stop getting rescanned once nobody is realistically still going to log time against them. Clicking Previous/Next back through old, already-settled periods will not trigger a refresh.
+- The ↻ Refresh button still works exactly as it always has, for pulling fresh data on demand at any time.
+
+**Daily scan.** Once a day, Anchor Hub automatically refreshes the current week, previous week, current month, and previous month for every active employee, so the data most people look at is usually already current before they ever open the tool. Two things worth knowing about how this actually runs:
+
+- It only runs on **Hub Admin** machines. The results land in the same shared database every manager reads from, so one admin's daily scan is enough to keep everyone's view current — it doesn't need to run on every manager's computer.
+- It only runs **while Anchor Hub is open** on that admin machine at the scheduled time (Settings, default **05:00 Denver time**) — there's no separate server that runs this in the background when the app is closed. In practice it usually fires on the first launch after the scheduled time rather than at that exact moment, since nobody typically has the Hub open at 5 AM — that's expected, not a malfunction. If no admin has the Hub open around the scheduled time on a given day, the "Refresh on open" behavior above still keeps things current for anyone who opens the tool that day.
+
+**The AI features never run automatically.** Manager Review, Team Review, Ask AI, and AI Note Review are billed per use and stay strictly click-only under both refresh mechanisms above — neither the background refresh nor the daily scan ever triggers an AI call on your behalf.
+
+---
+
 ## Classification
 
 Each time entry is bucketed by **account**, not the billable flag — a lot of ANS client work is non-billable fixed-fee but still client-facing:
@@ -187,6 +207,11 @@ All centrally managed via Azure App Configuration — Hub Admin only. Everyone e
 | Internal company name / ID | "Anchor Network Solutions" / `0` | Name is a display label only — ID `0` is what actually drives internal/client classification. |
 | Excluded resources | (none) | Autotask resource IDs hidden everywhere in this tool. |
 | AI model | claude-haiku-4-5 | Used by all four AI features. |
+| **Automatic Refresh** | | |
+| Daily scan | Enabled | Master on/off switch for the once-a-day scan described above. |
+| Daily scan time (Denver) | 05:00 | When the daily scan is scheduled to fire. Usually actually runs on the first launch after this time — see [Automatic refresh](#automatic-refresh). |
+| Refresh on open when data is older than (hours) | 12 | Cache age that triggers a background refresh when you open the tool. |
+| Keep refreshing a period for this many days after it ends | 14 | How long after a period ends it's still considered "live" and worth background-refreshing. Older periods are treated as settled. |
 
 ---
 
