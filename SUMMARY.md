@@ -40,6 +40,7 @@
 
 ## What's New
 
+* [v3.8.2 — Hotfix: Sign-In Was Broken for New Sign-Ins](whats-new/v3.8.2.md)
 * [v3.8.1 — Timesheet Review: Automatic Refresh](whats-new/v3.8.1.md)
 * [v3.8.0 — Cytracom Invoice Processor](whats-new/v3.8.0.md)
 * [v3.7.5 — Client Touch Aging: Technologist & TAM columns/filters](whats-new/v3.7.5.md)
