@@ -37,9 +37,11 @@
 * [Timesheet Review](tool-guides/timesheet-review.md)
 * [Client Touch Aging](tool-guides/client-touch-aging.md)
 * [Block Hour Report](tool-guides/block-hour-report.md)
+* [Payroll Review](tool-guides/payroll-review.md)
 
 ## What's New
 
+* [v3.9.0 — Payroll Review](whats-new/v3.9.0.md)
 * [v3.8.2 — Hotfix: Sign-In Was Broken for New Sign-Ins](whats-new/v3.8.2.md)
 * [v3.8.1 — Timesheet Review: Automatic Refresh](whats-new/v3.8.1.md)
 * [v3.8.0 — Cytracom Invoice Processor](whats-new/v3.8.0.md)
