@@ -41,6 +41,7 @@
 
 ## What's New
 
+* [v3.9.1 — Fractional IT Leadership Report](whats-new/v3.9.1.md)
 * [v3.9.0 — Payroll Review](whats-new/v3.9.0.md)
 * [v3.8.2 — Hotfix: Sign-In Was Broken for New Sign-Ins](whats-new/v3.8.2.md)
 * [v3.8.1 — Timesheet Review: Automatic Refresh](whats-new/v3.8.1.md)

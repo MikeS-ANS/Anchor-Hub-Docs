@@ -4,6 +4,8 @@
 
 Block Hour Report is an Account Manager-facing dashboard and AI-narrative review tool for **Block Hour clients** — Autotask contracts (`contractType=4`, "Block Hours Support Agreement", `status=1` In Effect) where a client prepays for a fixed block of support hours instead of a flat monthly retainer. It shows hours purchased/used/remaining across every such client, flags clients whose coverage has actually lapsed, and drafts a monthly value-delivered summary email — via Hatz.ai — that an AM reviews and approves before it ever reaches a client.
 
+As of this build, the tool also has a second, parallel report type — a dedicated **Fractional IT Leadership** tab (see below) — for the small subset of Block Hour contracts covering ANS's fractional executive/IT leadership engagement offering. It shares this tool's contract population mechanics and send infrastructure but has no AI-generated text at all: fully computed from Autotask, reviewed live, sent on demand. The original AI-narrative Dashboard/Review queue flow described above is unchanged.
+
 Sidebar tool key: `block-hour-report`.
 
 ---
@@ -79,9 +81,38 @@ Clicking **Approve & send** immediately emails the client via Microsoft Graph, f
 
 ---
 
+## Fractional IT Leadership tab
+
+A second, parallel report type for **Fractional IT Leadership Services** contracts — a strict, exact-name-matched subset of the Block Hour population (`contractName === "Fractional IT Leadership Services"`, same `contractType=4`/`status=1` filter). Three real clients exist today: Mountaingate Capital, Platte River Equity, and Michaud Capital Management, LLC. Unlike the Dashboard/Review queue flow above, this report has **no AI-generated text at all** beyond one fixed intro paragraph — everything else is computed directly from Autotask.
+
+**Why a separate flow, not folded into the existing Review Queue:** the work these clients pay for is different in kind (ongoing fractional executive/IT leadership engagement, not ad-hoc ticket-driven support), and there's no AI narrative to draft or edit here — so the editable-narrative Review Queue UI doesn't apply.
+
+**Client list** — same shape as the Dashboard tab (hours purchased/used/remaining, usage bar, block expiration), scoped to just the Fractional population, plus a "Last sent" timestamp. A dormant client (no current block coverage) is shown dimmed and non-interactive, since there's nothing to report on yet.
+
+**Report content**, computed live on open:
+
+- **Hours by Task** — for the current active block(s), every billed `BillingItems` row grouped by its `itemName` **verbatim** as the category (e.g. "Meetings," "Policy & Compliance Work," "Project Management," "Misc Work" — no fixed list or alias table; whatever Autotask's billing item is named becomes the category), broken down by month within each category, sorted by total hours descending. Cumulative for the active block's full life since it started, not scoped to a single calendar month.
+- **Hours by Block** — the same breakdown for **every** block ever purchased on the contract (not just the active one), so a client can see their full engagement history in one place, with each block's own purchased/used/remaining hours and dates.
+- A **fixed intro paragraph** (verbatim copy from the client-facing mockup) with the client contact's first name interpolated in, falling back to a generic greeting if no matching Autotask Contact is found for the configured recipient email.
+
+**Preview + Send** — clicking a client builds a live preview that is exactly what would be emailed (the preview and the actual send use the identical HTML-builder function, so there's no risk of the two drifting apart), laid out with table-based HTML rather than flexbox so it also renders correctly in classic Outlook desktop, not just modern mail clients. There is **no queued/pending review-approval workflow** the way the AI-narrative flow has — since there's no AI text to review, an explicit **Send** button emails the client directly via Microsoft Graph once clicked. The report is recomputed fresh immediately before every send rather than trusting whatever the renderer already has on screen, and a failed live Autotask pull hard-refuses the send rather than risking a confidently-false "no hours logged" report reaching a client. Send is disabled if the client has no recipient configured, and is guarded against a double-click firing two sends for the same client at once.
+
+**Read-only against Autotask** — like the rest of Block Hour Report, the only write this flow ever performs is the outbound client email itself.
+
+**Send history is merged into the main Send History tab** (as of v3.9.1) — a Fractional send is still logged to its own `bh_fractional_sends` table under the hood (a plain append-only log, not the `pending → approved/skipped → sent` state machine `bh_reports` uses, since there's no draft state to track), but the main **Send History** tab now reads both tables and shows every sent report — AI-narrative and Fractional alike — in one combined list. The client's own row in this tab still shows its "Last sent" date too.
+
+**Auto-send on the 1st (v3.9.1)** — each Fractional client's row has an opt-in **"Auto-send on the 1st"** checkbox, off by default. A client with it checked is emailed automatically by a new monthly scheduled job (`registerJob`, same day-of-month/time settings as the tool's existing monthly generation schedule — there's no separate cadence to configure), with no human review step, since this report has no AI text to review in the first place. The scheduled job and the manual **Send** button share the exact same underlying send function and in-flight guard, so a scheduled run and a manual click on the same client can never race or send the report twice. A client is skipped by the scheduled run (not treated as a failure) if they're dormant, have no recipient configured, or have already been sent a report for the current calendar month.
+
+### Known open items specific to this tab
+
+- **A transient Autotask query failure fetching a client's block purchase history could, in a low-likelihood edge case, be hard to distinguish from a genuinely empty block** — flagged by code review as a residual correctness gap, not yet fixed. In the common case this is caught (a failed data fetch marks the report as unsendable and blocks Send with a clear error, rather than silently showing "no hours logged"), but the review flagged this as worth a closer look in a future pass.
+- **If the scheduled auto-send's history write to `bh_fractional_sends` fails after the real email already went out**, the job falls back to a local per-machine record (not the shared database) as a backstop against re-sending that same client again the same month — but that gap in the shared table should still be checked manually if it ever comes up, since the local record doesn't survive a reinstall or a different machine picking up the job.
+
+---
+
 ## Send history tab
 
-A log of every report that reached a terminal state — **sent** or **skipped** — showing client, period, date, recipients, and who approved it. There's no separate history table under the hood: a report row's own state machine (`pending → approved/skipped → sent`) doubles as its own history entry.
+A log of every report that reached a terminal state — **sent** or **skipped** — showing client, period, date, recipients, and who approved it. There's no separate history table under the hood: a report row's own state machine (`pending → approved/skipped → sent`) doubles as its own history entry. (This covers the original AI-narrative report only — see the Fractional IT Leadership tab above for that report type's own, separately-tracked send history.)
 
 ---
 
@@ -155,7 +186,7 @@ Both prompts are duplicated (the exact same rules) into the renderer (`app.js`) 
 
 ## Access
 
-In addition to the sidebar visibility toggle and a Hub Role Matrix row (both required for anyone to see the tool at all — see [Roles & Permissions](../getting-started/roles-and-permissions.md)), the tool's own render function checks the signed-in user's role directly: `hub.admin`, `hub.manager`, `hub.delivery`, `hub.tam`, and `hub.strategic` all have access; anyone else sees a locked-page message even if the sidebar entry and matrix row are both present.
+In addition to the sidebar visibility toggle and a Hub Role Matrix row (both required for anyone to see the tool at all — see [Roles & Permissions](../getting-started/roles-and-permissions.md)), the tool's own render function checks the signed-in user's role directly: `hub.admin`, `hub.manager`, `hub.delivery`, `hub.tam`, and `hub.strategic` all have access; anyone else sees a locked-page message even if the sidebar entry and matrix row are both present. The Fractional IT Leadership tab uses the exact same role gate — there is no separate, narrower permission for it.
 
 ---
 
@@ -170,6 +201,8 @@ Flagged deliberately rather than left silent — trade-offs and judgment calls t
 - **Dashboard is a live Autotask read on every load**, so at higher future contract volumes this may eventually need the same daily-sync caching pattern Client Touch Aging already uses. Not needed at the current population size (~20 contracts).
 - **Unposted-time warning uses a 90-day floor on `dateWorked`, not just `hoursToBill > 0`.** Autotask's own "not yet billed" flag doesn't reliably clear once an entry is actually processed — confirmed live that some entries from 2022-2024 still read `hoursToBill > 0` with no billing-approval timestamp, which would otherwise read as a large stale "unposted" backlog rather than a real, current early-warning signal.
 - **Estimated runway is a rough estimate, not a guarantee** — it's a simple hours-remaining ÷ trailing-12-month-average division done client-side, with no seasonality or trend adjustment.
+- **Fractional IT Leadership tab: a transient Autotask query failure fetching a client's block purchase history could, in a low-likelihood case, be hard to distinguish from a genuinely empty block.** Flagged by code review, not yet fixed — see the tab's own section above for the detail.
+- **Fractional IT Leadership tab: the monthly auto-send job's local per-machine backstop record doesn't survive a reinstall or a different machine picking up the scheduled job.** Only matters if the shared `bh_fractional_sends` history write fails right after a real send succeeds — see the tab's own section above.
 
 ---
 
@@ -183,3 +216,6 @@ Flagged deliberately rather than left silent — trade-offs and judgment calls t
 - `computeAdHocRange()` and `hasOverlappingBlocks()` (same file) derive the ad hoc report's date window (earliest selected block's purchase date through the latest selected block's end date, capped at today) and detect whether that window overlaps a non-selected block, which drives the internal-narrative overlap disclaimer.
 - `spend12mo` (trailing-12-month spend) and the per-block `hourlyRate` are computed in `computeClientMetrics()` alongside the existing hours math — `hours * hourlyRate` was confirmed live against the matching `BillingItems` "Block Purchase" `extendedPrice` for real clients.
 - `main/shared/hubApi.js` gained `getBlockHourReports()` / `postBlockHourReport()` / `patchBlockHourReport()` for the `bh_reports` CRUD calls.
+- **Fractional IT Leadership tab** (additive sibling, same `main/ipc/blockHourReport.js` file): `loadFractionalClients()`/`enrichContractsToClients()` share the existing contract-population/enrichment logic via an exact `contractName` match; `getBilledWorkByCategoryAndMonth()`/`groupBillingItemsByCategoryAndMonth()` group posted `BillingItems` by `itemName` (verbatim) and month, separately from the AI-narrative flow's own flat, occurrence-counted grouping (`getBilledWorkInRange`) since the two serve different presentations; `generateFractionalReport()` assembles the hard numbers, active-block breakdown, and full block history, reusing `computeAdHocRange()` for both the combined active-block range and each individual historical block's own range. `buildFractionalEmailHtml()` renders the two-section HTML (Hours by Task, Hours by Block) with no editable-text step, using table-based layout for classic Outlook desktop compatibility. New IPC channels: `fr-list-clients`, `fr-generate-report` (preview only, no persistence), `fr-send-report` (recomputes fresh, sends via Graph, then persists a send-history row — separate try/catch for send vs. persist, same tri-state-result shape as Payroll Review's Notify flow, plus a per-client in-flight guard against a double-click firing two sends). SQL: `functions/sql/phase17-fractional-report-sends.sql` creates `bh_fractional_sends`, a plain append-only log (no state machine, unlike `bh_reports`) — deliberately not reusing `bh_reports`, since that table's narrative columns are `NOT NULL` and its state machine exists to support editing AI text that this report never has. This migration has been run against the live database. Functions route: `GET`/`POST /block-hour-report/fractional-sends` in `functions/src/functions/blockHourReport.js`. `hubApi.js` functions: `getFractionalSends()`/`postFractionalSend()`.
+- **Send History merge (v3.9.1):** the main Send History tab's render function now also calls `hubApi.getFractionalSends()` alongside its existing `bh_reports` read and merges both lists by date before rendering, so a Fractional send and an AI-narrative send appear in the same list.
+- **Auto-send (v3.9.1):** per-client opt-in stored in Company Directory metadata (`frAutoSend`, same JSON `metadata` pattern as `bhRecipients`/`bhAutoGenerate`), set via the `fr-set-auto-send` IPC handler and logged to the shared activity log (`FRACTIONAL_AUTO_SEND_CHANGED`) since toggling it on means a client can be emailed with zero human review. `runFractionalMonthlyAutoSend()` and its `registerJob` entry (`Block Hour Report — Fractional Monthly Auto-Send`) run on the same admin-configured day-of-month/time as the existing monthly generation schedule (no separate cadence setting), calling the same `sendFractionalReportForClient()` the manual Send button uses. Eligibility per client: `autoSend === true`, not dormant, has a recipient, and hasn't already been sent a report for the current calendar month (checked against `bh_fractional_sends`, with a local per-machine `bh-fractional-scheduler-state.json` file as a backstop in case a successful send's history write itself fails).
