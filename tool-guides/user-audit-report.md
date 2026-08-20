@@ -86,12 +86,20 @@ Role-gated to finance/admin. A roll-up of **contracted vs. supported users** per
 - **Contracted** comes from the MSC sheet's *Included Users*; **Supported** is the count classified as supported (configurable) from the latest audit.
 - **Basis** shows **PROVISIONAL** (from the audit as generated) or **CONFIRMED** (client returned the review).
 - **Delta** flags clients **over** their contract (the "up to N" model — at or under is compliant); **Est. $/mo** multiplies the overage by the MSC **Seat Price**.
+- **Show:** filters the table to **All clients**, **Confirmed positives** (over-contracted and confirmed — the actionable set), or **Provisional positives** (over-contracted but not yet confirmed — a look-ahead at what's likely coming).
 - Defaults to **out-of-compliance first**. Expand a row for the classification breakdown.
-- **+ Note** posts an account note; **Disposition** records a decision (Increase / No change / Waive / Follow-up) and posts a note.
 
-> This tab **never changes the Autotask contract quantity** — it records the decision and posts a note. Contract changes happen through your normal process and the MSC sheet; the number here updates on the next load.
+**Increase** — for a CONFIRMED, over-contracted client, the row's primary button walks you through updating the price/cost/description on the Autotask contract and the MSC workbook in three tracked steps:
 
-**Billing digest.** The **Digest…** button previews and sends a summary of over-contracted clients (with $ estimate) to the recipients set in Settings. It can also send automatically on a **weekly or monthly** schedule (the Hub must be running for a scheduled send).
+1. **Update Calculator** — opens the client's Service Plan Calculator in SharePoint; set the new user count there, then type the resulting price and cost back into the Hub.
+2. **Update Autotask** — pushes the new invoice description, price, and cost to the matched contract service, and posts a Contract Note on the contract itself (the same Contract Notes tab your own manual notes live on).
+3. **Update MSC Sheet** — runs automatically once Step 2 succeeds; updates Included Users and adds a dated note to the workbook's Contract Notes column.
+
+The row's button label tracks real progress ("Continue (Step 2 of 3)," etc.) with a small progress indicator, and the estimated $/mo impact shows before you start. **📜 Increase History** (next to Digest/Reload) lists every client that's gone through the flow, across every cycle — useful for "what did we actually increase this month," and includes a way to remove stale/test entries.
+
+**+ Note** (🗒) posts a free-text account note. **Disposition** is for clients you're **not** increasing this cycle — it records why (No change / Waive / Needs follow-up, or a manual-increase note if you handled it outside the Hub) and posts a note; it never touches the Autotask contract.
+
+**Billing digest.** The **Digest…** button previews and sends a summary of **confirmed** over-contracted clients (with $ estimate) to the recipients set in Settings — provisional clients are excluded, since they're not yet actionable. It can also send automatically on a **weekly or monthly** schedule (the Hub must be running for a scheduled send).
 
 ---
 
