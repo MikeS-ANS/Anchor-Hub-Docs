@@ -24,6 +24,7 @@
 * [Autotask Contract Renewals](tool-guides/contract-renewals.md)
 * [BlackPoint Invoice Processor](tool-guides/blackpoint.md)
 * [Cytracom Invoice Processor](tool-guides/cytracom-invoice-processor.md)
+* [Duo Invoice Processor](tool-guides/duo-invoice-processor.md)
 * [MSC Agreements](tool-guides/msc-agreements.md)
 * [Meraki Admin Management](tool-guides/meraki-admin.md)
 * [Meraki License & EoL Expiration Report](tool-guides/meraki-expiration.md)
@@ -41,6 +42,7 @@
 
 ## What's New
 
+* [v3.10.0 — Duo Invoice Processor](whats-new/v3.10.0.md)
 * [v3.9.1 — Fractional IT Leadership Report](whats-new/v3.9.1.md)
 * [v3.9.0 — Payroll Review](whats-new/v3.9.0.md)
 * [v3.8.2 — Hotfix: Sign-In Was Broken for New Sign-Ins](whats-new/v3.8.2.md)
