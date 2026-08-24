@@ -42,6 +42,7 @@
 
 ## What's New
 
+* [v3.11.1 — User Audit Report Improvements & Beta Graduations](whats-new/v3.11.1.md)
 * [v3.11.0 — User Increase Automation](whats-new/v3.11.0.md)
 * [v3.10.0 — Duo Invoice Processor](whats-new/v3.10.0.md)
 * [v3.9.1 — Fractional IT Leadership Report](whats-new/v3.9.1.md)

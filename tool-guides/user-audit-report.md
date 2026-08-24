@@ -68,7 +68,7 @@ On confirm, the tool:
 
 ## Account Manager Dashboard
 
-The tool opens here for account managers (role-gated). It's the lifecycle view, with collapsible sections filtered to your own clients by default (toggle to All):
+The tool opens here for account managers (role-gated). It's the lifecycle view, with collapsible sections filtered to your own clients by default (toggle to All). Every client row also shows **Included** (contracted seat count from the MSC workbook), **Full Support** (the client's current full-support user count from the latest audit or write-back), and **Over/Under** (the difference between the two, color-coded) — so drift from the contract is visible without opening Contract Review.
 
 - **Needs an audit run** — never run, or last run over 60 days ago.
 - **Sent, not returned — pending** — sent and still within the return window.
@@ -85,7 +85,7 @@ Role-gated to finance/admin. A roll-up of **contracted vs. supported users** per
 
 - **Contracted** comes from the MSC sheet's *Included Users*; **Supported** is the count classified as supported (configurable) from the latest audit.
 - **Basis** shows **PROVISIONAL** (from the audit as generated) or **CONFIRMED** (client returned the review).
-- **Delta** flags clients **over** their contract (the "up to N" model — at or under is compliant); **Est. $/mo** multiplies the overage by the MSC **Seat Price**.
+- **Over/Under** flags clients **over** their contract (the "up to N" model — at or under is compliant); **Est. $/mo** multiplies the overage by the MSC **Seat Price**.
 - **Show:** filters the table to **All clients**, **Confirmed positives** (over-contracted and confirmed — the actionable set), or **Provisional positives** (over-contracted but not yet confirmed — a look-ahead at what's likely coming).
 - Defaults to **out-of-compliance first**. Expand a row for the classification breakdown.
 
@@ -105,6 +105,6 @@ The row's button label tracks real progress ("Continue (Step 2 of 3)," etc.) wit
 
 ## Notes & limits
 
-- **Matching is by email** (M365 UPN/mail ↔ Autotask contact email) for the main report. Write-back adds a name-based safety net on top (see **Write-back** above) to catch a drifted-email duplicate, but it's a review-flag heuristic, not a source of truth — always confirm the flagged match is actually the same person before choosing "Update existing."
+- **Matching is by email** (M365 UPN/mail ↔ any of the Autotask contact's three email fields — primary plus the two secondary slots) for the main report. Write-back adds a name-based safety net on top (see **Write-back** above) to catch a drifted-email duplicate, but it's a review-flag heuristic, not a source of truth — always confirm the flagged match is actually the same person before choosing "Update existing."
 - Reports and lifecycle data are stored in SharePoint and shared across the team; history is retained long-term.
 - Time entries, notes, and dispositions post as **To-Do items assigned to whoever records them** (a property of the "User Count Audit" Action Type). The Action Type ID is set in Settings.

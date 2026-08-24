@@ -1,7 +1,5 @@
 # Client Touch Aging
 
-> **Beta.** Marked Beta in the sidebar and on its own page since v3.6.0 while a couple of open questions get confirmed with the requester — see [Known open items](#known-open-items) below.
-
 Client Touch Aging flags MSC (Managed Service Contract) MRR+ORR clients whose Autotask touch history has gone stale — no logged **Note** or **Quick Note** in the last 3 months, or no **Client Meeting** in the last 12 months. Both thresholds are admin-editable. It also surfaces a **due-soon** tier for clients approaching (not yet past) either threshold, and a computed **Priority** score to help you triage the flagged list. It was originally spec'd as a pure reporting tool with no write-back of any kind — a single, deliberate, explicitly-confirmed exception now exists (**Log a touch**, below); everything else remains read-only against Autotask.
 
 Sidebar tool key: `client-touch-aging`.

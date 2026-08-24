@@ -1,7 +1,5 @@
 # Block Hour Report
 
-> **Beta.** Shipped in v3.7.0. Marked Beta in the sidebar and on its own page while the team gathers feedback.
-
 Block Hour Report is an Account Manager-facing dashboard and AI-narrative review tool for **Block Hour clients** — Autotask contracts (`contractType=4`, "Block Hours Support Agreement", `status=1` In Effect) where a client prepays for a fixed block of support hours instead of a flat monthly retainer. It shows hours purchased/used/remaining across every such client, flags clients whose coverage has actually lapsed, and drafts a monthly value-delivered summary email — via Hatz.ai — that an AM reviews and approves before it ever reaches a client.
 
 As of this build, the tool also has a second, parallel report type — a dedicated **Fractional IT Leadership** tab (see below) — for the small subset of Block Hour contracts covering ANS's fractional executive/IT leadership engagement offering. It shares this tool's contract population mechanics and send infrastructure but has no AI-generated text at all: fully computed from Autotask, reviewed live, sent on demand. The original AI-narrative Dashboard/Review queue flow described above is unchanged.
