@@ -68,7 +68,9 @@ On confirm, the tool:
 
 ## Account Manager Dashboard
 
-The tool opens here for account managers (role-gated). It's the lifecycle view, with collapsible sections filtered to your own clients by default (toggle to All). Every client row also shows **Included** (contracted seat count from the MSC workbook), **Full Support** (the client's current full-support user count from the latest audit or write-back), and **Over/Under** (the difference between the two, color-coded) — so drift from the contract is visible without opening Contract Review.
+The tool opens here for account managers (role-gated). It's the lifecycle view, with collapsible sections filtered to your own clients by default (toggle to All). Every client row also shows **Included** (contracted seat count from the MSC workbook), **Full Support** (the client's current full-support user count from the latest audit or write-back), and **Over/Under** (the difference between the two, color-coded) — so drift from the contract is visible without opening Contract Review. These three columns are **full-time seats only**. A client with any part-time users shows Included and Full Support as **"X + Y"** (full-time + part-time) instead of a plain number, and a **PT +N** badge appears next to the client's name whenever more part-time users are supported than contracted — a signal that a manual contract conversation is needed, not something the Hub acts on. Part-time counts never affect Over/Under and are never written back anywhere automatically.
+
+> The MSC workbook's part-time column is new and mostly unfilled right now. Until it's filled in for a given client, that client's contracted part-time count reads as zero — so you may see a row like Full Support "7 + 2" next to a plain "7" for Included, with a PT badge showing. That's expected on an unfilled column, not a bug.
 
 - **Needs an audit run** — never run, or last run over 60 days ago.
 - **Sent, not returned — pending** — sent and still within the return window.
@@ -81,25 +83,46 @@ Every row also has **+ Time** — a quick time entry (default 15 min, work type 
 
 ## User Count Contract Review
 
-Role-gated to finance/admin. A roll-up of **contracted vs. supported users** per client:
+Role-gated to finance/admin. Opens to the **Confirmed positives** view every time you enter the tab — the actionable set. Switching the **Show** dropdown to All clients or Provisional positives during your session still works as before; **Reload** keeps whatever you last selected, but leaving the tab and coming back resets to Confirmed positives again.
 
-- **Contracted** comes from the MSC sheet's *Included Users*; **Supported** is the count classified as supported (configurable) from the latest audit.
+A roll-up of **contracted vs. supported users** per client:
+
+- **Contracted** comes from the MSC sheet's *Included Users*; **Supported** is the count classified as supported (configurable) from the latest audit. Both are **full-time counts**, and both display as **"X + Y"** (full-time + part-time) for a client with any part-time users, or a plain number otherwise.
 - **Basis** shows **PROVISIONAL** (from the audit as generated) or **CONFIRMED** (client returned the review).
-- **Over/Under** flags clients **over** their contract (the "up to N" model — at or under is compliant); **Est. $/mo** multiplies the overage by the MSC **Seat Price**.
-- **Show:** filters the table to **All clients**, **Confirmed positives** (over-contracted and confirmed — the actionable set), or **Provisional positives** (over-contracted but not yet confirmed — a look-ahead at what's likely coming).
+- **Over/Under** flags clients **over** their contract on **full-time seats only** (the "up to N" model — at or under is compliant); **Est. $/mo** multiplies the overage by the MSC **Seat Price**. Part-time seats never factor into Over/Under, the Increase flow, or the billing digest — see **Part-time users** below.
+- **Show:** filters the table to **All clients**, **Confirmed positives** (over-contracted and confirmed — the actionable set, and the default view), or **Provisional positives** (over-contracted but not yet confirmed — a look-ahead at what's likely coming).
+- A client already **dispositioned this cycle** as *No change (within contract)*, *Waive / grandfather*, or *Increase contract (handled manually, outside the Hub)* drops out of Confirmed Positives (and the billing digest) even if it's still technically over contract — that reflects a decision already made, not a bug. *Needs follow-up* and clients with no disposition yet keep showing. This resets automatically the next time a new audit cycle starts, so a client still over contract reappears then.
 - Defaults to **out-of-compliance first**. Expand a row for the classification breakdown.
+- **Open MSC Sheet** / **Open MRR Sheet** buttons open each source workbook directly in your browser — handy for double-checking a number or making a manual entry. Both show an "Opening…" state while resolving; the SharePoint lookup can take up to a minute on this network.
 
 **Increase** — for a CONFIRMED, over-contracted client, the row's primary button walks you through updating the price/cost/description on the Autotask contract and the MSC workbook in three tracked steps:
 
-1. **Update Calculator** — opens the client's Service Plan Calculator in SharePoint; set the new user count there, then type the resulting price and cost back into the Hub.
+1. **Update Calculator** — opens the client's Service Plan Calculator in SharePoint; set the new user count there, then type the resulting **price, cost, and new user count** back into the Hub. All three are now required — Save is blocked with an inline message until every field has a number, so a blank user count can no longer silently fall back to the audited figure.
 2. **Update Autotask** — pushes the new invoice description, price, and cost to the matched contract service, and posts a Contract Note on the contract itself (the same Contract Notes tab your own manual notes live on).
-3. **Update MSC Sheet** — runs automatically once Step 2 succeeds; updates Included Users and adds a dated note to the workbook's Contract Notes column.
+3. **Update MSC Sheet** — runs automatically once Step 2 succeeds; updates Included Users and adds a dated note to the workbook's Contract Notes column, then logs the increase into the **MRR Contract Changes** workbook (see below).
 
 The row's button label tracks real progress ("Continue (Step 2 of 3)," etc.) with a small progress indicator, and the estimated $/mo impact shows before you start. **📜 Increase History** (next to Digest/Reload) lists every client that's gone through the flow, across every cycle — useful for "what did we actually increase this month," and includes a way to remove stale/test entries.
 
-**+ Note** (🗒) posts a free-text account note. **Disposition** is for clients you're **not** increasing this cycle — it records why (No change / Waive / Needs follow-up, or a manual-increase note if you handled it outside the Hub) and posts a note; it never touches the Autotask contract.
+**+ Note** (🗒) posts a free-text account note. **Disposition** is for clients you're **not** increasing this cycle — it records why (No change / Waive / Needs follow-up, or a manual-increase note if you handled it outside the Hub) and posts a note; it never touches the Autotask contract. Recording any disposition other than *Needs follow-up* is also what pulls a client out of Confirmed Positives for the rest of this audit cycle (above).
 
-**Billing digest.** The **Digest…** button previews and sends a summary of **confirmed** over-contracted clients (with $ estimate) to the recipients set in Settings — provisional clients are excluded, since they're not yet actionable. It can also send automatically on a **weekly or monthly** schedule (the Hub must be running for a scheduled send).
+**Billing digest.** The **Digest…** button previews and sends a summary of **confirmed** over-contracted clients (with $ estimate) to the recipients set in Settings — provisional clients are excluded, since they're not yet actionable, and so is any client already dispositioned this cycle (same rule as Confirmed Positives, above). It can also send automatically on a **weekly or monthly** schedule (the Hub must be running for a scheduled send).
+
+### Part-time users
+
+The MSC workbook now has a dedicated **Included Part Time Users** column, separate from the full-time seat count everything above is based on. Part-time seats are tracked for visibility only:
+
+- They're never part of Contracted/Supported's full-time number, Over/Under, the Increase flow, the Autotask push, or the MSC write-back — closing a part-time overage is always a manual contract conversation, not something the Hub automates.
+- A client with any part-time users shows Contracted/Supported as **"X + Y"** (full-time + part-time) instead of a plain number, on both this tab and the Account Manager Dashboard.
+- A **PT +N** badge appears next to the client's name when more part-time users are currently supported than contracted — a flag to have that conversation, nothing more.
+- The part-time column is brand new in the MSC workbook and mostly blank right now. Until a client's contracted part-time count is filled in, it's treated as zero — so it's normal, not a bug, to see a client's Supported column read "7 + 2" next to a Contracted column that's still a plain "7", with a PT badge showing.
+
+### MRR Contract Changes log
+
+The moment Step 3 of an Increase (the MSC sheet update) succeeds, the Hub writes one row into the **MRR Contract Changes** workbook's "CHANGES MRR +/-" section for the quarter you pick — company name, the seat delta, the new per-user price, the effective date from Step 2, and your increase note. New contracts and cancellations are still entered by hand; only existing-client seat/price increases are logged automatically.
+
+- A **quarter dropdown** next to Step 2's effective date picks which quarter's section the row lands in. It defaults to the current quarter and only offers quarters that have already started this year — it can't select a future quarter, and it only ever writes into the **current year's** tab. A late entry that belongs to a prior year still has to be logged by hand in that year's tab.
+- Because the effective date defaults to the first of *next* month, a push made in March, June, September, or December logs into the quarter you made the change in, not the quarter the revenue actually starts — so the row's own Date column can visibly disagree with the quarter section it sits in. This is a known, open question, not something the Hub currently resolves for you.
+- The write only happens once per increase — repeating or retrying a push won't double-log it. If the log write itself fails, Step 3 still shows the MSC sheet update as successful (that part already happened and is never undone) alongside a separate warning telling you to open the MRR sheet and log that entry by hand.
 
 ---
 
