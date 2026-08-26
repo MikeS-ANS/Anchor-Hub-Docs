@@ -39,6 +39,7 @@
 * [Client Touch Aging](tool-guides/client-touch-aging.md)
 * [Block Hour Report](tool-guides/block-hour-report.md)
 * [Payroll Review](tool-guides/payroll-review.md)
+* [Payroll Processing](tool-guides/payroll-processing.md)
 
 ## What's New
 
