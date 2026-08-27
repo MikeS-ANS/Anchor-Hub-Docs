@@ -114,7 +114,7 @@ When a period is ready, **Approve & Send** on the Review & Send screen opens a p
 
 The preview shows:
 
-- The email itself — **To**, **Cc**, **Subject**, and body, all editable. Puzzle's address isn't pre-filled (there's no settings screen yet to save it), so type it in every time until that's added — see [Known open items](#known-open-items).
+- The email itself — **To**, **Cc**, **Subject**, and body, all editable. **The first time anyone sends, To and Cc come up empty** — the Hub doesn't ship with Puzzle's address built in, on purpose: sending real payroll to an address nobody's actually confirmed is worse than the one minute it takes to type it in. Type it in and press Send, and from then on those recipients are remembered and pre-fill automatically every period after — a one-time step, not a recurring one. (Subject and the body always start fresh with wording written for that specific period, which you can still edit same as everything else.)
 - The attached file — a generated Excel workbook in the same column layout Puzzle already receives today, one row per employee, grouped the same way the screen above is. A handful of columns from the old spreadsheet aren't used any more (New Hire/Term, Insurance Eligible, 401K, Overtime Hours, Pay Increase, Taxable Reimburse) — they're still in the file, always blank, so the shape matches what Puzzle has always gotten.
 - **The expense reports that need a manual flip to Paid in Autotask afterward** — every employee, amount, and week ending, with a plain explanation of why (below).
 - A warning if any manager still hasn't signed off. You can send anyway — the copy says so — and the send is recorded against your own name either way.
@@ -165,7 +165,7 @@ The warning only appears when the count is above zero; a period with nothing out
 
 ## Known open items
 
-- **No settings screen yet for Puzzle's email address or the internal reminder recipient.** Approve & Send's To/Cc fields start blank every time — type them in each period. If nobody's configured a specific reminder recipient, the internal "reports to flip" email defaults to whoever pressed Send, so it's never lost, just not yet routed to a fixed person or distribution list.
+- **No settings screen yet for the internal reminder recipient.** Puzzle's own To/Cc are remembered automatically after the first successful send (see above) — but if nobody's configured a specific person or distribution list to receive the internal "reports to flip" email, it defaults to whoever pressed Send. Never lost, just not yet routed anywhere fixed.
 - **A manager can't trigger their own sync from the UI yet** — the server-side permission is in place, the button isn't. The daily automatic sync covers it; this is a convenience gap, not a blocker.
 - **Nobody is notified when a sign-off is made on their behalf, or when a period is waiting on them at all, or when an expense report has been sitting on the "waiting to be flipped" list for a while.** Teams reminders are the last piece of the tool, covering all three.
 - **A department row added by mistake can't be removed from the UI.** The suggested rows on the Departments tab now come from the real roster, so they no longer offer a department that doesn't exist — but if a wrong one does get saved, ask for it to be cleaned up rather than leaving a department that matches nobody.
