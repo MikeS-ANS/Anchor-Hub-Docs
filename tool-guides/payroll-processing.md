@@ -29,13 +29,13 @@ Open **Payroll Processing** and the **My People** tab shows the currently open p
 
 | Column | Who fills it in |
 |---|---|
-| On call | You |
-| Perf bonus | You |
 | **Mileage** | **Synced from Autotask — read-only** |
 | **Expenses** | **Synced from Autotask — read-only** |
+| On Call | You |
+| Performance Bonus | You |
+| CrewHu Rewards | You |
 | Commission | You |
-| Reg hrs | You |
-| Rewards crew | You |
+| Regular Hours | You |
 | Notes | You |
 
 Edits save as you go — there's no Save button to forget. When you're finished, tick **"I've completed my updates for this period"** at the bottom. That's one checkbox for you, not one per employee: it records that your whole department is done, with your name and the time, and it's what Heather and Mike watch to know whether they're still waiting on you. You can untick it and keep editing if something changes.
