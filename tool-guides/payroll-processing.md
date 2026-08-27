@@ -19,7 +19,7 @@ Payroll Processing does **not** use the Hub's general Role Matrix. Like Payroll 
 
 A manager's scope isn't a UI filter. The server works out which employees belong to whoever is asking (from their department assignment, plus any per-employee overrides Heather and Mike have set) and simply never returns anybody else's row — so a manager cannot see, edit, or sign off on another department's people even by asking for them directly.
 
-> **`hub.payrollmanager` does not exist in Entra yet.** The code is built and the server-side permission checks are live, but until that role is created and assigned to the department managers, no manager can open the tool at all — they'll get the standard "you don't have access to this tool" screen. That's the one outstanding step between the built tool and managers actually using it.
+> **`hub.payrollmanager` now exists in Entra and is assigned.** Department managers can open the tool and work their own people. One piece is still missing on their side: there's no **Sync expenses & mileage** button on My People yet, so a manager can't trigger a fresh Autotask pull themselves. It doesn't hold anything up — the sync runs on its own every morning, and Heather or Mike can run it on demand — but a manager who's just been told "your mileage is in Autotask now" can't pull it in on the spot.
 
 ---
 
@@ -89,12 +89,26 @@ Heather and Mike can also run it on demand — **Sync expenses & mileage**, on b
 
 ## Review & Send — the cross-department screen
 
-Heather and Mike get a **Review & Send** tab: every department's employees for a chosen period in one grid, grouped by department, with the counts across the top — employees, sign-offs collected, flagged entries, total changes, and expense reports read.
+Heather and Mike get a **Review & Send** tab: every department's employees for a chosen period in one grid, grouped by the manager who actually owns them, with the counts across the top — employees, sign-offs collected, flagged entries, total changes, and expense reports read.
 
-- **Sign-off cards** show each department, its manager, how many employees they own, and whether they've signed off yet (with the time they did).
+- **Sign-off cards** show each manager, the department (or departments) they actually own, how many employees that comes to, and whether they've signed off yet — with the time they did it. The cards are per *manager*, not per department: if a few people in a department have been reassigned to somebody else, that second manager gets their own card and their own sign-off, and the grid below groups the same way. A department with two managers in it therefore appears twice, once per manager, which is the honest picture — they sign off separately because they're responsible for different people.
 - **Flags** mark anything unusual on an individual value — hover a flag for the detail.
 - **Any editable cell can be corrected here**, and the edit is logged against the name of whoever made it. Mileage and Expenses stay read-only on this screen too, for everyone.
 - A warning appears if any employee has **no manager assigned** — they're still listed, but nobody can sign them off.
+
+### Signing off for a manager who's away
+
+A manager on PTO used to block the entire period. Nobody else could tick their box, so the period could never be sent, and the only way round it was a database fix.
+
+Heather and Mike can now do it for them. Each sign-off card carries a **Sign off for them** button — or **Reopen**, on one that's already signed. Either way you're asked for a reason. It's optional, deliberately, because the moment you need this is usually the moment you're unblocking a deadline and don't want the friction — but it's worth typing one anyway (*"Chris on PTO, cover confirmed by Jacee"*), because the reason is the first thing anyone asks months later.
+
+What gets recorded is deliberately not a forgery. The sign-off is stored as **that manager's**, performed **by you**, and the card says so underneath — *"by Mike Stewart, on their behalf"* — along with whatever reason you gave. The audit log records it as a delegated action, distinct from an ordinary sign-off, so it stays obvious after the fact who actually did what.
+
+**Reopen** works the same way, and exists for the mirror-image problem: a sign-off made too early, or made by mistake, or overtaken by a late correction. Reopening one puts the period back to waiting on that manager, and the reason you give is kept.
+
+> The manager isn't notified yet that somebody signed off for them — that arrives with the Teams reminders. For now, tell them.
+
+---
 
 **"N expense reports need attention."** When this warning appears, it means the Hub found approved expense reports with reimbursable items on them that were **not** counted into this period — most often a late submission from outside the six-month window. Read it as: *someone may still be owed money and hasn't been paid.*
 
@@ -104,7 +118,7 @@ These are never settled automatically, on purpose. The Hub won't quietly treat a
 
 ## Known open items
 
-- **`hub.payrollmanager` hasn't been created in Entra yet**, so no department manager can open the tool. Mike and Heather can use it today; managers can't, until the role exists and is assigned.
-- **A manager can't trigger their own sync from the UI yet** — the server-side permission is in place, the button isn't.
-- **Approve & Send to Puzzle is visible but disabled.** Sending the consolidated period to Puzzle, and marking the matching expense reports settled in Autotask, is the next piece of work and isn't built.
-- **The Departments tab's suggested department rows include an example that doesn't exist in real data**, and a department row added by mistake can't be removed from the UI — ask for it to be cleaned up rather than leaving a department that matches nobody.
+- **A manager can't trigger their own sync from the UI yet** — the server-side permission is in place, the button isn't. The daily automatic sync covers it; this is a convenience gap, not a blocker.
+- **Approve & Send to Puzzle is visible but disabled.** Sending the consolidated period to Puzzle, and marking the matching expense reports settled in Autotask, is the piece currently being built.
+- **Nobody is notified when a sign-off is made on their behalf**, or when a period is waiting on them at all — Teams reminders are the last piece of the tool, after the Puzzle send.
+- **A department row added by mistake can't be removed from the UI.** The suggested rows on the Departments tab now come from the real roster, so they no longer offer a department that doesn't exist — but if a wrong one does get saved, ask for it to be cleaned up rather than leaving a department that matches nobody.
