@@ -1,6 +1,6 @@
 # Payroll Processing
 
-> **Not yet released.** Built and in testing — this page describes the tool exactly as it works today, and is updated as the remaining pieces land. Access is restricted — see [Access](#access) below.
+> **Not yet released.** Built and in testing — this page describes the tool exactly as it works today, and is updated as it changes. Every planned piece is now built, Teams reminders included. Access is restricted — see [Access](#access) below.
 
 Payroll Processing replaces the manually-maintained **"2026 Leadership Approved Payroll.xlsx"** spreadsheet — the one with a separate tab for every pay period, where each department manager's changes were collected by hand before payroll was sent off. Managers now enter their own people's per-period changes directly in the Hub, sign off once per period, and Heather and Mike review every department in a single screen before sending the period on to Puzzle.
 
@@ -106,7 +106,7 @@ What gets recorded is deliberately not a forgery. The sign-off is stored as **th
 
 **Reopen** works the same way, and exists for the mirror-image problem: a sign-off made too early, or made by mistake, or overtaken by a late correction. Reopening one puts the period back to waiting on that manager, and the reason you give is kept.
 
-> The manager isn't notified yet that somebody signed off for them — that arrives with the Teams reminders. For now, tell them.
+> **The manager is told.** A Teams message goes to them saying who did it, which period, whether it was a sign-off or a reopen, and whether a reason was recorded — not the reason itself, which stays on the sign-off card in the Hub. It's queued the moment you press the button and delivered on the next hourly pass, so expect it within the hour rather than instantly; if automatic reminders are switched off it waits in the queue until somebody sends the reminders by hand. See [Teams reminders](#teams-reminders) below.
 
 ### Approve & Send to Puzzle
 
@@ -164,9 +164,66 @@ The warning only appears when the count is above zero; a period with nothing out
 
 ---
 
+## Teams reminders
+
+Anchor Hub can nag people about the two things this tool asks them to remember: a manager's sign-off, and the expense reports still waiting to be marked Paid in Autotask by hand. They arrive as a **Teams direct message from "Anchor Hub"** — the Teams app of that name, not an email and not a channel post.
+
+There are four, and these are the only four:
+
+| Reminder | Who gets it | When |
+|---|---|---|
+| **Heads-up before the deadline** | Each manager on the open period who hasn't signed off | Once, first thing (8 a.m. Denver) on the day **two business days before** the sign-off deadline |
+| **Overdue sign-off** | The same managers, until they sign off | From the day **after** the deadline: **8 a.m., noon and 4 p.m.** every business day, and **8 a.m. only** on Saturday and Sunday |
+| **Weekly expense-flip digest** | The payroll admins configured in the settings (below) | **Monday morning** — and only when something is actually waiting |
+| **Signed off on your behalf** | The manager it happened to | Queued the moment a payroll admin signs off or reopens for them, delivered on the next hourly pass |
+
+Those are real Denver local times all year round — unlike the morning expense sync, they don't drift by an hour across daylight saving.
+
+**What stops them.** The overdue nagging stops the moment that manager's sign-off is recorded, or the moment the period is no longer open — whichever comes first. There's nothing to dismiss and no snooze. The heads-up and the weekly digest are sent once each and never repeat: one heads-up per manager per period, one digest per admin per week. A Monday with nothing waiting produces no digest at all rather than a "nothing to do" message.
+
+**What's in them — deliberately less than the screen shows.** A Teams message can be forwarded, screenshotted and read on a personal phone, and it lands outside the role gate that protects everything else in this tool. So **no reminder ever carries a dollar amount or an employee's name.** The period, the deadline, how many days overdue it is, how many employees are waiting on you, expense report ids and how long each has been waiting: those are fine. Anything more specific is "open Anchor Hub."
+
+### Switching them on
+
+**Reminders ship switched off, and off means nobody is reminded of anything** — no heads-up, no overdue nagging, no Monday digest, and a "signed off on your behalf" notice sits in the queue until somebody sends by hand. That's on purpose: a system that messages real people on a timer shouldn't start doing it the moment it's installed, before anybody has seen what it sends.
+
+The switch is on **Review & Send**, in the **Teams reminders** panel (Mike and Heather only — a manager never sees it):
+
+- **"Send reminders automatically, every hour"** — the on/off switch for all four. While it's off, the panel says so in red every time the screen is opened, so it can't quietly be off without anyone noticing.
+- **Payroll-admin recipients** — a comma-separated list of addresses. **This list is the entire audience for the weekly expense-flip digest; with nobody in it, that digest is sent to nobody.** Reminders can't be switched on while it's empty — the save is refused and says why. (Manager sign-off reminders don't use this list; those go to the managers themselves.)
+- **Save settings.** Turning reminders *on* asks you to confirm, and the confirmation spells out exactly what will start happening on its own. Turning them off doesn't ask.
+
+### Preview before anything sends
+
+**Preview due reminders** works out everything that's due right now and shows exactly what would go out and to whom — without sending, recording, or reserving anything. Only after a preview does **Send these now** appear, and it sends what that preview showed. It's a real send: **a Teams message can't be unsent**, the same as an email, and the confirmation says so before you commit.
+
+Two things worth knowing:
+
+- What actually goes out is worked out again on the server the moment you confirm, so it can differ from the preview if somebody has signed off in between. That's the safe direction — it won't nag someone who has just finished.
+- **Send to one person only** takes a single address and messages nobody else. It's there to prove delivery works end to end without messaging every manager. A filtered run is **not** a full sweep — everybody else who was genuinely due gets nothing, and it doesn't count as having reminded them. Both the on-screen result and the audit trail say so explicitly.
+
+Preview also loads the full send history: every reminder recently attempted, who it was for, when, and what became of it.
+
+### Delivery health — when somebody is receiving nothing
+
+A reminder can reach nobody, and the failure is completely invisible to the person it was meant for. So the panel carries a standing delivery line on every visit, with nothing to click:
+
+- **A red banner — "N reminders reached nobody"** — means exactly that. Those people were never told, and nothing retries on its own. The rows underneath name who, and say what went wrong in plain language: the Anchor Hub app isn't installed in their Teams, they've blocked or removed it, or their email address couldn't be matched to a Teams account at all. **Treat it as reminders not working for that person until it's fixed** — for a heads-up, a digest, or a delegated-sign-off notice there is no second attempt.
+- **"Reminder delivery could not be checked" is not the same as everything being fine.** The check itself failed, so whether anybody is silently receiving nothing is simply unknown at that moment. It's shown in red for that reason.
+- **"Reminder delivery checked — no reminder has failed permanently in the last 30 days"** is the all-clear, and it's said in words rather than left as blank space, because silence and "never checked" look identical.
+
+### Limits worth knowing
+
+- **A person only receives reminders if the Anchor Hub app is installed for them in Teams.** It's been installed for the current payroll managers and admins. Somebody new needs it installed before anything reaches them, and until then their reminders turn up in the red banner above instead of arriving.
+- **There's no opt-out.** These go to a handful of people about a real payroll deadline, so there's no per-person off switch — only the single on/off for everybody.
+- **Company holidays aren't modelled.** The schedule knows about weekends and nothing else, so a deadline that falls on a company holiday still produces its three messages that day.
+- **Existing periods keep the deadline they were created with.** The sign-off deadline is now four *business* days before the pay date; it used to be four calendar days, which occasionally landed on a Saturday. Periods created before that change deliberately keep their original date — recalculating an open period would move its deadline earlier and could tip it straight into "overdue," which isn't a fair way to start nagging somebody.
+
+---
+
 ## Known open items
 
 - **No settings screen yet for the internal reminder recipient.** Puzzle's own To/Cc are remembered automatically after the first successful send (see above) — but if nobody's configured a specific person or distribution list to receive the internal "reports to flip" email, it defaults to whoever pressed Send. Never lost, just not yet routed anywhere fixed.
 - **A manager can't trigger their own sync from the UI yet** — the server-side permission is in place, the button isn't. The daily automatic sync covers it; this is a convenience gap, not a blocker.
-- **Nobody is notified when a sign-off is made on their behalf, or when a period is waiting on them at all, or when an expense report has been sitting on the "waiting to be flipped" list for a while.** Teams reminders are the last piece of the tool, covering all three.
+- **Teams reminders only reach somebody who has the Anchor Hub app installed in their Teams, and there's no per-person opt-out.** A missing install shows up as a delivery failure on the Review & Send screen rather than quietly doing nothing — see [Teams reminders](#teams-reminders). Company holidays aren't modelled either, so a deadline landing on one still produces its reminders that day.
 - **A department row added by mistake can't be removed from the UI.** The suggested rows on the Departments tab now come from the real roster, so they no longer offer a department that doesn't exist — but if a wrong one does get saved, ask for it to be cleaned up rather than leaving a department that matches nobody.
