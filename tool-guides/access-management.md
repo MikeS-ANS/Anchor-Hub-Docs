@@ -248,9 +248,12 @@ elsewhere on this screen can never reference a tool that doesn't actually exist.
 | **People** | How many currently-active people these tables *would* grant this tool to today, counting roles and individual grants together and letting a deny win the way it always does. This is **not** the same as how many people can actually open the tool right now — nothing on this screen controls real access yet |
 
 A small "synced" timestamp in the corner shows when this list was last refreshed. That
-refresh happens automatically whenever an Access Admin launches the app — not on a
+refresh happens automatically whenever a Hub admin launches the app — not on a
 schedule, and not the moment a new tool ships — so a tool added to the Hub won't show up
-here until the next time someone with this permission opens it.
+here until the next time someone with the Hub admin role opens it. That's a different
+permission from Access Admin (the one that gets you onto this screen at all) — Access
+Admin is granted to a named person and never through a role, so holding only Access Admin
+does not, by itself, trigger this refresh.
 
 ---
 
@@ -298,9 +301,17 @@ never overwritten later by an automatic title match.
 
 ## The Audit Log tab
 
-Every write this screen has ever made — role assignments and removals, grid saves,
-granting or clearing an individual override (including Access Admin itself), and every
-title mapping change — in one running feed, newest first.
+Every write this screen has ever made — role assignments and removals, granting,
+denying, or clearing an individual override (including Access Admin itself), creating a
+role or saving the permission grid, deactivating or reactivating a person (nothing on
+this screen controls real access yet, so neither changes what they can actually reach
+today), every title mapping change, and a **System & migration** category for
+everything else this table records automatically rather than from a click on this
+screen: the Tools tab's own registry sync (see above), the one-time historical import
+that seeded these tables from the old Hub Role Matrix and Hub User Overrides SharePoint
+lists at cutover, and a record every time someone reaches this screen through the
+emergency Entra fallback with no real Access Admin grant — in one running feed, newest
+first.
 
 - A **category** dropdown narrows the feed to one kind of change.
 - **Break-glass only** shows just the entries where someone reached this screen through
