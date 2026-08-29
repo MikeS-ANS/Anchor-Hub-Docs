@@ -46,7 +46,7 @@ permission information currently on file for each of them.
 | --- | --- |
 | **Person** | Name and email address |
 | **Directory title** | Their job title from Microsoft 365. This is blank for **everyone** right now — pulling titles in automatically hasn't been built yet, so a blank title isn't a data problem, it's just not wired up |
-| **Roles** | Every role currently assigned to them, as chips. Nobody with zero roles or grants gets a **"No role — pending"** chip instead |
+| **Roles** | Every role currently assigned to them, as chips. Anyone with zero roles gets a **"No role — pending"** chip instead |
 | **Source** | Whether the role came from the one-time import that read the old system when this screen was first built (**auto**), or was set by hand on this screen (**manual**) |
 | **Tools** | How many tools this person's roles and grants add up to. A red **−N** next to it means N of those are explicitly blocked (see below) |
 | **Access** | Click anywhere on the row to expand it and see exactly why — see the next section |
