@@ -28,12 +28,20 @@ below the regular tool list. If you don't have it, there's nothing to see — th
 simply isn't there, and opening the screen directly shows a plain "you don't have
 access" message.
 
+**A brief "Checking access…" label can appear in that same spot right after the app
+launches**, in place of the real entry. That's not an error — the app confirms your
+permission with a quick check every time it starts, and that check occasionally takes a
+moment longer than usual. The label resolves into the real entry within a few seconds; it
+never grants anything by itself, and it's only ever shown to someone this machine has
+previously seen holding Access Admin.
+
 Because whoever holds Access Admin can grant it to anyone else — including themselves —
 it's treated as the single most sensitive permission in the Hub. There's also a safety
 net: if this permission were ever accidentally removed from everyone, someone holding the
 Hub's own top administrator role can still get into this screen to fix it. That's an
 emergency path, not a normal one, and using it is recorded the same way everything else
-here is.
+here is — the Audit Log tab (below) calls these entries out distinctly, so it's easy to
+confirm the emergency path hasn't quietly become the normal one.
 
 ---
 
@@ -106,8 +114,7 @@ denied at once, denied is what applies.
 ## Changing what someone can do
 
 Everything below writes a permanent record — every change is logged with who made it and
-when, even though there's no page yet to browse that log directly (that's coming in a
-later update).
+when, and every one of them can be reviewed afterward on the **Audit Log** tab (below).
 
 ### Assigning or removing an ordinary role
 
@@ -127,13 +134,48 @@ this is, what they currently hold, and what they're gaining.
 **Important: this adds Admin on top of what someone already has — it does not replace
 their existing roles.** If you want their old roles gone too, remove them separately.
 
-### Granting Access Admin
+### Granting, denying, or clearing an individual tool
 
-The **Add override** button grants the Access Admin permission described above — the one
-action on this screen that can hand over control of the screen itself. Because of that,
-it asks you to **type the person's full name** before it will proceed, on top of the
-usual confirmation. There is currently no button to take this back once granted; removing
-it has to be done outside this screen.
+The **Add override** button opens a small editor, separate from roles entirely, for
+handing someone (or taking away from them) one specific tool regardless of what their
+roles say. Pick a tool from the list — organized by the same categories the Tools tab
+shows — and choose:
+
+- **Grant** — gives them this one tool personally, even if none of their roles include it.
+- **Deny** — blocks this one tool for them specifically, even if a role they hold would
+  otherwise grant it. This shows up on the Granted/Not visible panel as **"Denied —
+  overrides [Role]."**
+- **Clear** — removes whichever override is currently set, so their access reverts to
+  whatever their roles alone provide.
+
+Existing overrides for this person are listed underneath, each with who set it and when,
+and its own **Clear** button. A tool that keeps its own separate, dedicated permission —
+Payroll Review and Payroll Processing today — isn't offered here at all, since granting
+or denying it on this screen would create a row that looks like it does something and
+doesn't.
+
+Re-selecting the effect a tool already has (granting an already-granted tool, for
+example) is disabled rather than silently re-run — doing nothing still writes a fresh
+record otherwise, discarding the original reason and date the override was actually set.
+
+### Granting or revoking Access Admin
+
+Access Admin — the permission that controls this screen itself — gets its own treatment
+everywhere in this editor, because it's the one action in the Hub that can hand over
+control of the Hub. Selecting it always routes through a dedicated confirmation that
+requires **typing the person's full name** before it will proceed, in both directions:
+
+- **Granting** it works the same way as any other override, just with the extra
+  confirmation.
+- **Revoking** it works the same way — pick **Clear** for this permission from an
+  existing override row (or from the editor above), confirm by typing the name, and it's
+  removed immediately. There's no separate "Deny" for this one permission: since no role
+  ever grants it in the first place, blocking it would only add a permanent note saying
+  so, so **Clear** is the only option offered, and it's the honest one.
+- **You cannot remove your own Access Admin permission from this screen**, even by
+  mistake — the button for it simply isn't offered on your own row. Another Access Admin
+  can remove it for you, or, if nobody else currently holds it, the emergency Entra
+  fallback described above still works.
 
 ### Deactivating someone
 
@@ -176,7 +218,7 @@ state so you can see what actually changed before trying again.
 **Three tools never appear in any role's grid, on any of the three views:** Payroll
 Review and Payroll Processing keep their own separate, dedicated permission entirely
 outside this system (matching how they already work today), and Access Management itself
-is only ever granted to a named person, the way [Grant Access Admin](#granting-access-admin)
+is only ever granted to a named person, the way [Grant Access Admin](#granting-or-revoking-access-admin)
 above does it — never through a role. A note at the bottom of the grid names the two
 payroll tools specifically; Access Management isn't offered as a grid option at all, so
 there's nothing to toggle there in the first place.
@@ -190,20 +232,107 @@ with no tools granted; add them on the grid afterward.
 
 ---
 
+## The Tools tab
+
+A read-only list of every tool the Hub's own tool registry currently knows about, and how
+each one becomes visible to someone. There are no controls on this tab on purpose — a
+tool key can't be hand-typed, added, renamed, or deleted here, so a role or an override
+elsewhere on this screen can never reference a tool that doesn't actually exist.
+
+| Column | What it shows |
+| --- | --- |
+| **Tool key** | The internal identifier a role or override actually references |
+| **Display name** | What the tool is called in the sidebar |
+| **Category** | Its grouping — the same categories the Roles tab's Checklist view and the override editor's tool picker use |
+| **Granted by** | How it becomes visible: a count of the roles that include it; **Dedicated gate** for Payroll Review and Payroll Processing, which keep their own separate permission outside this whole system; or **By individual grant only** for Access Management itself, which is never handed out through a role |
+| **People** | How many currently-active people these tables *would* grant this tool to today, counting roles and individual grants together and letting a deny win the way it always does. This is **not** the same as how many people can actually open the tool right now — nothing on this screen controls real access yet |
+
+A small "synced" timestamp in the corner shows when this list was last refreshed. That
+refresh happens automatically whenever an Access Admin launches the app — not on a
+schedule, and not the moment a new tool ships — so a tool added to the Hub won't show up
+here until the next time someone with this permission opens it.
+
+---
+
+## The Title Mapping tab
+
+Where a job title will eventually be mapped to a role automatically, once that's switched
+on in a later update. **Nothing here does anything yet** — nobody's job title is stored
+in the Hub today, so no mapping has ever been checked against a real person. The
+**Matched** column always shows a plain dash for that reason, on every row, and will keep
+doing so until titles arrive. Think of this tab as configuration being prepared ahead of
+time, not a feature that's currently live — existing people are never re-assigned by a
+mapping either way; a mapping would only ever apply the moment someone first signs in.
+
+A mapping is a **pattern** matched against a job title, plus the role it assigns if that
+pattern matches. The pattern grammar:
+
+- Matching would be case-insensitive, and extra spaces are collapsed, so `Network
+  Engineer` and `network   engineer` are treated the same.
+- `*` matches any run of characters, including none — a wildcard.
+- `|` separates several alternative patterns in one mapping, e.g. `*network
+  engineer*|*noc technician*` matches either.
+- Everything else is literal — a pattern containing `.`, `(`, or `+` matches those exact
+  characters, not a special meaning.
+- A pattern made of nothing but wildcards and spaces (`*`, `**`, `* *`) is refused —
+  matching literally everyone isn't really "matching a title."
+
+Mappings are checked **top to bottom**, in the order shown, and the **first one that
+matches wins** — everything below it never gets a chance for that title. The **▲**/**▼**
+buttons next to each row reorder them. If someone else changes the list of mappings while
+you're reordering, your reorder is refused with a plain explanation rather than silently
+landing on top of theirs, and the table refreshes to whatever the current order actually
+is so you can try again from there.
+
+**Remove** doesn't delete a mapping outright — it retires it, and a retired mapping stops
+counting toward precedence entirely (its Order cell shows a dash instead of a number).
+Tick **Show removed** to see retired mappings alongside the active ones, and **Restore**
+brings one back into the active list.
+
+**Payroll can't be assigned through a mapping** — that role is only ever assigned by
+hand, the same rule the Roles tab enforces for its own grid, and a manual assignment is
+never overwritten later by an automatic title match.
+
+---
+
+## The Audit Log tab
+
+Every write this screen has ever made — role assignments and removals, grid saves,
+granting or clearing an individual override (including Access Admin itself), and every
+title mapping change — in one running feed, newest first.
+
+- A **category** dropdown narrows the feed to one kind of change.
+- **Break-glass only** shows just the entries where someone reached this screen through
+  the emergency Entra fallback described above, rather than a real Access Admin grant —
+  worth checking now and again, since it should normally stay empty.
+- The **search box** matches against an entry's summary, the person it affected, and who
+  made the change.
+- Two date fields narrow the feed to a range.
+
+All of these run on the server against the full log, not against whatever page happens to
+already be loaded in your browser — so narrowing to an older date, or a category with a
+lot of history, can never silently make an entry disappear just because it fell outside a
+page that was already fetched. A running count ("Showing N of M matching entries") always
+shows whether there's more than what's currently on screen, and **Load more** fetches the
+next page without losing your place.
+
+An entry with more to show carries a **Details** section — expand it to see the exact
+before/after values the server recorded for that change (for example, a reorder's full
+before-and-after list of mapping ids), rather than a sentence reconstructed after the
+fact.
+
+This tab has its own access rule, separate from the rest of the Hub: it's readable only
+by someone holding Access Admin, unlike the Hub's shared activity log elsewhere in the
+app, which any signed-in user can query.
+
+---
+
 ## What's not built yet
 
-- **Two more tabs exist but aren't built out** — Tools (a read-only list of every tool in
-  the registry) and Title Mapping (auto-assigning a role based on someone's job title)
-  both currently show a placeholder. So does the Audit Log tab — every change made on
-  this screen today is already being recorded permanently, there just isn't a page yet to
-  browse that history in the app itself.
 - **No automatic role assignment from job title yet.** That's why the Directory title
-  column is blank for everyone and the "Re-sync titles" button doesn't do anything yet —
-  both are wired up for a later update, not broken today.
-- **Access Admin, once granted, can't be revoked from this screen.** The "Add override"
-  button only grants it; there's no matching button to take it away, and no general way
-  yet to grant or block any other individual tool for one person the way the old Hub User
-  Overrides list could.
+  column on the Users tab is blank for everyone, the Title Mapping tab's Matched column
+  always shows a dash, and the "Re-sync titles" button doesn't do anything yet — all of
+  that is wired up for a later update, not broken today.
 - **None of this changes what anyone actually sees in the Hub yet** — see the notice at
   the top of this page. That's the biggest thing to keep in mind while this screen is
   being built out: it's safe to explore, assign roles, and get familiar with it, without
