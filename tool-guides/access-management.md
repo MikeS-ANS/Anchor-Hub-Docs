@@ -267,8 +267,9 @@ mapping either way; a mapping would only ever apply the moment someone first sig
 A mapping is a **pattern** matched against a job title, plus the role it assigns if that
 pattern matches. The pattern grammar:
 
-- Matching would be case-insensitive, and extra spaces are collapsed, so `Network
-  Engineer` and `network   engineer` are treated the same.
+- The grammar is case-insensitive, and extra spaces are collapsed, so `Network Engineer`
+  and `network   engineer` would be treated the same once there's a real title to
+  compare against.
 - `*` matches any run of characters, including none — a wildcard.
 - `|` separates several alternative patterns in one mapping, e.g. `*network
   engineer*|*noc technician*` matches either.
