@@ -40,6 +40,7 @@
 * [Block Hour Report](tool-guides/block-hour-report.md)
 * [Payroll Review](tool-guides/payroll-review.md)
 * [Payroll Processing](tool-guides/payroll-processing.md)
+* [Access Management](tool-guides/access-management.md)
 
 ## What's New
 
