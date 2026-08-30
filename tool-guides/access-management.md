@@ -106,18 +106,17 @@ already auto-assigned once before. The **Re-sync titles** button described just 
 only ever refreshes what's stored in the Directory title column — it never assigns,
 changes, or removes anyone's role, no matter how its name might sound.
 
-**Why almost every real person still lands on Pending today, and why that's expected
-rather than broken:** automatic assignment can only match a job title that actually
-exists in Microsoft 365, and as of this writing **only one person in the entire company
-directory has a job title entered there at all.** Everyone else's field is simply empty
-— that's a Microsoft 365 data-entry gap, ongoing and separate from the Hub, not
-something wrong with this screen. Until more titles get entered there, a new person's
-title lookup will almost always come back empty, nothing will match, and they'll
-correctly land on Pending for an Access Admin to assign by hand — exactly like every new
-person so far. Seeing "Would match 0 of 1 directory titles" on the Title Mapping tab, or
-a new hire showing up Pending instead of auto-assigned, is exactly what's supposed to
-happen right now — it will simply start matching more people as titles get filled in,
-with nothing needing to change here.
+**Most people do have a real job title in Microsoft 365, and the Hub can now read them.**
+The first successful bulk re-sync stored real titles for **26 of the 28 people** it
+looked at. So automatic assignment has genuine data to match against — a new person's
+first sign-in will usually find a real title, and whether they're auto-assigned or land
+on Pending comes down to whether that title matches one of your patterns on the Title
+Mapping tab.
+
+That means the **Title Mapping** tab is now the thing that decides the outcome. A pattern
+that matches nobody's real title will quietly never fire, so it's worth checking the
+**Matched** column against the titles people actually have — the Directory title column
+on the Users tab shows you exactly what the Hub read for each person.
 
 **Nothing in Entra needs to be touched before a new hire's first sign-in.** The Hub's own
 app registration in Microsoft 365 doesn't require anyone to be specifically assigned to
@@ -149,21 +148,25 @@ simply couldn't be read at all (a temporary directory hiccup), whatever was alre
 stored is left alone rather than guessed at — and the summary afterward always says so
 honestly rather than reporting a clean sync that didn't happen.
 
-**This button has not worked so far — every attempt failed to read anyone's title, and
-it said so plainly rather than reporting a false success. A candidate fix has now shipped,
-but nobody has run the button since, so treat it as unconfirmed until someone does.**
-The failure was traced to how the button looks up many people's titles at once in a single
-batch. Two changes went out together: a correction to how those bulk lookups are addressed,
-and — regardless of whether that correction turns out to be the cause — the button now
-reports the *actual* error behind a failure instead of only a count. So the next run either
-succeeds, or finally tells you why it didn't. **Importantly, this does not
-affect automatic assignment at first sign-in, described above.** That path looks up one
-person's title at a time rather than in bulk, has been separately confirmed working
-correctly in production, and is unaffected by whatever's wrong with the bulk button. So
+**This button went through a period of failing on every person, reporting that nobody's
+title could be read. That was a real defect and it is now fixed** — the first successful
+run stored real job titles for 26 of the 28 people it looked at. If you saw it fail
+before, it was failing honestly rather than reporting a false success, and there is
+nothing you need to undo.
+
+The cause was internal: the Hub asked Microsoft 365 for the right people, got the right
+answers back, and then failed to match those answers to its own records — so it counted
+every person as "not found" even though the directory had answered correctly. Alongside
+the fix, the button now reports the *actual* underlying error whenever a lookup genuinely
+fails, rather than only a count, so a future problem here explains itself instead of
+needing to be investigated from scratch. **Automatic assignment at first sign-in was never
+affected by any of this.** That path looks up one
+person's title at a time rather than in bulk, was separately confirmed working
+correctly in production throughout, and was unaffected by the bulk button's problem. So
 in practice: a new person's first sign-in still correctly reads their real title and
-either auto-assigns them or lands them on Pending exactly as designed — the bulk button
-just can't yet be used to refresh everyone else's stored titles in bulk until this is
-fixed.
+either auto-assigns them or lands them on Pending exactly as designed. The bulk button is
+the separate convenience path for refreshing everyone else's stored titles at once, and
+it now works too.
 
 ---
 
@@ -349,13 +352,12 @@ does not, by itself, trigger this refresh.
 
 Where a job title is matched to a role automatically, the moment someone signs in for
 the very first time — see [Automatic role assignment on first sign-in](#automatic-role-assignment-on-first-sign-in)
-above for how that works today and why almost nobody has a real title recorded yet. The
-**Matched** column shows how many currently-recorded directory titles a pattern would
-match, calculated live against real data — it's a real, working number now, not a
-placeholder. Expect it to read **0** on almost every row for the time being, since only
-one person in the whole company directory currently has a job title entered in Microsoft
-365 at all; that number will simply grow as more titles get filled in there, with
-nothing needing to change on this tab. **Existing people are never re-assigned by
+above for how that works. The **Matched** column shows how many currently-recorded
+directory titles a pattern would match, calculated live against real data — it's a real,
+working number, not a placeholder. Because most people now have a real title stored, this
+column is the fastest way to tell whether a pattern will ever actually fire: a pattern
+reading **0** matches nobody in the directory as it stands, and will quietly never
+trigger until either the pattern or someone's title changes. **Existing people are never re-assigned by
 editing or adding a mapping** — a mapping only ever applies the moment someone signs in
 for the very first time, never retroactively.
 
@@ -435,14 +437,10 @@ app, which any signed-in user can query.
 
 ## What's not built yet
 
-- **The bulk "Re-sync titles" button has not worked so far, and a candidate fix is now
-  live but unconfirmed** — see [The "Re-sync titles" button](#the-re-sync-titles-button)
-  above for what went wrong, what shipped, and why automatic assignment at first sign-in
-  is unaffected either way.
-- **Almost nobody has a job title recorded in Microsoft 365 yet**, which is why
-  automatic role assignment correctly stays quiet for nearly everyone today — see
-  [Automatic role assignment on first sign-in](#automatic-role-assignment-on-first-sign-in)
-  above. This is a Microsoft 365 data gap, not something to fix on this screen.
+- **Nothing outstanding on titles.** The bulk **Re-sync titles** button had a period of
+  failing on every person; that was a real defect, it is fixed, and the first successful
+  run stored real job titles for 26 of the 28 people it looked at. Automatic assignment
+  at first sign-in was never affected by it.
 - **None of this changes what anyone actually sees in the Hub yet** — see the notice at
   the top of this page. That's the biggest thing to keep in mind while this screen is
   being built out: it's safe to explore, assign roles, and get familiar with it, without
