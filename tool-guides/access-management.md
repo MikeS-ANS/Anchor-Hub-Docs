@@ -149,10 +149,14 @@ simply couldn't be read at all (a temporary directory hiccup), whatever was alre
 stored is left alone rather than guessed at — and the summary afterward always says so
 honestly rather than reporting a clean sync that didn't happen.
 
-**Right now this button doesn't work — every attempt fails to read anyone's title, and
-it says so plainly rather than reporting a false success.** This has been traced to how
-the button looks up many people's titles at once in a single batch, and is a real,
-separate production issue currently being investigated. **Importantly, this does not
+**This button has not worked so far — every attempt failed to read anyone's title, and
+it said so plainly rather than reporting a false success. A candidate fix has now shipped,
+but nobody has run the button since, so treat it as unconfirmed until someone does.**
+The failure was traced to how the button looks up many people's titles at once in a single
+batch. Two changes went out together: a correction to how those bulk lookups are addressed,
+and — regardless of whether that correction turns out to be the cause — the button now
+reports the *actual* error behind a failure instead of only a count. So the next run either
+succeeds, or finally tells you why it didn't. **Importantly, this does not
 affect automatic assignment at first sign-in, described above.** That path looks up one
 person's title at a time rather than in bulk, has been separately confirmed working
 correctly in production, and is unaffected by whatever's wrong with the bulk button. So
@@ -431,9 +435,10 @@ app, which any signed-in user can query.
 
 ## What's not built yet
 
-- **The bulk "Re-sync titles" button doesn't currently work in production** — see
-  [The "Re-sync titles" button](#the-re-sync-titles-button) above for what's wrong and
-  why automatic assignment at first sign-in is unaffected by it.
+- **The bulk "Re-sync titles" button has not worked so far, and a candidate fix is now
+  live but unconfirmed** — see [The "Re-sync titles" button](#the-re-sync-titles-button)
+  above for what went wrong, what shipped, and why automatic assignment at first sign-in
+  is unaffected either way.
 - **Almost nobody has a job title recorded in Microsoft 365 yet**, which is why
   automatic role assignment correctly stays quiet for nearly everyone today — see
   [Automatic role assignment on first sign-in](#automatic-role-assignment-on-first-sign-in)
