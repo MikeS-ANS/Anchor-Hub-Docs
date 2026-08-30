@@ -53,9 +53,9 @@ permission information currently on file for each of them.
 | Column | What it shows |
 | --- | --- |
 | **Person** | Name and email address |
-| **Directory title** | Their job title from Microsoft 365. This is blank for **everyone** right now — pulling titles in automatically hasn't been built yet, so a blank title isn't a data problem, it's just not wired up |
+| **Directory title** | Their job title as recorded in Microsoft 365. This is now read automatically — every time someone signs in, the Hub checks their current job title and stores it here. It still shows blank for almost everyone today, but for a much simpler reason than before: see [Automatic role assignment on first sign-in](#automatic-role-assignment-on-first-sign-in) below |
 | **Roles** | Every role currently assigned to them, as chips. Anyone with zero roles gets a **"No role — pending"** chip instead |
-| **Source** | Whether the role came from the one-time import that read the old system when this screen was first built (**auto**), or was set by hand on this screen (**manual**) |
+| **Source** | Whether the role was set by hand on this screen, or came from the one-time import that read the old system when this screen was first built — both show **manual** — or was assigned automatically because a brand-new person's job title matched a pattern on the Title Mapping tab the moment they first signed in (**auto**) |
 | **Tools** | How many tools this person's roles and grants add up to. A red **−N** next to it means N of those are explicitly blocked (see below) |
 | **Access** | Click anywhere on the row to expand it and see exactly why — see the next section |
 
@@ -76,6 +76,90 @@ away from what's recorded here afterward — someone gets added to a group in Mi
 to their roles showing what Entra still says (hover it to see when that was last
 checked). It's worth reviewing before the day this screen starts actually controlling
 access, so those two records agree by then — it isn't an error today, just a heads-up.
+
+---
+
+## Automatic role assignment on first sign-in
+
+The very first time a genuinely new person signs into the Hub, Access Management now
+checks their job title in Microsoft 365 and tries to match it against the Title Mapping
+tab (below) — top to bottom, first match wins, the same rule that tab already documents.
+If a pattern matches, that role is assigned automatically the instant they sign in,
+tagged **auto** in the Source column above so it's always clear it wasn't a person's
+deliberate choice. If nothing matches — or their title isn't in the directory at all —
+they land on the Pending queue exactly as before, and an Access Admin assigns a role by
+hand, same as today.
+
+**This only ever happens once, on someone's genuine first sign-in — and deliberately
+never just because someone currently holds no role.** Those sound like the same
+condition, but they're not, and the difference matters: if an Access Admin later
+deliberately removes someone's role, that person now has no role too — but the whole
+point of removing it was for them to hold nothing, and re-checking would silently put a
+role right back the next time they opened the app. So this only ever fires for a
+person's real, one-time first launch, never for "currently has zero roles" in general. A
+role an admin took away stays taken away.
+
+**A manual assignment is never touched by this, full stop.** Automatic assignment only
+ever runs against a genuine newcomer who currently holds zero roles at all; it never
+runs again for someone already assigned by hand, imported from the old system, or
+already auto-assigned once before. The **Re-sync titles** button described just below
+only ever refreshes what's stored in the Directory title column — it never assigns,
+changes, or removes anyone's role, no matter how its name might sound.
+
+**Why almost every real person still lands on Pending today, and why that's expected
+rather than broken:** automatic assignment can only match a job title that actually
+exists in Microsoft 365, and as of this writing **only one person in the entire company
+directory has a job title entered there at all.** Everyone else's field is simply empty
+— that's a Microsoft 365 data-entry gap, ongoing and separate from the Hub, not
+something wrong with this screen. Until more titles get entered there, a new person's
+title lookup will almost always come back empty, nothing will match, and they'll
+correctly land on Pending for an Access Admin to assign by hand — exactly like every new
+person so far. Seeing "Would match 0 of 1 directory titles" on the Title Mapping tab, or
+a new hire showing up Pending instead of auto-assigned, is exactly what's supposed to
+happen right now — it will simply start matching more people as titles get filled in,
+with nothing needing to change here.
+
+**Nothing in Entra needs to be touched before a new hire's first sign-in.** The Hub's own
+app registration in Microsoft 365 doesn't require anyone to be specifically assigned to
+it before they can sign in, so there's no separate Entra-side approval step standing
+between a brand-new employee's very first launch and their arrival on the Pending queue
+here. The moment someone signs in, they're either auto-assigned or Pending — there's
+nothing to configure in Entra first.
+
+**Every Access Admin gets a Teams message the moment someone new lands on Pending.**
+It's deliberately brief and doesn't name the person, their email, or their job title —
+on purpose, not as an oversight. A Teams message can be forwarded, screenshotted, or read
+on someone's personal phone, and it sits entirely outside every permission check the Hub
+itself has. So the message is only ever a pointer, telling you that someone new signed
+in and needs a role — the actual name and details stay behind the Access Admin gate,
+right here on the Pending banner and the Users tab, same as always. If the message never
+arrives for some reason — Teams itself briefly unavailable, say — the Pending Users
+banner on this screen is still the reliable, permanent record of who's waiting; the Teams
+message is a heads-up, never the record itself.
+
+## The "Re-sync titles" button
+
+At the top of the Users tab, **Re-sync titles** re-reads everyone's current job title
+from Microsoft 365 in bulk and updates what's stored in the Directory title column. It's
+a title refresh only — it never assigns, removes, or changes anyone's role, regardless
+of what a title now matches; a role is only ever assigned automatically at a brand-new
+person's first sign-in, described above. If someone's title genuinely comes back empty
+from Microsoft 365, this clears what's stored here to match reality; if a person's title
+simply couldn't be read at all (a temporary directory hiccup), whatever was already
+stored is left alone rather than guessed at — and the summary afterward always says so
+honestly rather than reporting a clean sync that didn't happen.
+
+**Right now this button doesn't work — every attempt fails to read anyone's title, and
+it says so plainly rather than reporting a false success.** This has been traced to how
+the button looks up many people's titles at once in a single batch, and is a real,
+separate production issue currently being investigated. **Importantly, this does not
+affect automatic assignment at first sign-in, described above.** That path looks up one
+person's title at a time rather than in bulk, has been separately confirmed working
+correctly in production, and is unaffected by whatever's wrong with the bulk button. So
+in practice: a new person's first sign-in still correctly reads their real title and
+either auto-assigns them or lands them on Pending exactly as designed — the bulk button
+just can't yet be used to refresh everyone else's stored titles in bulk until this is
+fixed.
 
 ---
 
@@ -259,13 +343,17 @@ does not, by itself, trigger this refresh.
 
 ## The Title Mapping tab
 
-Where a job title will eventually be mapped to a role automatically, once that's switched
-on in a later update. **Nothing here does anything yet** — nobody's job title is stored
-in the Hub today, so no mapping has ever been checked against a real person. The
-**Matched** column always shows a plain dash for that reason, on every row, and will keep
-doing so until titles arrive. Think of this tab as configuration being prepared ahead of
-time, not a feature that's currently live — existing people are never re-assigned by a
-mapping either way; a mapping would only ever apply the moment someone first signs in.
+Where a job title is matched to a role automatically, the moment someone signs in for
+the very first time — see [Automatic role assignment on first sign-in](#automatic-role-assignment-on-first-sign-in)
+above for how that works today and why almost nobody has a real title recorded yet. The
+**Matched** column shows how many currently-recorded directory titles a pattern would
+match, calculated live against real data — it's a real, working number now, not a
+placeholder. Expect it to read **0** on almost every row for the time being, since only
+one person in the whole company directory currently has a job title entered in Microsoft
+365 at all; that number will simply grow as more titles get filled in there, with
+nothing needing to change on this tab. **Existing people are never re-assigned by
+editing or adding a mapping** — a mapping only ever applies the moment someone signs in
+for the very first time, never retroactively.
 
 A mapping is a **pattern** matched against a job title, plus the role it assigns if that
 pattern matches. The pattern grammar:
@@ -301,17 +389,19 @@ never overwritten later by an automatic title match.
 
 ## The Audit Log tab
 
-Every write this screen has ever made — role assignments and removals, granting,
-denying, or clearing an individual override (including Access Admin itself), creating a
-role or saving the permission grid, deactivating or reactivating a person (nothing on
-this screen controls real access yet, so neither changes what they can actually reach
-today), every title mapping change, and a **System & migration** category for
-everything else this table records automatically rather than from a click on this
-screen: the Tools tab's own registry sync (see above), the one-time historical import
-that seeded these tables from the old Hub Role Matrix and Hub User Overrides SharePoint
-lists at cutover, and a record every time someone reaches this screen through the
-emergency Entra fallback with no real Access Admin grant — in one running feed, newest
-first.
+Every write this screen has ever made — role assignments and removals (including one
+assigned automatically at a person's first sign-in, described above — it's recorded here
+the same as a manual one, just worded so it's clear nobody actually clicked anything),
+granting, denying, or clearing an individual override (including Access Admin itself),
+creating a role or saving the permission grid, deactivating or reactivating a person
+(nothing on this screen controls real access yet, so neither changes what they can
+actually reach today), every title mapping change, and a **System & migration** category
+for everything else this table records automatically rather than from a click on this
+screen: the Tools tab's own registry sync (see above), a bulk **Re-sync titles** run,
+the one-time historical import that seeded these tables from the old Hub Role Matrix and
+Hub User Overrides SharePoint lists at cutover, and a record every time someone reaches
+this screen through the emergency Entra fallback with no real Access Admin grant — in
+one running feed, newest first.
 
 - A **category** dropdown narrows the feed to one kind of change.
 - **Break-glass only** shows just the entries where someone reached this screen through
@@ -341,10 +431,13 @@ app, which any signed-in user can query.
 
 ## What's not built yet
 
-- **No automatic role assignment from job title yet.** That's why the Directory title
-  column on the Users tab is blank for everyone, the Title Mapping tab's Matched column
-  always shows a dash, and the "Re-sync titles" button doesn't do anything yet — all of
-  that is wired up for a later update, not broken today.
+- **The bulk "Re-sync titles" button doesn't currently work in production** — see
+  [The "Re-sync titles" button](#the-re-sync-titles-button) above for what's wrong and
+  why automatic assignment at first sign-in is unaffected by it.
+- **Almost nobody has a job title recorded in Microsoft 365 yet**, which is why
+  automatic role assignment correctly stays quiet for nearly everyone today — see
+  [Automatic role assignment on first sign-in](#automatic-role-assignment-on-first-sign-in)
+  above. This is a Microsoft 365 data gap, not something to fix on this screen.
 - **None of this changes what anyone actually sees in the Hub yet** — see the notice at
   the top of this page. That's the biggest thing to keep in mind while this screen is
   being built out: it's safe to explore, assign roles, and get familiar with it, without
