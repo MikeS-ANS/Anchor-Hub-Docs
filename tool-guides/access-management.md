@@ -70,9 +70,12 @@ holding screen instead of an empty sidebar with no explanation.
 
 ## The holding screen
 
-A person who has successfully signed in but currently has no way to reach any tool sees a
-dedicated holding screen instead of an empty sidebar. Exactly who sees it, and who doesn't,
-follows one rule:
+Someone signing in for the very first time with no Hub account yet, or someone whose
+account exists but holds neither a role nor an individual grant, sees a dedicated holding
+screen instead of a bare empty sidebar. It is **not** simply "anyone who currently has no
+tools" — a person holding a role that happens to grant nothing still counts as having
+arrived, and gets the ordinary Hub (with an empty sidebar), not this screen; see the third
+bullet below. Exactly who sees the holding screen, and who doesn't, follows these rules:
 
 - **No Hub account exists for you yet at all** → holding screen, with a "Setting up" badge.
   This is the very first moment after signing in, before the Hub has even finished creating
@@ -80,9 +83,13 @@ follows one rule:
 - **Your account exists, is active, and holds no role and no individual tool grant at all**
   → holding screen, with an "Access pending" badge and the date you first showed up in the
   queue.
-- **Your account exists, is active, and holds a role — but that role happens to grant zero
-  tools** (an empty or misconfigured role) → treated exactly the same as holding no role at
-  all. A role that grants nothing isn't meaningfully different from no role.
+- **Your account exists, is active, and holds a role — even one that happens to grant zero
+  tools** (an empty or misconfigured role) → you do **not** see the holding screen. Holding
+  any role at all, regardless of what it actually grants, is enough to count as "arrived."
+  You go to the ordinary Hub instead, just with an empty sidebar — which looks like nothing
+  happened, but is a different situation from never having a role in the first place, and
+  is fixed the same way any other access gap is: by giving the role some tools, or the
+  person a different role.
 - **You hold at least one real tool, however you got it** — through a role, or through a
   personal grant with no role at all — you never see this screen. You go straight to the
   Hub with whatever you're entitled to.
@@ -420,7 +427,7 @@ elsewhere on this screen can never reference a tool that doesn't actually exist.
 | **Display name** | What the tool is called in the sidebar |
 | **Category** | Its grouping — the same categories the Roles tab's Checklist view and the override editor's tool picker use |
 | **Granted by** | How it becomes visible: a count of the roles that include it; **Dedicated gate** for Payroll Review and Payroll Processing, which keep their own separate Entra-role-based permission outside this whole system (see above); or **By individual grant only** for Access Management itself, which is never handed out through a role |
-| **People** | How many currently-active people these tables grant this tool to today, counting roles and individual grants together and letting a deny win the way it always does. For a **Dedicated gate** tool this reflects Entra role holders instead, not this screen's own grants |
+| **People** | How many currently-active people these tables grant this tool to today, counting roles and individual grants together and letting a deny win the way it always does. **For a Dedicated gate tool (Payroll Review, Payroll Processing) this always reads 0** — these tables never grant a dedicated-gate tool to anyone, by design, so there's nothing here for them to count. It does **not** mean nobody can see the tool; it means this screen isn't where that count comes from. Who actually sees a dedicated-gate tool is decided by Entra sign-in roles instead — see [above](#payroll-review-and-payroll-processing-are-a-special-case) — and this screen doesn't total that up anywhere |
 
 A small "synced" timestamp in the corner shows when this list was last refreshed. That
 refresh happens automatically whenever a Hub admin launches the app — not on a
