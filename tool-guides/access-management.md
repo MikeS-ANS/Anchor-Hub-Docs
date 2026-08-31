@@ -1,18 +1,18 @@
 # Access Management
 
-> **What this screen actually controls today: nothing yet.** Access Management is real —
-> every change made on it is saved permanently and logged. What it does **not** do yet is
-> decide what anyone actually sees in the Hub. Sidebar access for every tool, for every
-> person, still comes from the same SharePoint lists described in
-> [Roles & Permissions](../getting-started/roles-and-permissions.md) — nothing on this
-> screen has any effect on that yet. A later update will switch the app over to read from
-> here instead; until then, treat this page as a preview of how access will work, not as
-> something that changes anyone's access if you use it today.
+> **This screen is now the real thing — in an unreleased development build.** As of Phase 6,
+> the Hub's own Access Management tables decide who sees what tool, replacing the **Hub Role
+> Matrix** and **Hub User Overrides** SharePoint lists described in
+> [Roles & Permissions](../getting-started/roles-and-permissions.md). That cutover has
+> genuinely happened — but only inside an unreleased development branch. **The released app
+> you're using today still runs on the old SharePoint-based system**, unchanged, until this
+> branch finishes its next phase and ships. Nothing in this page describes your access right
+> now unless someone has specifically told you they're testing the new build with you. Once
+> it ships, this page is simply how the Hub decides access from then on.
 
-Access Management is where roles and individual permissions will eventually be managed
-for the whole Hub, replacing the **Hub Role Matrix** and **Hub User Overrides**
-SharePoint lists. It's being built and rolled out in stages so it can be checked
-carefully before it's switched on — this page describes the part that exists so far.
+Access Management is where roles and individual permissions are managed for the whole Hub.
+This page describes everything that exists today, including the parts that only apply once
+the branch above ships.
 
 ---
 
@@ -38,10 +38,106 @@ previously seen holding Access Admin.
 Because whoever holds Access Admin can grant it to anyone else — including themselves —
 it's treated as the single most sensitive permission in the Hub. There's also a safety
 net: if this permission were ever accidentally removed from everyone, someone holding the
-Hub's own top administrator role can still get into this screen to fix it. That's an
-emergency path, not a normal one, and using it is recorded the same way everything else
-here is — the Audit Log tab (below) calls these entries out distinctly, so it's easy to
-confirm the emergency path hasn't quietly become the normal one.
+Hub's own top administrator Entra role (`hub.admin`) can still get into this screen to fix
+it. That's an emergency path — a "break-glass" — not a normal one, and using it is recorded
+the same way everything else here is: the Audit Log tab (below) calls these entries out
+distinctly, so it's easy to confirm the emergency path hasn't quietly become the normal one.
+
+**This break-glass, and one other admin badge, are the two places the Hub still checks your
+live Microsoft 365 sign-in role directly, rather than these tables — see
+[What still comes from Entra](#what-still-comes-from-entra-for-now) near the bottom.**
+
+---
+
+## How access is actually decided now
+
+Once the branch above ships, every tool's visibility comes from four tables this screen
+manages: who someone is (**Users**), what a role includes (**Roles**), an optional
+person-by-person exception on top of a role (**overrides**, part of the Users tab), and
+the master list of tools that exist at all (**Tools**). Nothing about visibility is read
+from SharePoint or hand-maintained anywhere else — if a tool doesn't appear in these
+tables for a person, they don't see it, full stop.
+
+**The default is no access, not "show everything."** A person with no `hub_users` row yet,
+or one whose check for access genuinely failed (a network hiccup, say), is never treated as
+"we don't know, so let them see it all" — they're treated as having nothing, until a real
+answer says otherwise. That's a deliberate reversal from how the old SharePoint-based
+system behaved (an unconfigured or unreachable matrix used to mean "show everything"), and
+it's the whole reason the sections below exist: a genuinely new person now lands on a
+holding screen instead of an empty sidebar with no explanation.
+
+---
+
+## The holding screen
+
+A person who has successfully signed in but currently has no way to reach any tool sees a
+dedicated holding screen instead of an empty sidebar. Exactly who sees it, and who doesn't,
+follows one rule:
+
+- **No Hub account exists for you yet at all** → holding screen, with a "Setting up" badge.
+  This is the very first moment after signing in, before the Hub has even finished creating
+  your account record.
+- **Your account exists, is active, and holds no role and no individual tool grant at all**
+  → holding screen, with an "Access pending" badge and the date you first showed up in the
+  queue.
+- **Your account exists, is active, and holds a role — but that role happens to grant zero
+  tools** (an empty or misconfigured role) → treated exactly the same as holding no role at
+  all. A role that grants nothing isn't meaningfully different from no role.
+- **You hold at least one real tool, however you got it** — through a role, or through a
+  personal grant with no role at all — you never see this screen. You go straight to the
+  Hub with whatever you're entitled to.
+- **Your account has been deactivated** → you never see the holding screen, no matter how
+  many roles or tools you hold or don't. You see an empty sidebar with no card and no
+  explanation instead. This is deliberate: the holding screen's copy talks about "your
+  account is being set up" and "you're in the queue," and both of those would be false
+  claims about someone who was never mid-onboarding — they were removed. There's nothing
+  to check for and nothing to wait on.
+
+The screen checks for new access on its own every 5 minutes while it's on screen, and has
+a **Check for access now** button for an immediate check. Either way, the moment a real
+role or grant lands, it leaves the holding screen on its own and goes straight to the Hub
+with the sidebar already reflecting the new access — no restart, no re-sign-in, no need to
+click anything further.
+
+---
+
+## Losing access
+
+Access can also be taken away while someone is already signed in and using the Hub —
+whether that's a role removed, an individual grant cleared, or the whole account
+deactivated. The Hub notices this on its own, in the background, roughly every 10 minutes
+for as long as the app stays open — it doesn't wait for the next sign-in.
+
+If that background check fails for some reason (a network hiccup, say), the Hub simply
+keeps using whatever it last confirmed rather than guessing, and tries again about a
+minute later instead of waiting the full 10 minutes — so a brief connectivity blip doesn't
+strand anyone on a stale answer for long.
+
+**If the tool someone currently has open gets revoked mid-session, they're returned to the
+Home screen quietly — no pop-up, no warning dialog.** That's deliberate, not an oversight:
+a dialog would announce out loud that access was just pulled, which is exactly the kind of
+thing that shouldn't be broadcast to whoever happens to be looking at the screen at that
+moment. They simply find themselves back on Home, and the tool is gone from the sidebar.
+
+---
+
+## Payroll Review and Payroll Processing are a special case
+
+These two tools never appear on the Roles tab's grid and can't be granted or denied as an
+individual override — trying to configure them here isn't an option, and that's not an
+oversight. Their sidebar visibility comes from a completely separate mechanism: whether
+your live Microsoft 365 sign-in currently carries the specific Entra security role each
+tool actually checks —
+
+- **Payroll Review** needs `hub.payroll`.
+- **Payroll Processing** needs `hub.payroll` **or** `hub.payrollmanager`.
+
+This is exactly how each tool's own screens have always gated themselves — nothing about
+the Access Management rebuild changed that, and nothing on this screen can override it
+either way. Whatever your Entra role assignment says is what decides whether these two
+tools show up for you, independent of every role and override this screen manages for
+every other tool. If you're wondering why you can't grant someone Payroll Processing from
+the Users tab the way you'd grant any other tool, this is why.
 
 ---
 
@@ -53,9 +149,9 @@ permission information currently on file for each of them.
 | Column | What it shows |
 | --- | --- |
 | **Person** | Name and email address |
-| **Directory title** | Their job title as recorded in Microsoft 365. This is now read automatically — every time someone signs in, the Hub checks their current job title and stores it here. It still shows blank for almost everyone today, but for a much simpler reason than before: see [Automatic role assignment on first sign-in](#automatic-role-assignment-on-first-sign-in) below |
+| **Directory title** | Their job title as recorded in Microsoft 365. This is read automatically — every time someone signs in, the Hub checks their current job title and stores it here |
 | **Roles** | Every role currently assigned to them, as chips. Anyone with zero roles gets a **"No role — pending"** chip instead |
-| **Source** | Whether the role was set by hand on this screen, or came from the one-time import that read the old system when this screen was first built — both show **manual** — or was assigned automatically because a brand-new person's job title matched a pattern on the Title Mapping tab the moment they first signed in (**auto**) |
+| **Source** | Whether the role was set by hand on this screen, came from the one-time import that read the old system when this screen was first built (both show **manual**), or was assigned automatically because a brand-new person's job title matched a pattern on the Title Mapping tab the moment they first signed in (**auto**) |
 | **Tools** | How many tools this person's roles and grants add up to. A red **−N** next to it means N of those are explicitly blocked (see below) |
 | **Access** | Click anywhere on the row to expand it and see exactly why — see the next section |
 
@@ -64,31 +160,30 @@ status (active, deactivated, or pending). A deactivated person's row shows their
 but can't be expanded — there's nothing left to change on it.
 
 **A "pending" person** is someone who has signed in, is active, but currently holds
-neither a role nor an individual grant here. When there's at least one, a banner appears
-at the top of the tab telling you how many and offering to filter the list down to just
-them. Dismissing the banner only lasts for your current session — reopening the app (or
-signing back in) brings it back if the same people are still pending.
+neither a role nor an individual grant here — the same person who would see the holding
+screen described above. When there's at least one, a banner appears at the top of the tab
+telling you how many and offering to filter the list down to just them. Dismissing the
+banner only lasts for your current session — reopening the app (or signing back in) brings
+it back if the same people are still pending.
 
-**When the two systems disagree.** Because this screen was seeded from a one-time
-snapshot of the old system, a person's real Entra security-group membership can drift
-away from what's recorded here afterward — someone gets added to a group in Microsoft
-365, but nothing here has been told. When that happens, an extra amber chip appears next
-to their roles showing what Entra still says (hover it to see when that was last
-checked). It's worth reviewing before the day this screen starts actually controlling
-access, so those two records agree by then — it isn't an error today, just a heads-up.
+**When the two systems disagree.** A person's live Entra security-group membership can
+drift away from what's recorded in these tables — someone gets added to a group in
+Microsoft 365, but nothing here has been told. When that happens, an extra amber chip
+appears next to their roles showing what Entra still says (hover it to see when that was
+last checked). Worth reviewing periodically so the two stay in agreement.
 
 ---
 
 ## Automatic role assignment on first sign-in
 
-The very first time a genuinely new person signs into the Hub, Access Management now
-checks their job title in Microsoft 365 and tries to match it against the Title Mapping
-tab (below) — top to bottom, first match wins, the same rule that tab already documents.
+The very first time a genuinely new person signs into the Hub, Access Management checks
+their job title in Microsoft 365 and tries to match it against the Title Mapping tab
+(below) — top to bottom, first match wins, the same rule that tab already documents.
 If a pattern matches, that role is assigned automatically the instant they sign in,
 tagged **auto** in the Source column above so it's always clear it wasn't a person's
-deliberate choice. If nothing matches — or their title isn't in the directory at all —
-they land on the Pending queue exactly as before, and an Access Admin assigns a role by
-hand, same as today.
+deliberate choice. If nothing matches — or their title isn't in the directory at all, or
+there simply are no active mapping patterns configured yet — they land on the Pending
+queue exactly as before, and an Access Admin assigns a role by hand, same as today.
 
 **This only ever happens once, on someone's genuine first sign-in — and deliberately
 never just because someone currently holds no role.** Those sound like the same
@@ -106,24 +201,15 @@ already auto-assigned once before. The **Re-sync titles** button described just 
 only ever refreshes what's stored in the Directory title column — it never assigns,
 changes, or removes anyone's role, no matter how its name might sound.
 
-**Most people do have a real job title in Microsoft 365, and the Hub can now read them.**
-The first successful bulk re-sync stored real titles for **26 of the 28 people** it
-looked at. So automatic assignment has genuine data to match against — a new person's
-first sign-in will usually find a real title, and whether they're auto-assigned or land
-on Pending comes down to whether that title matches one of your patterns on the Title
-Mapping tab.
-
-That means the **Title Mapping** tab is now the thing that decides the outcome. A pattern
-that matches nobody's real title will quietly never fire, so it's worth checking the
-**Matched** column against the titles people actually have — the Directory title column
-on the Users tab shows you exactly what the Hub read for each person.
-
 **Nothing in Entra needs to be touched before a new hire's first sign-in.** The Hub's own
 app registration in Microsoft 365 doesn't require anyone to be specifically assigned to
 it before they can sign in, so there's no separate Entra-side approval step standing
 between a brand-new employee's very first launch and their arrival on the Pending queue
 here. The moment someone signs in, they're either auto-assigned or Pending — there's
-nothing to configure in Entra first.
+nothing to configure in Entra first. That's also true of anyone who already holds a role
+in Entra today but has simply never opened the Hub yet — their eventual first sign-in
+runs through this exact same auto-assign-or-Pending path, with nothing pre-loaded for
+them ahead of time.
 
 **Every Access Admin gets a Teams message the moment someone new lands on Pending.**
 It's deliberately brief and doesn't name the person, their email, or their job title —
@@ -146,27 +232,16 @@ person's first sign-in, described above. If someone's title genuinely comes back
 from Microsoft 365, this clears what's stored here to match reality; if a person's title
 simply couldn't be read at all (a temporary directory hiccup), whatever was already
 stored is left alone rather than guessed at — and the summary afterward always says so
-honestly rather than reporting a clean sync that didn't happen.
+honestly rather than reporting a clean sync that didn't happen, naming the specific
+failure reason when one occurred.
 
-**This button went through a period of failing on every person, reporting that nobody's
-title could be read. That was a real defect and it is now fixed** — the first successful
-run stored real job titles for 26 of the 28 people it looked at. If you saw it fail
-before, it was failing honestly rather than reporting a false success, and there is
-nothing you need to undo.
-
-The cause was internal: the Hub asked Microsoft 365 for the right people, got the right
-answers back, and then failed to match those answers to its own records — so it counted
-every person as "not found" even though the directory had answered correctly. Alongside
-the fix, the button now reports the *actual* underlying error whenever a lookup genuinely
-fails, rather than only a count, so a future problem here explains itself instead of
-needing to be investigated from scratch. **Automatic assignment at first sign-in was never
-affected by any of this.** That path looks up one
-person's title at a time rather than in bulk, was separately confirmed working
-correctly in production throughout, and was unaffected by the bulk button's problem. So
-in practice: a new person's first sign-in still correctly reads their real title and
-either auto-assigns them or lands them on Pending exactly as designed. The bulk button is
-the separate convenience path for refreshing everyone else's stored titles at once, and
-it now works too.
+**This button works.** It went through a period earlier in the build where it failed on
+every single person — an internal bug where the Hub asked Microsoft 365 for the right
+people, got the right answers back, and then failed to match those answers to its own
+records, so it counted everyone as "not found" even though the directory had answered
+correctly. That's fixed. Automatic assignment at a new person's first sign-in was never
+affected by it either way — that path looks up one person's title at a time rather than
+in bulk, and was unaffected by the bulk button's problem throughout.
 
 ---
 
@@ -199,6 +274,10 @@ rather than guessing from a blank space in a table.
 
 A blocked tool always wins over a grant. If someone somehow had a tool both granted and
 denied at once, denied is what applies.
+
+**Payroll Review and Payroll Processing never appear in either list here** — see
+[Payroll Review and Payroll Processing are a special case](#payroll-review-and-payroll-processing-are-a-special-case)
+above for why, and for how their visibility actually works.
 
 ---
 
@@ -266,15 +345,19 @@ requires **typing the person's full name** before it will proceed, in both direc
 - **You cannot remove your own Access Admin permission from this screen**, even by
   mistake — the button for it simply isn't offered on your own row. Another Access Admin
   can remove it for you, or, if nobody else currently holds it, the emergency Entra
-  fallback described above still works.
+  break-glass fallback described above still works.
 
 ### Deactivating someone
 
-**Deactivate** marks a person as no longer active. It doesn't erase anything — every role
-they held is kept exactly as it was, so reactivating them later restores the same
-picture. Since this screen doesn't control real access yet, deactivating someone here
-doesn't take anything away from them today; it only updates the record here, ready for
-when it does.
+**Deactivate** marks a person as no longer active, and their real access is taken away
+along with it — a deactivated person's sidebar goes empty within the same background
+check window described in [Losing access](#losing-access) above, if they're already
+signed in, or immediately on their next sign-in. Deactivating someone does not erase
+anything — every role they held is kept exactly as it was, so reactivating them later
+restores the same picture instantly. A deactivated person also never sees the holding
+screen (see above) — they simply see nothing, since the holding-screen copy about "your
+account is being set up" would be a false claim about someone who used to have access and
+no longer does.
 
 ---
 
@@ -308,11 +391,12 @@ state so you can see what actually changed before trying again.
 
 **Three tools never appear in any role's grid, on any of the three views:** Payroll
 Review and Payroll Processing keep their own separate, dedicated permission entirely
-outside this system (matching how they already work today), and Access Management itself
-is only ever granted to a named person, the way [Grant Access Admin](#granting-or-revoking-access-admin)
-above does it — never through a role. A note at the bottom of the grid names the two
-payroll tools specifically; Access Management isn't offered as a grid option at all, so
-there's nothing to toggle there in the first place.
+outside this system (see [above](#payroll-review-and-payroll-processing-are-a-special-case)),
+and Access Management itself is only ever granted to a named person, the way
+[Grant Access Admin](#granting-or-revoking-access-admin) above does it — never through a
+role. A note at the bottom of the grid names the two payroll tools specifically; Access
+Management isn't offered as a grid option at all, so there's nothing to toggle there in
+the first place.
 
 ### Creating a role
 
@@ -335,8 +419,8 @@ elsewhere on this screen can never reference a tool that doesn't actually exist.
 | **Tool key** | The internal identifier a role or override actually references |
 | **Display name** | What the tool is called in the sidebar |
 | **Category** | Its grouping — the same categories the Roles tab's Checklist view and the override editor's tool picker use |
-| **Granted by** | How it becomes visible: a count of the roles that include it; **Dedicated gate** for Payroll Review and Payroll Processing, which keep their own separate permission outside this whole system; or **By individual grant only** for Access Management itself, which is never handed out through a role |
-| **People** | How many currently-active people these tables *would* grant this tool to today, counting roles and individual grants together and letting a deny win the way it always does. This is **not** the same as how many people can actually open the tool right now — nothing on this screen controls real access yet |
+| **Granted by** | How it becomes visible: a count of the roles that include it; **Dedicated gate** for Payroll Review and Payroll Processing, which keep their own separate Entra-role-based permission outside this whole system (see above); or **By individual grant only** for Access Management itself, which is never handed out through a role |
+| **People** | How many currently-active people these tables grant this tool to today, counting roles and individual grants together and letting a deny win the way it always does. For a **Dedicated gate** tool this reflects Entra role holders instead, not this screen's own grants |
 
 A small "synced" timestamp in the corner shows when this list was last refreshed. That
 refresh happens automatically whenever a Hub admin launches the app — not on a
@@ -352,14 +436,24 @@ does not, by itself, trigger this refresh.
 
 Where a job title is matched to a role automatically, the moment someone signs in for
 the very first time — see [Automatic role assignment on first sign-in](#automatic-role-assignment-on-first-sign-in)
-above for how that works. The **Matched** column shows how many currently-recorded
-directory titles a pattern would match, calculated live against real data — it's a real,
-working number, not a placeholder. Because most people now have a real title stored, this
-column is the fastest way to tell whether a pattern will ever actually fire: a pattern
-reading **0** matches nobody in the directory as it stands, and will quietly never
-trigger until either the pattern or someone's title changes. **Existing people are never re-assigned by
-editing or adding a mapping** — a mapping only ever applies the moment someone signs in
-for the very first time, never retroactively.
+above for how that works.
+
+**Before this ships, this tab needs at least one active pattern configured, or nobody
+gets auto-assigned.** With no active mappings, every genuinely new sign-in lands on
+Pending regardless of their title, which isn't wrong, just not useful — seeding real
+patterns here is a needed step before this branch is handed over for real use, not an
+optional nice-to-have.
+
+The **Matched** column shows how many currently-recorded directory titles a pattern
+would match, calculated live against real data — it's a real, working number, not a
+placeholder. It's the fastest way to sanity-check a new pattern: a **0** here today means
+nobody *currently in the directory* has a matching title — it does **not** necessarily
+mean the pattern is wrong. A pattern written for a role nobody on staff happens to hold
+right now (a role meant for a future hire, say) will legitimately read 0 until that
+person actually joins and signs in — the column only ever reflects people who have
+already signed in and had a title successfully read, never people who might join later.
+**Existing people are never re-assigned by editing or adding a mapping** — a mapping only
+ever applies the moment someone signs in for the very first time, never retroactively.
 
 A mapping is a **pattern** matched against a job title, plus the role it assigns if that
 pattern matches. The pattern grammar:
@@ -399,15 +493,13 @@ Every write this screen has ever made — role assignments and removals (includi
 assigned automatically at a person's first sign-in, described above — it's recorded here
 the same as a manual one, just worded so it's clear nobody actually clicked anything),
 granting, denying, or clearing an individual override (including Access Admin itself),
-creating a role or saving the permission grid, deactivating or reactivating a person
-(nothing on this screen controls real access yet, so neither changes what they can
-actually reach today), every title mapping change, and a **System & migration** category
-for everything else this table records automatically rather than from a click on this
-screen: the Tools tab's own registry sync (see above), a bulk **Re-sync titles** run,
-the one-time historical import that seeded these tables from the old Hub Role Matrix and
-Hub User Overrides SharePoint lists at cutover, and a record every time someone reaches
-this screen through the emergency Entra fallback with no real Access Admin grant — in
-one running feed, newest first.
+creating a role or saving the permission grid, deactivating or reactivating a person,
+every title mapping change, and a **System & migration** category for everything else
+this table records automatically rather than from a click on this screen: the Tools
+tab's own registry sync (see above), a bulk **Re-sync titles** run, the one-time
+historical import that originally seeded these tables from the old SharePoint lists, and
+a record every time someone reaches this screen through the emergency Entra break-glass
+with no real Access Admin grant — in one running feed, newest first.
 
 - A **category** dropdown narrows the feed to one kind of change.
 - **Break-glass only** shows just the entries where someone reached this screen through
@@ -435,13 +527,81 @@ app, which any signed-in user can query.
 
 ---
 
+## What still comes from Entra, for now
+
+Two things about the Hub still read your live Microsoft 365 sign-in role directly,
+rather than these tables, and will until a later phase folds them in properly:
+
+- **The general "Admin" badge** several individual tools use for their own admin-only
+  buttons and settings (things like Company Mapping, Client Touch Aging, and various
+  Settings panels) is still based on whether your token carries the `hub.admin` Entra
+  role — the same signal that's always driven it, unrelated to whether you hold the
+  Admin role on this screen's Roles tab specifically.
+- **The break-glass fallback** described near the top of this page — letting a
+  `hub.admin` Entra role open this screen if Access Admin were ever accidentally removed
+  from everyone — is, by design, independent of this screen's own tables. An emergency
+  door that only worked as long as the tables it might need to fix were themselves
+  working wouldn't be much of an emergency door.
+
+Neither of these is a gap left open by accident — they're deliberately still reading
+Entra directly, and a later phase is what folds them into this same system properly.
+
+---
+
+## The two old SharePoint lists are retired from live use
+
+**Hub Role Matrix** and **Hub User Overrides** are no longer read anywhere in the app for
+a real access decision — not for the sidebar, not for the holding screen, and not for
+either of the two Entra-based checks described above. The only thing that still reads
+either list at all is a one-off, read-only comparison tool used to double-check the new
+tables agree with what the old lists would have said, before this branch is finally handed
+over for use — it never writes to either list and never feeds a live decision.
+
+Once this branch is fully handed over, the plan is to rename both lists in SharePoint with
+a **`RETIRED — `** prefix rather than delete them outright, so the historical record stays
+available without anyone mistaking either list for something still live.
+
+---
+
+## Cutover runbook (for whoever finishes this branch)
+
+A short list of what's left to do around this feature specifically, separate from the
+actual `withAuth`/permission-mode work still ahead in the next development phase:
+
+1. **Seed real Title Mapping patterns.** Covered above — with none configured, every
+   new sign-in lands on Pending. Do this any time; it's inert until the branch ships and
+   harmless in the meantime.
+2. **Re-run the parity comparison once more, right before the actual merge/release.**
+   Data can drift between now and then, so the last comparison run should be as close to
+   the real cutover as practical. This is a DevTools call, not a screen — from the app's
+   developer console:
+   `await window.api.accessParityRun({ entraCsvPath: '<path to a fresh Entra app-role export>' })`.
+   The `entraCsvPath` matters: the Hub's roles are assigned through security **groups**,
+   not directly to people, so an ordinary Entra portal user list is not an equivalent
+   substitute — it needs to be a real app-role assignment export, expanded through group
+   membership, the same way the Hub's own sign-in token resolves it. Once this branch
+   actually ships, this export stops being necessary at all — every sign-in through the
+   new build repopulates the Hub's own stored copy of each person's roles on its own.
+3. **Optional cleanup: one retired (soft-deleted) Title Mapping row.** There's a single
+   already-retired mapping sitting in the table from earlier testing — it's fully inert
+   today (it never counts toward precedence and is already hidden unless **Show removed**
+   is ticked on the Title Mapping tab), so there's nothing that needs doing. If you'd
+   rather have it gone from the database entirely rather than just hidden, that has no
+   in-app button and needs a one-line SQL delete run in the Azure Portal's Query Editor —
+   purely cosmetic, never urgent.
+4. **Rename the two retired SharePoint lists** with the `RETIRED — ` prefix described
+   above, once the branch is actually live and nothing could still need the old lists for
+   comparison.
+
+---
+
 ## What's not built yet
 
-- **Nothing outstanding on titles.** The bulk **Re-sync titles** button had a period of
-  failing on every person; that was a real defect, it is fixed, and the first successful
-  run stored real job titles for 26 of the 28 people it looked at. Automatic assignment
-  at first sign-in was never affected by it.
-- **None of this changes what anyone actually sees in the Hub yet** — see the notice at
-  the top of this page. That's the biggest thing to keep in mind while this screen is
-  being built out: it's safe to explore, assign roles, and get familiar with it, without
-  worrying that a mistake here immediately changes someone's real access.
+- **The next development phase** finishes folding the two Entra-direct checks described
+  in [What still comes from Entra, for now](#what-still-comes-from-entra-for-now) into
+  this same system, so eventually nothing in the Hub reads a live Microsoft 365 role
+  directly at all for an access decision.
+- **This whole feature is still on an unreleased development branch.** Everything on this
+  page describes how access works inside that branch — the app you're actually using today
+  still runs on the old SharePoint-based system until that branch ships. Watch for an
+  announcement when it does; nothing about your day-to-day access changes silently.
