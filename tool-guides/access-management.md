@@ -183,6 +183,14 @@ may have been deactivated in the Hub for a completely separate reason, and this 
 in a position to know that — only a real Access Admin, using the Users tab, can bring
 someone back.
 
+**The M365 disable-state is authoritative, and there is no per-person exemption.** The sweep
+doesn't skip anyone, and there's no setting or flag anywhere in Access Management that
+excuses a specific person from it. If an Access Admin reactivates someone in the Users tab
+while their Microsoft 365 account is still disabled, that reactivation will be undone by the
+very next hourly run — the sweep re-checks every active person's M365 account each time it
+runs, so it will simply deactivate them again within the hour. To keep a Hub row active, the
+Microsoft 365 account has to be re-enabled first; reactivating the Hub side alone doesn't stick.
+
 **What this actually buys, stated plainly:** a disabled Microsoft 365 account already can't
 sign in or refresh a Hub session on its own — Microsoft 365 is what handles that part, not
 the Hub. So this doesn't stop someone from getting in who couldn't already. What it does do
