@@ -651,6 +651,26 @@ Microsoft 365 sign-in role directly, rather than these tables:
   [above](#payroll-review-and-payroll-processing-are-a-special-case) — current design,
   with a revisit Mike has asked for still pending (see that section for what that means).
 
+The eight retired general roles (`hub.manager`, `hub.delivery`, `hub.tam`,
+`hub.strategic`, `hub.projects`, `hub.finance`, `hub.sales`, `hub.wsd`) were **deleted
+from the Entra app registration on 2026-09-01**, after the 4.0.0 release made them
+unread. Only the three roles above remain defined.
+
+### The "Hub" security groups stay — they do more than assign roles
+
+The ten **Hub \*** security groups in Entra (Hub Admin, Hub Delivery, Hub Finance, Hub
+Manager, Hub Payroll Manager, Hub Projects, Hub Sales, HUB Strategic, Hub TAM, Hub WSD)
+must **not** be deleted as part of any access cleanup, even though most of the app roles
+they used to assign are gone. Verified directly against Azure's own role assignments
+(2026-09-01): nine of the ten — every one except Hub Payroll Manager — carry the **Key
+Vault access that every employee's copy of the Hub depends on** to read shared
+credentials (the Autotask connection, the shared Strety connection, and its
+refresh-token self-heal). Deleting a group would silently break those integrations for
+everyone in it. On top of that, **Hub Admin** is what assigns the `hub.admin` break-glass
+role, and **Hub Payroll Manager** assigns the live Payroll Processing role. Treat the
+groups as Key Vault access rosters first and role feeds second — membership changes are
+fine; deletion is not.
+
 **The general "Admin" badge several individual tools use for their own admin-only buttons
 and settings** — things like Company Mapping, Client Touch Aging, and various Settings
 panels — used to be a third item on this list, reading the `hub.admin` Entra role
