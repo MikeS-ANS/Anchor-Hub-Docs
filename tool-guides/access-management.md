@@ -1,14 +1,16 @@
 # Access Management
 
-> **This screen is now the real thing — in an unreleased development build.** As of Phase 6,
-> the Hub's own Access Management tables decide who sees what tool, replacing the **Hub Role
-> Matrix** and **Hub User Overrides** SharePoint lists described in
-> [Roles & Permissions](../getting-started/roles-and-permissions.md). That cutover has
-> genuinely happened — but only inside an unreleased development branch. **The released app
-> you're using today still runs on the old SharePoint-based system**, unchanged, until this
-> branch finishes its next phase and ships. Nothing in this page describes your access right
-> now unless someone has specifically told you they're testing the new build with you. Once
-> it ships, this page is simply how the Hub decides access from then on.
+> **This screen is now the real thing — in an unreleased development build.** The Hub's own
+> Access Management tables decide who sees what tool, replacing the **Hub Role Matrix** and
+> **Hub User Overrides** SharePoint lists described in
+> [Roles & Permissions](../getting-started/roles-and-permissions.md). That cutover is now
+> complete on the server side too — every server-side action the Hub takes, not just what
+> the sidebar shows, checks these same tables directly, the same way tool visibility does.
+> That's all genuinely true today — but only inside an unreleased development branch.
+> **The released app you're using today still runs on the old SharePoint-based system**,
+> unchanged, until this branch finishes and ships. Nothing in this page describes your
+> access right now unless someone has specifically told you they're testing the new build
+> with you. Once it ships, this page is simply how the Hub decides access from then on.
 
 Access Management is where roles and individual permissions are managed for the whole Hub.
 This page describes everything that exists today, including the parts that only apply once
@@ -38,13 +40,24 @@ previously seen holding Access Admin.
 Because whoever holds Access Admin can grant it to anyone else — including themselves —
 it's treated as the single most sensitive permission in the Hub. There's also a safety
 net: if this permission were ever accidentally removed from everyone, someone holding the
-Hub's own top administrator Entra role (`hub.admin`) can still get into this screen to fix
-it. That's an emergency path — a "break-glass" — not a normal one, and using it is recorded
-the same way everything else here is: the Audit Log tab (below) calls these entries out
-distinctly, so it's easy to confirm the emergency path hasn't quietly become the normal one.
+Hub's own top administrator Entra role (`hub.admin`) can still get in to fix it — and not
+just onto this screen. **That same emergency role now backs up nearly every server-side
+check the Hub makes off these tables, everywhere in the app, not only Access Admin itself**
+— the same safety net that gets someone into this screen also keeps a config change, a
+feedback reply, or another admin-only server action from being permanently blocked by a bad
+table row. These tables are always checked first, and the emergency role is only consulted
+if that check comes up empty — so someone whose real access already covers what they're
+doing is never recorded as having used the emergency path just because they happen to also
+hold it. Only an actual use — where the emergency role is the reason something was let
+through — gets recorded: the Audit Log tab (below) calls these entries out distinctly
+(**Break-glass only**, further down), so it's easy to confirm the emergency path hasn't
+quietly become the normal one. Simply loading a page, and having the Hub silently check
+whether the emergency role *would* let someone in, is never logged by itself.
 
-**This break-glass, and one other admin badge, are the two places the Hub still checks your
-live Microsoft 365 sign-in role directly, rather than these tables — see
+**This break-glass is now the only place the Hub checks your live Microsoft 365 sign-in
+role directly instead of these tables, anywhere in the app — except the two Payroll tools'
+own separate permission, described
+[below](#payroll-review-and-payroll-processing-are-a-special-case). See
 [What still comes from Entra](#what-still-comes-from-entra-for-now) near the bottom.**
 
 ---
@@ -65,6 +78,34 @@ answer says otherwise. That's a deliberate reversal from how the old SharePoint-
 system behaved (an unconfigured or unreachable matrix used to mean "show everything"), and
 it's the whole reason the sections below exist: a genuinely new person now lands on a
 holding screen instead of an empty sidebar with no explanation.
+
+---
+
+## Server-side enforcement, not just the sidebar
+
+Everything above describes what a person *sees* — the sidebar, the holding screen. What
+matters more is that the Hub's server checks these same tables before it *does* anything
+sensitive, not just before it draws a menu. Hiding a button in the app was never enough by
+itself — the underlying server action could always have been reached directly, skipping the
+button entirely. That gap is now closed everywhere it used to exist: every server action
+that used to check a signed-in person's Microsoft 365 role directly now checks these same
+Roles/Users/overrides tables instead, the same way the sidebar does, with the `hub.admin`
+break-glass role continuing to work as the emergency fallback described above on nearly all
+of them.
+
+A handful of admin-only actions elsewhere in the Hub — saving a global setting, replying
+Officially to feedback, seeing who's currently running the app, an admin-only Client Touch
+Aging or Contract Review setting, and a few others — check for the **Admin** role from this
+screen's own Roles tab, the exact same role you assign someone right here. There's no
+separate, second "admin badge" anywhere else in the app any more: give someone the Admin
+role on this screen, and every one of those actions opens up for them too, everywhere in
+the Hub, the moment the Hub next checks (see [Losing access](#losing-access) above for how
+quickly a change like that takes effect, either direction).
+
+When a single action needs to check more than one thing at once — say, whether someone
+holds one of two different roles, or holds a role and a specific tool grant, both — the Hub
+only actually asks these tables once per action, not once per thing being checked, so
+checking more than one requirement never makes an action slower.
 
 ---
 
@@ -128,6 +169,39 @@ moment. They simply find themselves back on Home, and the tool is gone from the 
 
 ---
 
+## Automatic offboarding
+
+Once an hour, the Hub checks every active person's Microsoft 365 account directly against
+Microsoft, on its own, with no button to click. If that check finds an account has been
+**disabled** or **deleted entirely** in Microsoft 365, that person's Hub account is
+automatically deactivated — the same as if someone had clicked **Deactivate** for them on
+the Users tab — and it's recorded in the Audit Log as a **System** action, not attributed to
+any human, with a summary naming the reason (disabled vs. deleted).
+
+**This never reactivates anyone, ever, even if the M365 account comes back on.** A person
+may have been deactivated in the Hub for a completely separate reason, and this check isn't
+in a position to know that — only a real Access Admin, using the Users tab, can bring
+someone back.
+
+**What this actually buys, stated plainly:** a disabled Microsoft 365 account already can't
+sign in or refresh a Hub session on its own — Microsoft 365 is what handles that part, not
+the Hub. So this doesn't stop someone from getting in who couldn't already. What it does do
+is close the one real gap: if that person was already signed in and using the Hub at the
+moment their M365 account got disabled, their session would otherwise have kept working
+until it happened to expire on its own. Now, within about an hour of the disable, their Hub
+account is deactivated, and within about another 10 minutes on top of that (the same
+background check described in [Losing access](#losing-access) above), their sidebar goes
+empty and stays that way. Mostly, though, this removes a manual step someone on the IT side
+used to have to remember — offboarding an employee in Microsoft 365 no longer requires a
+separate trip to this screen to also deactivate their Hub account by hand. The Users tab now
+stays accurate on its own.
+
+There's no button in the app for this — it runs on its own, every hour, silently, and there
+is nothing to configure. (A way to trigger it on demand exists for troubleshooting, but it
+isn't reachable from inside the app itself — see the runbook near the bottom of this page.)
+
+---
+
 ## Payroll Review and Payroll Processing are a special case
 
 These two tools never appear on the Roles tab's grid and can't be granted or denied as an
@@ -145,6 +219,14 @@ either way. Whatever your Entra role assignment says is what decides whether the
 tools show up for you, independent of every role and override this screen manages for
 every other tool. If you're wondering why you can't grant someone Payroll Processing from
 the Users tab the way you'd grant any other tool, this is why.
+
+**This is current design, not a settled permanent decision.** Mike has flagged wanting to
+revisit whether these two tools should keep their own separate Entra-based permission at
+all, versus folding onto this same Hub-native system like every other tool — in his own
+words, "I don't want some things in Entra and some things in the hub." That revisit hasn't
+happened yet, and it's its own separate project with its own before/after comparison, not
+something folded quietly into this one. Until it does, the rule above is exactly how these
+two tools work today.
 
 ---
 
@@ -366,6 +448,11 @@ screen (see above) — they simply see nothing, since the holding-screen copy ab
 account is being set up" would be a false claim about someone who used to have access and
 no longer does.
 
+**This isn't the only way someone ends up deactivated.** The [Automatic offboarding](#automatic-offboarding)
+sweep further down does the same thing on its own, once an hour, for anyone whose
+Microsoft 365 account gets disabled or deleted — worth knowing before assuming every
+deactivated row on this tab was someone's deliberate click.
+
 ---
 
 ## The Roles tab
@@ -430,12 +517,13 @@ elsewhere on this screen can never reference a tool that doesn't actually exist.
 | **People** | How many currently-active people these tables grant this tool to today, counting roles and individual grants together and letting a deny win the way it always does. **For a Dedicated gate tool (Payroll Review, Payroll Processing) this always reads 0** — these tables never grant a dedicated-gate tool to anyone, by design, so there's nothing here for them to count. It does **not** mean nobody can see the tool; it means this screen isn't where that count comes from. Who actually sees a dedicated-gate tool is decided by Entra sign-in roles instead — see [above](#payroll-review-and-payroll-processing-are-a-special-case) — and this screen doesn't total that up anywhere |
 
 A small "synced" timestamp in the corner shows when this list was last refreshed. That
-refresh happens automatically whenever a Hub admin launches the app — not on a
-schedule, and not the moment a new tool ships — so a tool added to the Hub won't show up
-here until the next time someone with the Hub admin role opens it. That's a different
-permission from Access Admin (the one that gets you onto this screen at all) — Access
-Admin is granted to a named person and never through a role, so holding only Access Admin
-does not, by itself, trigger this refresh.
+refresh happens automatically whenever someone holding the **Admin** role (the Roles tab
+role described [above](#server-side-enforcement-not-just-the-sidebar)) launches the app —
+not on a schedule, and not the moment a new tool ships — so a tool added to the Hub won't
+show up here until the next time an Admin opens it. That's a different permission from
+Access Admin (the one that gets you onto this screen at all) — Access Admin is granted to a
+named person and never through a role, so holding only Access Admin does not, by itself,
+trigger this refresh.
 
 ---
 
@@ -500,18 +588,23 @@ Every write this screen has ever made — role assignments and removals (includi
 assigned automatically at a person's first sign-in, described above — it's recorded here
 the same as a manual one, just worded so it's clear nobody actually clicked anything),
 granting, denying, or clearing an individual override (including Access Admin itself),
-creating a role or saving the permission grid, deactivating or reactivating a person,
-every title mapping change, and a **System & migration** category for everything else
-this table records automatically rather than from a click on this screen: the Tools
-tab's own registry sync (see above), a bulk **Re-sync titles** run, the one-time
-historical import that originally seeded these tables from the old SharePoint lists, and
-a record every time someone reaches this screen through the emergency Entra break-glass
-with no real Access Admin grant — in one running feed, newest first.
+creating a role or saving the permission grid, deactivating or reactivating a person
+(including the automatic hourly [offboarding sweep](#automatic-offboarding)'s own
+deactivations, in the same **User status** category as a manual one but attributed to
+**System — M365 offboarding sweep** rather than a person), every title mapping change, and
+a **System & migration** category for everything else this table records automatically
+rather than from a click on this screen: the Tools tab's own registry sync (see above), a
+bulk **Re-sync titles** run, the one-time historical import that originally seeded these
+tables from the old SharePoint lists, and a record every time the emergency Entra
+break-glass role is the actual reason some server action was allowed to proceed, anywhere
+in the app — not only on this screen — with no real grant from these tables covering it —
+in one running feed, newest first.
 
 - A **category** dropdown narrows the feed to one kind of change.
-- **Break-glass only** shows just the entries where someone reached this screen through
-  the emergency Entra fallback described above, rather than a real Access Admin grant —
-  worth checking now and again, since it should normally stay empty.
+- **Break-glass only** shows just the entries where the emergency Entra fallback described
+  above was the reason something was let through, anywhere in the Hub, rather than a real
+  grant from these tables — worth checking now and again, since it should normally stay
+  empty.
 - The **search box** matches against an entry's summary, the person it affected, and who
   made the change.
 - Two date fields narrow the feed to a range.
@@ -536,22 +629,26 @@ app, which any signed-in user can query.
 
 ## What still comes from Entra, for now
 
-Two things about the Hub still read your live Microsoft 365 sign-in role directly,
-rather than these tables, and will until a later phase folds them in properly:
+As of this page's latest update, only two things about the Hub still read your live
+Microsoft 365 sign-in role directly, rather than these tables:
 
-- **The general "Admin" badge** several individual tools use for their own admin-only
-  buttons and settings (things like Company Mapping, Client Touch Aging, and various
-  Settings panels) is still based on whether your token carries the `hub.admin` Entra
-  role — the same signal that's always driven it, unrelated to whether you hold the
-  Admin role on this screen's Roles tab specifically.
-- **The break-glass fallback** described near the top of this page — letting a
-  `hub.admin` Entra role open this screen if Access Admin were ever accidentally removed
-  from everyone — is, by design, independent of this screen's own tables. An emergency
-  door that only worked as long as the tables it might need to fix were themselves
-  working wouldn't be much of an emergency door.
+- **The `hub.admin` break-glass fallback**, described near the top of this page and in
+  [Server-side enforcement](#server-side-enforcement-not-just-the-sidebar) above, keeps
+  working independently of this screen's own tables, everywhere it's used across the Hub
+  — not only on this screen. An emergency door that only worked as long as the tables it
+  might need to fix were themselves working wouldn't be much of an emergency door. This
+  one is permanent by design; no future phase is expected to remove it.
+- **Payroll Review and Payroll Processing's own dedicated `hub.payroll`/
+  `hub.payrollmanager` roles**, described
+  [above](#payroll-review-and-payroll-processing-are-a-special-case) — current design,
+  with a revisit Mike has asked for still pending (see that section for what that means).
 
-Neither of these is a gap left open by accident — they're deliberately still reading
-Entra directly, and a later phase is what folds them into this same system properly.
+**The general "Admin" badge several individual tools use for their own admin-only buttons
+and settings** — things like Company Mapping, Client Touch Aging, and various Settings
+panels — used to be a third item on this list, reading the `hub.admin` Entra role
+directly. It no longer is: it now reads the exact same **Admin** role you assign on this
+screen's Roles tab, the same way every other tool's visibility works. See
+[Server-side enforcement](#server-side-enforcement-not-just-the-sidebar) above.
 
 ---
 
@@ -559,10 +656,11 @@ Entra directly, and a later phase is what folds them into this same system prope
 
 **Hub Role Matrix** and **Hub User Overrides** are no longer read anywhere in the app for
 a real access decision — not for the sidebar, not for the holding screen, and not for
-either of the two Entra-based checks described above. The only thing that still reads
-either list at all is a one-off, read-only comparison tool used to double-check the new
-tables agree with what the old lists would have said, before this branch is finally handed
-over for use — it never writes to either list and never feeds a live decision.
+either of the Entra-based checks described above (the break-glass fallback or the two
+payroll tools' dedicated roles). The only thing that still reads either list at all is a
+one-off, read-only comparison tool used to double-check the new tables agree with what the
+old lists would have said, before this branch is finally handed over for use — it never
+writes to either list and never feeds a live decision.
 
 Once this branch is fully handed over, the plan is to rename both lists in SharePoint with
 a **`RETIRED — `** prefix rather than delete them outright, so the historical record stays
@@ -572,8 +670,8 @@ available without anyone mistaking either list for something still live.
 
 ## Cutover runbook (for whoever finishes this branch)
 
-A short list of what's left to do around this feature specifically, separate from the
-actual `withAuth`/permission-mode work still ahead in the next development phase:
+A short list of what's left to do around this feature specifically, before the branch is
+actually handed over for real use:
 
 1. **Seed real Title Mapping patterns.** Covered above — with none configured, every
    new sign-in lands on Pending. Do this any time; it's inert until the branch ships and
@@ -583,31 +681,57 @@ actual `withAuth`/permission-mode work still ahead in the next development phase
    the real cutover as practical. This is a DevTools call, not a screen — from the app's
    developer console:
    `await window.api.accessParityRun({ entraCsvPath: '<path to a fresh Entra app-role export>' })`.
-   The `entraCsvPath` matters: the Hub's roles are assigned through security **groups**,
-   not directly to people, so an ordinary Entra portal user list is not an equivalent
-   substitute — it needs to be a real app-role assignment export, expanded through group
-   membership, the same way the Hub's own sign-in token resolves it. Once this branch
-   actually ships, this export stops being necessary at all — every sign-in through the
-   new build repopulates the Hub's own stored copy of each person's roles on its own.
-3. **Optional cleanup: one retired (soft-deleted) Title Mapping row.** There's a single
+   The `entraCsvPath` matters: the Hub's roles are assigned through security **groups**
+   (4 people assigned directly plus 10 groups, as of the last real run), not directly to
+   people, so an ordinary Entra portal user list is not an equivalent substitute — it
+   needs to be a real app-role assignment export, expanded through group membership, the
+   same way the Hub's own sign-in token resolves it. Once this branch actually ships,
+   this export stops being necessary at all — every sign-in through the new build
+   repopulates the Hub's own stored copy of each person's roles on its own.
+3. **Three people are missing from the Users tab entirely and need one manual step
+   before they can be granted anything here: Brian French, Chris Heck, and Jacee Dobbs.**
+   All three hold their Hub roles only through Microsoft 365 security groups, never a
+   direct assignment, and the historical import that originally seeded most of this
+   screen's data only carried direct assignments, not expanded group membership — so
+   their rows were never created. A ready-to-run script
+   (`Downloads/seed-french-dobbs-heck-hub-users.sql`) creates their three rows the same
+   way the original import would have; run it once in the Azure Portal's Query Editor,
+   then assign each of them a role on the Users tab as normal. Their Payroll Processing
+   access is unaffected either way — it rides their `hub.payrollmanager` group
+   membership directly and doesn't depend on a Users tab row existing at all.
+4. **The M365 offboarding sweep (see [Automatic offboarding](#automatic-offboarding)
+   above) can be triggered on demand for troubleshooting, but only from outside the
+   app** — there's no in-app button or developer-console call for it. Trigger it
+   manually from the Azure Portal (open the Function App, find the
+   `accessOffboardSweepRun` function, use its built-in Test/Run) or with an
+   authenticated call to the underlying route. The hourly automatic run is the normal
+   path and needs nothing done to it.
+5. **Optional cleanup: one retired (soft-deleted) Title Mapping row.** There's a single
    already-retired mapping sitting in the table from earlier testing — it's fully inert
    today (it never counts toward precedence and is already hidden unless **Show removed**
    is ticked on the Title Mapping tab), so there's nothing that needs doing. If you'd
    rather have it gone from the database entirely rather than just hidden, that has no
    in-app button and needs a one-line SQL delete run in the Azure Portal's Query Editor —
    purely cosmetic, never urgent.
-4. **Rename the two retired SharePoint lists** with the `RETIRED — ` prefix described
+6. **Rename the two retired SharePoint lists** with the `RETIRED — ` prefix described
    above, once the branch is actually live and nothing could still need the old lists for
-   comparison.
+   comparison. This is Mike's own click in SharePoint, done after the merge — not an
+   in-app or code step.
 
 ---
 
 ## What's not built yet
 
-- **The next development phase** finishes folding the two Entra-direct checks described
-  in [What still comes from Entra, for now](#what-still-comes-from-entra-for-now) into
-  this same system, so eventually nothing in the Hub reads a live Microsoft 365 role
-  directly at all for an access decision.
+- **The `hub.admin` break-glass fallback stays permanent, by design** — see
+  [What still comes from Entra, for now](#what-still-comes-from-entra-for-now) above for
+  why an emergency door has to work independently of the system it might need to fix.
+  There's no future phase planned to remove it.
+- **Whether Payroll Review and Payroll Processing keep their own separate Entra-based
+  permission, or fold onto this same system like every other tool, is an open question
+  Mike has asked to revisit** — as its own separate project, with its own before/after
+  comparison, not a small follow-on to this one. See
+  [Payroll Review and Payroll Processing are a special case](#payroll-review-and-payroll-processing-are-a-special-case)
+  above.
 - **This whole feature is still on an unreleased development branch.** Everything on this
   page describes how access works inside that branch — the app you're actually using today
   still runs on the old SharePoint-based system until that branch ships. Watch for an
