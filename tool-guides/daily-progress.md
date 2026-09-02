@@ -33,16 +33,15 @@ Across the top, four tiles:
 - **Hours logged** — your total Autotask hours for the day, across however many tickets, with
   how many of those were closed that day.
 
-Under each tile, once you have at least five earlier workdays with a complete report, a trend
-block appears: a **typical** figure — the median of up to your last 30 such days before the day
-you're looking at, counting only complete Monday–Friday reports and skipping partial runs and
-days with nothing on them — and a small sparkline of those same days, ending with the day
-currently on screen as a highlighted dot (the sparkline itself shows once there are at least two
-qualifying earlier days, even before "typical" has enough days to appear). It only ever compares
-you with your own recent days, and the day you're viewing is never counted toward its own
-baseline. Neither figure travels with the report — the copy you email yourself or save to
-OneDrive doesn't carry them, since they're computed fresh from your local history index each
-time the page loads, not stored as part of the report itself.
+Under each tile, once you have at least two earlier qualifying workdays, a small sparkline
+appears: those days' own numbers, ending with the day currently on screen as a highlighted dot.
+Once you have at least five such days, a **typical** figure joins it — the median of up to your
+last 30 such days before the day you're looking at, counting only complete Monday–Friday reports
+and skipping partial runs and days with nothing on them. It only ever compares you with your own
+recent days, and the day you're viewing is never counted toward its own baseline. Neither figure
+travels with the report — the copy you email yourself or save to OneDrive doesn't carry them,
+since they're computed fresh from the history index in your OneDrive each time the page loads,
+not stored as part of the report itself.
 
 Below the tiles, **"What actually moved forward"** is a single timeline combining every sent-mail
 thread, every ticket you touched, and every meeting that's already happened that day — earliest
@@ -76,7 +75,8 @@ include it." with a **Generate** button next to it — click it and that one day
 place, exactly like generating any past day from the Today view, and the week reloads once it's
 saved. A day that couldn't be read instead shows the error it hit and a **Retry** button. Either
 way, a callout under the week's totals names which day or days aren't included in the numbers
-above it.
+above it, as long as the saved days have any actions at all — a week where every saved day came
+back completely empty shows no callout, even if other days are also missing or unreadable.
 
 The **◀**/**▶** arrows move a week at a time (capped at the current week — you can't go past
 today), and the date picker jumps to the week containing whichever day you pick there: Monday
@@ -259,14 +259,25 @@ A gear icon in the header, next to Email me, opens a small settings panel with t
 
 Turning **Generate at end of day** on means today's report generates itself once the time you
 picked has passed — no need to open Daily Progress or click anything — as long as Anchor Hub is
-open and you're signed in at that moment. If Anchor Hub wasn't open when your chosen time
-arrived, it catches up the moment you next launch it and sign in, including the very first
-launch after you turn the setting on, if that day's slot has already passed by then. The same
+open and you're signed in at that moment. It runs every day of the week, not just workdays: if
+Anchor Hub is open on a Saturday or Sunday after that time, that day's report (usually empty,
+since there's rarely anything to log on a weekend) is generated and saved the same as any other
+day, and emailed too if **Email me when it generates** is on. If Anchor Hub wasn't open when
+your chosen time arrived, it catches up about ten seconds after your next launch — as long as
+you're still signed in at that moment; if you had signed out, nothing runs then, and that day is
+instead filled in by the next scheduled run's previous-workday check, described next. The same
 run also fills in the **previous workday** if it has no saved report at all: if yesterday — or
 Friday, on a Monday — has no report, it's generated too, so a day the Hub was closed still ends
 up with one. A scheduled report's header names its source the same way any report does, with
 "scheduler" in place of the usual tag — for example "as of 4:32 PM · scheduler" for today, or
-"generated Wed, Aug 26, 4:31 PM · scheduler" for a filled-in past day.
+"generated Wed 4:31 PM · scheduler" for a filled-in past day.
+
+Two edge cases worth knowing: changing the time to a *later* slot after today's report has
+already generated makes today due again at the new time, so a second report — and, with Email me
+on, a second email — can go out the same evening. And if the app can't read your saved reports
+at the moment a scheduled run fires, that run produces nothing and shows nothing here (Windows
+shows its own "Scheduled scan failed" notification instead); the previous-workday fill catches
+the missed day the next time the job runs.
 
 The same privacy gate applies to a scheduled run as to any other: if the account signed in on
 this machine hasn't acknowledged the current privacy notice, its scheduled report still
@@ -275,12 +286,19 @@ for that same unacknowledged account.
 
 **Email me when it generates** only fires for a run the scheduler itself triggered, only after
 that run's report actually saved, and never from a plain Refresh or from generating a day
-yourself. If a scheduled send fails, you're told about it the next time you open Daily Progress:
-an inline message appears once, and only to the account whose scheduled run it was — nobody else
-signed in on this same machine sees it. Toggling any of these three settings takes effect
-immediately; there's no need to close and reopen Anchor Hub for a change to apply. Both this
-panel's settings and the scheduler's own record of when it last ran are saved on this machine
-only, in two separate local files.
+yourself. If a scheduled run happens to land while you're already running your own Refresh for
+that same day, it joins your run instead of starting a second one — that report is yours, it is
+not auto-emailed, and nothing is shown about it; it's simply noted in the scheduler's own record.
+If a scheduled send fails, you're told about it the next time you open Daily Progress: an inline
+message appears once, and only to the account whose scheduled run it was — nobody else signed in
+on this same machine sees it. Toggling any of these three settings takes effect immediately;
+there's no need to close and reopen Anchor Hub for a change to apply. Both this panel's settings
+and the scheduler's own record are saved on this machine only, in two separate local files — and
+both are per computer, not per person: the three toggles above, and when the scheduler last ran,
+are shared by whoever signs in here, so one person's schedule change controls the scheduled run
+no matter which account is signed in when it fires. The scheduler's file also keeps the last
+run's outcome — which day or days it covered, whether each one saved and was emailed, and any
+error text — and that part is shown only to the account it belonged to.
 
 ## Where it's saved
 
@@ -301,10 +319,12 @@ Nothing is ever deleted by the app — retention is whatever your organization's
 **Open in OneDrive** link at the bottom of the settings panel (the gear in the header) takes you
 straight to this folder in your browser, so it's yours to open, move, or delete any time you want.
 
-Two more files live on this machine only, and never in OneDrive: your Daily Progress settings
-(the three toggles/time above, plus which privacy-notice version you've acknowledged) and the
-scheduler's own record of when it last ran. Neither is shared with, or visible to, anyone else
-who signs in on the same computer.
+Two more files live on this machine only, and never in OneDrive: your Daily Progress settings and
+the scheduler's own record. The three toggles/time above, and when the scheduler last ran, are
+per computer, not per person — shared by whoever signs in here, the same as described in
+[Generate at end of day](#generate-at-end-of-day) above. Two things in these same files are kept
+per account instead: which privacy-notice version you've acknowledged, and the last scheduled
+run's outcome — each visible only to the account it belongs to.
 
 ## Privacy
 
@@ -401,10 +421,13 @@ still a complete, saved report like any other.
 A scheduled run has three cases worth calling out on their own. If nobody is signed in on this
 machine at the scheduled time, nothing runs at all — there's no report to show and no error,
 since there's no one for it to belong to. If Anchor Hub itself was closed at that time, it
-catches up the moment it's next opened and signed into, as described in
-[Generate at end of day](#generate-at-end-of-day) above. And if a scheduled **Email me** send
-fails, you're not left to guess — the inline message described above appears the next time you
-open Daily Progress, once, addressed to whoever's run it was.
+catches up the moment it's next opened, as long as you're still signed in when it opens, as
+described in [Generate at end of day](#generate-at-end-of-day) above — if you had signed out
+instead, that day is filled in by the next scheduled run rather than the moment you sign back in.
+And if a scheduled run runs into trouble — whether it couldn't generate the report at all, or it
+generated fine but couldn't send the email — you're not left to guess: the inline message
+described above names which of the two happened, and appears the next time you open Daily
+Progress, once, addressed to whoever's run it was.
 
 ## Coming next
 
