@@ -62,11 +62,13 @@ reaches Hatz.ai — not your inbox, not anyone else's message, not your calendar
 Autotask. One report means one call to Hatz.ai covering every thread from that day at once, never
 one call per thread.
 
-Every line that comes back is checked before you ever see it: for a dollar figure or amount of
-money in any currency, as digits or spelled out; for salary, bonus, payroll, or other
-compensation language; and for an email address, link, phone number, a long run of digits, or a
-credential word (password, PIN, API key, secret, token, and the like) that's followed by a value
-— "helped Michael with a password reset" passes, "password: Winter2026!" does not. A line that
+Every line that comes back is checked before you ever see it: for a money amount written as
+digits or spelled out — a currency symbol in front of a number, or a number followed by a
+currency word or code (dollars, bucks, euros, pounds, quid, cents, USD, EUR, GBP), including the
+"3k" shorthand; for salary, bonus, payroll, or other compensation language; and for an email
+address, link, phone number, a long run of digits, or a credential word (password, PIN, API key,
+secret, token, and the like) followed by "is", a colon or an equals sign and then a value —
+"helped Michael with a password reset" passes, "password: Winter2026!" does not. A line that
 fails any of those checks is withheld, and so is a line Hatz.ai simply couldn't produce — missing,
 empty, or too long. A withheld thread shows a dashed **AI** chip with the exact reason instead of
 a summary line:
@@ -87,9 +89,8 @@ whether the lines you're reading came from this run. A report saved before this 
 **AI ✗** even though nothing actually failed — a Phase 1 report simply has no AI data at all, and
 that reads the same as "unavailable" until you Refresh or Regenerate that day.
 
-The text sent to Hatz.ai is never stored anywhere, by this tool or by Hatz.ai — only the one
-screened sentence that comes back is kept, saved as part of the report the same as everything
-else.
+The text you send is not stored by Daily Progress — only the one screened sentence that comes
+back is kept, saved as part of the report the same as everything else.
 
 ## AI Prompt
 
@@ -128,20 +129,22 @@ the thread so nothing resembling a real Graph conversation id is ever sent. The 
 answer through, `submit_lines`, requires exactly one `{ key, line }` pair per thread key, with
 `line` documented as one plain-text sentence of at most 30 words.
 
-**Guardrails**, checked against every line before it's shown, in plain words: no money amount in
-any currency, as digits or spelled out; no salary, bonus, payroll, or other pay/compensation
-language; no email address, link, phone number, or long run of digits; no credential word
-(password, PIN, API key, secret, token, and the like) followed by a value — a line that merely
-mentions one of those words in passing, with nothing that looks like a value after it, passes;
-and no line that's missing, empty, or too long. **On any failure** — Hatz.ai unreachable, a bad
+**Guardrails**, checked against every line before it's shown, in plain words: no money amount
+written as digits or spelled out — a currency symbol in front of a number, or a number followed
+by a currency word or code (dollars, bucks, euros, pounds, quid, cents, USD, EUR, GBP), the "3k"
+shorthand included; no salary, bonus, payroll, or other pay/compensation language; no email
+address, link, phone number, or long run of digits; no credential word (password, PIN, API key,
+secret, token, and the like) followed by "is", a colon or an equals sign and then a value — a
+line that merely mentions one of those words in passing, with nothing that looks like a value
+after it, passes; and no line that's missing, empty, or too long. **On any failure** — Hatz.ai unreachable, a bad
 response, or a line that doesn't pass a guardrail — the affected thread simply shows its subject
 line instead, with a note explaining why; nothing else about the report changes, and the report
 still saves.
 
 The AI step may also not run at all this time, for reasons that have nothing to do with the model
 itself: Sent Items was unavailable this run, there were no email threads that day to summarise,
-the privacy notice hasn't been acknowledged on this machine yet, or the signed-in account changed
-partway through the run.
+the privacy notice hasn't been acknowledged yet by the account you're signed in as on this
+machine, or the signed-in account changed partway through the run.
 
 ## Email this to me
 
@@ -223,8 +226,8 @@ until you acknowledge it.
 As of Phase 2, one thing does leave Microsoft: the text you wrote in the emails you sent — never
 the quoted reply chain underneath it, and never anyone else's message — goes to Hatz.ai, ANS's AI
 vendor, to be summarised into a single sentence per thread (see [AI one-liners](#ai-one-liners)
-above for exactly what's sent). That text is never stored anywhere; only the one screened sentence
-that comes back is kept. Nothing else leaves Microsoft or Autotask. The privacy notice is
+above for exactly what's sent). That text is not stored by Daily Progress; only the one screened
+sentence that comes back is kept. Nothing else leaves Microsoft or Autotask. The privacy notice is
 versioned, and the app remembers which version you last acknowledged — because this is a real
 change in what leaves your machine, not a wording tweak, anyone who had already acknowledged
 Phase 1's notice sees the first-run screen again, once, the next time they open Daily Progress.
@@ -232,6 +235,14 @@ That re-shown screen is headed "What's changed before your next report," with th
 called out in an amber banner above the same full notice, rather than quietly opting anyone in.
 Acknowledging it again is all it takes to keep going, and nothing about what's read, where it's
 stored, or who can see it has changed.
+
+Your acknowledgement is recorded against your Microsoft account on each computer you use Daily
+Progress on. If a second person signs in to the Hub on the same computer, they see the notice
+themselves and acknowledge it for themselves — one person's acknowledgement never speaks for
+anyone else's, and until it's given, nothing that person wrote goes to Hatz.ai. One consequence
+of this build: if you acknowledged the notice in an earlier build, you'll see it once more, even
+if you've already acknowledged this version. The older record was kept per computer rather than
+per person, so it is no longer trusted.
 
 ## Getting access
 
@@ -277,8 +288,8 @@ rather than losing it.
 The AI step is a fourth, independent piece with two failure states of its own, and — like the
 other three sources — neither one ever marks the whole report partial or stops it from saving.
 **Unavailable** means the AI step didn't produce anything usable this run at all: Hatz.ai couldn't
-be reached or timed out, the privacy notice hasn't been acknowledged on this machine, the
-signed-in account changed mid-run, or Sent Items itself was unavailable (in which case its own
+be reached or timed out, the privacy notice hasn't been acknowledged by the signed-in account on
+this machine, the signed-in account changed mid-run, or Sent Items itself was unavailable (in which case its own
 mail-unavailable note already explains why, so a second AI note isn't added on top of it). When AI
 is unavailable, every email entry shows its plain subject line, the footer adds "Hatz.ai
 unavailable — email entries show their subject.", and the source glyph reads **AI ✗**.
