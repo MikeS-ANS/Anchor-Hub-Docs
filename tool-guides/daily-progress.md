@@ -1,11 +1,11 @@
 # Daily Progress
 
-> **This tool exists only in an unreleased development branch (Phases 1–2 of 3).** It is not in
+> **This tool exists only in an unreleased development branch (all three phases built).** It is not in
 > the released app you're using today — nothing on this page describes anything you can open
 > right now unless someone has specifically told you they're testing the new build with you.
 > Once it ships, it will also need a grant from **Access Management** before it shows up in
 > anyone's sidebar (see "Getting access" below) — being on a role that normally gets everything
-> is not enough on its own. This page describes the tool as Phases 1 and 2 actually built it.
+> is not enough on its own. This page describes the tool as Phases 1–3 actually built it.
 
 Daily Progress is a personal report of your own day at ANS: what you actually did, not what you
 were assigned. It reads your own sent email, your own calendar, and your own Autotask activity
@@ -33,6 +33,17 @@ Across the top, four tiles:
 - **Hours logged** — your total Autotask hours for the day, across however many tickets, with
   how many of those were closed that day.
 
+Under each tile, once you have at least five earlier workdays with a complete report, a trend
+block appears: a **typical** figure — the median of up to your last 30 such days before the day
+you're looking at, counting only complete Monday–Friday reports and skipping partial runs and
+days with nothing on them — and a small sparkline of those same days, ending with the day
+currently on screen as a highlighted dot (the sparkline itself shows once there are at least two
+qualifying earlier days, even before "typical" has enough days to appear). It only ever compares
+you with your own recent days, and the day you're viewing is never counted toward its own
+baseline. Neither figure travels with the report — the copy you email yourself or save to
+OneDrive doesn't carry them, since they're computed fresh from your local history index each
+time the page loads, not stored as part of the report itself.
+
 Below the tiles, **"What actually moved forward"** is a single timeline combining every sent-mail
 thread, every ticket you touched, and every meeting that's already happened that day — earliest
 first. A meeting that hasn't happened yet does not appear in this timeline; it only shows in the
@@ -49,6 +60,32 @@ generated.
 
 A separate **Meetings** card lists the day's whole calendar — past and upcoming, counted and not
 — so you can see what's ahead as well as what's done.
+
+## This week
+
+A **Today / This week** switch sits in the header, next to the date. Switching to This week
+shows Monday through the day you have selected — picking a Saturday or Sunday instead shows
+that whole week's Monday through Friday, since there's nothing of its own to show for a weekend
+day. The four tiles sum the week's saved daily reports (clients touched are counted once across
+the whole week, not once per day it came up), and below them, "What actually moved forward"
+lists each day's own saved entries grouped under its own heading — oldest day first, with a
+quick tally of that day's actions, clients, and hours next to its heading.
+
+A day with no saved report shows "No report saved for this day. Weekly totals above do not
+include it." with a **Generate** button next to it — click it and that one day backfills in
+place, exactly like generating any past day from the Today view, and the week reloads once it's
+saved. A day that couldn't be read instead shows the error it hit and a **Retry** button. Either
+way, a callout under the week's totals names which day or days aren't included in the numbers
+above it.
+
+The **◀**/**▶** arrows move a week at a time (capped at the current week — you can't go past
+today), and the date picker jumps to the week containing whichever day you pick there: Monday
+through that day, or that week's Mon–Fri if you pick a weekend. **Refresh** re-reads the days
+already saved for the week on screen — it never regenerates them; use the per-day **Generate**
+button (or switch to Today and Refresh/Regenerate that single day) if you want a day's numbers
+recomputed. **Email me** is disabled in this view, since a week is a rollup of saved reports, not
+a saved report of its own to send. The trend strip's figure under each weekly tile reads
+"typical N/day" — the same daily baseline described above, not a separate weekly one.
 
 ## AI one-liners
 
@@ -82,12 +119,17 @@ a summary line:
 If Hatz.ai is unavailable for the whole run, every email entry in the timeline just shows its
 subject line the way Phase 1 always did, and the report footer adds *"Hatz.ai unavailable — email
 entries show their subject."* If Hatz.ai answered but one or more individual lines were withheld
-by a guardrail, the footer instead adds *"N lines withheld by guardrail."* Either way, the
-footer's source list ends with **AI ✓** (or, in red, **AI ✗** when the step didn't run this time)
-alongside the same ✓/✗ shown for Sent Items, Calendar, and Autotask, so you can tell at a glance
-whether the lines you're reading came from this run. A report saved before this update also shows
-**AI ✗** even though nothing actually failed — a Phase 1 report simply has no AI data at all, and
-that reads the same as "unavailable" until you Refresh or Regenerate that day.
+by a guardrail, the footer instead adds *"N lines withheld by guardrail."* — and if one or more
+threads simply got nothing usable back from Hatz.ai (not a guardrail refusal, just an empty,
+missing, or malformed answer), the footer separately adds *"N threads got no usable AI line."*;
+a run that hit both counts adds both sentences. Either way, the footer's source list ends with
+**AI ✓** (or, in red, **AI ✗** when the step didn't run this time) alongside the same ✓/✗ shown
+for Sent Items, Calendar, and Autotask, so you can tell at a glance whether the lines you're
+reading came from this run. A report saved before this update also shows **AI ✗** even though
+nothing actually failed — a Phase 1 report simply has no AI data at all, and that reads the same
+as "unavailable" until you Refresh or Regenerate that day. On a day with no sent-email threads at
+all, both the **AI** legend beside the timeline's heading and the footer's AI ✓/✗ marker are
+simply absent — there was nothing to summarise, so there's nothing to report on.
 
 The text you send is not stored by Daily Progress — only the one screened sentence that comes
 back is kept, saved as part of the report the same as everything else.
@@ -96,7 +138,9 @@ back is kept, saved as part of the report the same as everything else.
 
 The AI line is generated by **one call per report** to Hatz.ai's Anthropic-native passthrough
 endpoint (`https://ai.hatz.ai/v1/anthropic/messages`, via the Hub's shared `hatzToolChat.js`
-transport), with a 55-second timeout. The call forces Hatz.ai to answer through a tool
+transport), with a 25-second timeout, tried twice at most (about 50 seconds all told) — a stalled
+or failing first attempt gets one retry, a second failure just means the AI step didn't run this
+time. The call forces Hatz.ai to answer through a tool
 (`tool_choice`) rather than free text, with a plain-text-JSON reading of the same shape accepted
 as a fallback in case a proxy in front of Hatz.ai ever drops that instruction. Model:
 `anthropic.claude-haiku-4-5`.
@@ -176,6 +220,13 @@ as an extra entry in that day's timeline; emailing yourself the report is never 
 the day's actions. **Email me** always sends whatever is currently on screen, so Refresh first if
 you want the latest version of today's report before sending it.
 
+Two more things it checks before sending: a report only ever emails to the account it belongs to
+— if you generated a report while signed in as one Microsoft account and then a different account
+is signed in on this same computer, that report is refused rather than emailed to the wrong
+mailbox. And a report saved by a different, incompatible version of Anchor Hub than the one
+you're currently running is also refused, with a message naming the version that saved it —
+Regenerate it, or update the app, rather than emailing something this build can't fully read back.
+
 ## What counts
 
 **A meeting counts** if it has at least one other attendee, you didn't decline it, it isn't
@@ -195,6 +246,42 @@ any other system process don't count as touching a ticket. Time logged against a
 task (no specific ticket) still adds to your hours and appears in the timeline as its own
 "Project" entry, but it isn't one of the tickets counted in that number.
 
+## Generate at end of day
+
+A gear icon in the header, next to Email me, opens a small settings panel with three rows:
+
+- **Generate at end of day** — a toggle, off by default. Its helper line: *"Runs while Anchor
+  Hub is open. If it was closed, it catches up on next launch."*
+- **Time** — a dropdown, enabled only once the toggle above is on, offering six choices: 3:30 PM,
+  4:00 PM, 4:30 PM, 5:00 PM, 5:30 PM, and 6:00 PM.
+- **Email me when it generates** — a second toggle, also only enabled once Generate at end of day
+  is on. Its helper line: *"Scheduled runs only. Refresh never emails without the button."*
+
+Turning **Generate at end of day** on means today's report generates itself once the time you
+picked has passed — no need to open Daily Progress or click anything — as long as Anchor Hub is
+open and you're signed in at that moment. If Anchor Hub wasn't open when your chosen time
+arrived, it catches up the moment you next launch it and sign in, including the very first
+launch after you turn the setting on, if that day's slot has already passed by then. The same
+run also fills in the **previous workday** if it has no saved report at all: if yesterday — or
+Friday, on a Monday — has no report, it's generated too, so a day the Hub was closed still ends
+up with one. A scheduled report's header names its source the same way any report does, with
+"scheduler" in place of the usual tag — for example "as of 4:32 PM · scheduler" for today, or
+"generated Wed, Aug 26, 4:31 PM · scheduler" for a filled-in past day.
+
+The same privacy gate applies to a scheduled run as to any other: if the account signed in on
+this machine hasn't acknowledged the current privacy notice, its scheduled report still
+generates and saves — just without any AI one-liners — exactly as a manual Refresh would behave
+for that same unacknowledged account.
+
+**Email me when it generates** only fires for a run the scheduler itself triggered, only after
+that run's report actually saved, and never from a plain Refresh or from generating a day
+yourself. If a scheduled send fails, you're told about it the next time you open Daily Progress:
+an inline message appears once, and only to the account whose scheduled run it was — nobody else
+signed in on this same machine sees it. Toggling any of these three settings takes effect
+immediately; there's no need to close and reopen Anchor Hub for a change to apply. Both this
+panel's settings and the scheduler's own record of when it last ran are saved on this machine
+only, in two separate local files.
+
 ## Where it's saved
 
 Every report is written to your own OneDrive, not to a shared Hub database — nothing about your
@@ -211,8 +298,13 @@ under **Apps/Anchor Hub**, in a folder Microsoft creates specifically for this a
 
 Nothing is ever deleted by the app — retention is whatever your organization's OneDrive/Microsoft
 365 storage and retention policy already allows, not anything Daily Progress manages itself. The
-**Open in OneDrive** button in the header takes you straight to this folder in your browser, so
-it's yours to open, move, or delete any time you want.
+**Open in OneDrive** link at the bottom of the settings panel (the gear in the header) takes you
+straight to this folder in your browser, so it's yours to open, move, or delete any time you want.
+
+Two more files live on this machine only, and never in OneDrive: your Daily Progress settings
+(the three toggles/time above, plus which privacy-notice version you've acknowledged) and the
+scheduler's own record of when it last ran. Neither is shared with, or visible to, anyone else
+who signs in on the same computer.
 
 ## Privacy
 
@@ -222,7 +314,9 @@ time: your **Sent Items** (not your inbox — just what you sent), your **calend
 or anyone else's mail, calendar, or tickets. The first time you open the tool, before it ever
 generates a report, a one-time screen spells this out plainly — what it reads, what it doesn't,
 where it's stored, what (if anything) leaves Microsoft, and who can see it — and nothing runs
-until you acknowledge it.
+until you acknowledge it. A scheduled run reads exactly what a Refresh would, for the
+signed-in account it belongs to only, and applies this same acknowledgement check before it will
+generate an AI one-liner for anything.
 
 As of Phase 2, one thing does leave Microsoft: the text you wrote in the emails you sent — never
 the quoted reply chain underneath it, and never anyone else's message — goes to Hatz.ai, ANS's AI
@@ -257,12 +351,14 @@ if it does).
 
 ## History and past days
 
-The **◀** and **▶** arrows step one day at a time, and the date picker next to them jumps
-straight to any day up through today (you can't pick a future date). If a day you navigate to
-was never generated, you'll see a **"No report saved for this day"** message with a **Generate
-it** button — Sent Items, calendar, and Autotask still have that day's data, so generating it
-later saves it to your OneDrive exactly like any other day. Today's report generates itself
-automatically the first time you open the tool that day; past days only generate when you ask.
+In Today view, the **◀** and **▶** arrows step one day at a time, and the date picker next to
+them jumps straight to any day up through today (you can't pick a future date). If a day you
+navigate to was never generated, you'll see a **"No report saved for this day"** message with a
+**Generate it** button — Sent Items, calendar, and Autotask still have that day's data, so
+generating it later saves it to your OneDrive exactly like any other day. Today's report
+generates itself automatically the first time you open the tool that day; past days only
+generate when you ask. (This week has its own arrow behaviour — see [This week](#this-week)
+above.)
 
 ## When something is unavailable
 
@@ -284,7 +380,8 @@ client count is never mistaken for a quiet day. **Refresh** (today) or
 **Regenerate** (a past day) tries again. Saving to OneDrive is a separate step from generating
 the report — if the report itself generates fine but the save to OneDrive fails, you're told
 explicitly with an on-screen alert, and the report stays visible so you can try Refresh again
-rather than losing it.
+rather than losing it. In **This week**, a day that couldn't be read shows its own error and a
+**Retry** button, without affecting the other days already loaded.
 
 The AI step is a fourth, independent piece with two failure states of its own, and — like the
 other three sources — neither one ever marks the whole report partial or stops it from saving.
@@ -297,17 +394,28 @@ unavailable — email entries show their subject.", and the source glyph reads *
 **Withheld** is different: the AI step ran and answered, but one or more individual lines didn't
 pass a guardrail (or came back empty, missing, or too long) — those threads show a dashed **AI**
 chip with the specific reason instead of a line, the footer adds "N lines withheld by guardrail."
-instead, and the glyph still reads **AI ✓**, since the step itself succeeded overall. A report
-with AI unavailable, or with some lines withheld, is still a complete, saved report like any
-other.
+and/or "N threads got no usable AI line." instead, and the glyph still reads **AI ✓**, since the
+step itself succeeded overall. A report with AI unavailable, or with some lines withheld, is
+still a complete, saved report like any other.
+
+A scheduled run has three cases worth calling out on their own. If nobody is signed in on this
+machine at the scheduled time, nothing runs at all — there's no report to show and no error,
+since there's no one for it to belong to. If Anchor Hub itself was closed at that time, it
+catches up the moment it's next opened and signed into, as described in
+[Generate at end of day](#generate-at-end-of-day) above. And if a scheduled **Email me** send
+fails, you're not left to guess — the inline message described above appears the next time you
+open Daily Progress, once, addressed to whoever's run it was.
 
 ## Coming next
 
-Phases 1 and 2 are today's report, history and backfill, the first-run privacy screen, AI
-one-liners with guardrails, and Email me — everything above is what's actually shipped. Not yet
-in this release, planned for **Phase 3**:
-
-- **End-of-day auto-generate** — the day's report generating itself on a schedule instead of
-  only on first open.
-- **This week** — a rolled-up view across the current week, not just one day at a time.
-- **Baselines** — comparing a day or week against your own recent average, with sparklines.
+Phases 1–3 complete the tool as specified: today's report, history and backfill, the first-run
+privacy screen, AI one-liners with guardrails, Email me, end-of-day auto-generate with
+auto-email, This week, and baselines with the trend strip. One more phase is planned. **Teams**
+returns — Mike has decided it comes back with both of the postures the spec describes: (A) who /
+when / how many messages per conversation from your own Teams chats, sent and received, live for
+today, with message text never read and nothing from Teams ever sent to Hatz.ai; and (B) per-day
+totals of messages posted, calls, meetings and audio/video/screen-share minutes from Microsoft's
+own Teams activity report, which runs a day or two behind. That is a change to the spec, so it
+goes through the Analyst seat (the spec amendment) and then Design (the mockup states) first, and
+it becomes **Phase 4** after this release. Nothing in that phase will show anyone else's day —
+the no-manager-view, no-team-rollup principle stands.
