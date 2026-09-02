@@ -63,8 +63,8 @@ Autotask. One report means one call to Hatz.ai covering every thread from that d
 one call per thread.
 
 Every line that comes back is checked before you ever see it: for a money amount written as
-digits or spelled out — a currency symbol in front of a number, or a number followed by a
-currency word or code (dollars, bucks, euros, pounds, quid, cents, USD, EUR, GBP), including the
+digits or spelled out — a dollar, euro, pound or yen sign in front of a number, or a number followed
+by a currency word or code (dollars, bucks, euros, pounds, quid, cents, USD, EUR, GBP), including the
 "3k" shorthand; for salary, bonus, payroll, or other compensation language; and for an email
 address, link, phone number, a long run of digits, or a credential word (password, PIN, API key,
 secret, token, and the like) followed by "is", a colon or an equals sign and then a value —
@@ -126,13 +126,14 @@ as a fallback in case a proxy in front of Hatz.ai ever drops that instruction. M
 The **user turn** is a single JSON object shaped `{ threads: [{ key, subject, to, sent }] }` —
 one entry per email thread from that day, with a short local key (`t1`, `t2`, …) standing in for
 the thread so nothing resembling a real Graph conversation id is ever sent. The tool Hatz.ai must
-answer through, `submit_lines`, requires exactly one `{ key, line }` pair per thread key, with
-`line` documented as one plain-text sentence of at most 30 words.
+answer through, `submit_lines`, takes a list of `{ key, line }` pairs — the prompt asks for exactly
+one per thread key, and the app keeps only the first line it gets for each key, ignoring duplicates
+and any key it never sent — with `line` documented as one plain-text sentence of at most 30 words.
 
 **Guardrails**, checked against every line before it's shown, in plain words: no money amount
-written as digits or spelled out — a currency symbol in front of a number, or a number followed
-by a currency word or code (dollars, bucks, euros, pounds, quid, cents, USD, EUR, GBP), the "3k"
-shorthand included; no salary, bonus, payroll, or other pay/compensation language; no email
+written as digits or spelled out — a dollar, euro, pound or yen sign in front of a number, or a
+number followed by a currency word or code (dollars, bucks, euros, pounds, quid, cents, USD, EUR,
+GBP), the "3k" shorthand included; no salary, bonus, payroll, or other pay/compensation language; no email
 address, link, phone number, or long run of digits; no credential word (password, PIN, API key,
 secret, token, and the like) followed by "is", a colon or an equals sign and then a value — a
 line that merely mentions one of those words in passing, with nothing that looks like a value
