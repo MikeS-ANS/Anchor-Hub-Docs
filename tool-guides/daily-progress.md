@@ -124,7 +124,12 @@ day genuinely being empty. **Actions taken** and **Clients touched** each depend
 sources (mail and Autotask); if only one of the two fails, they still show a real number built
 from whichever source succeeded, with a note like "email unavailable" appended — they only drop
 to "—" if both fail at once. The footer at the bottom of every report also shows a ✓ or ✗ per
-source for exactly this reason. **Refresh** (today) or
+source for exactly this reason. One softer case: if the Autotask *contact* lookup that matches
+your email recipients to client companies fails part-way (the rest of Autotask being fine), the
+report still generates and is not marked partial, but the **Clients touched** tile gets
+"· matching incomplete" appended and the timeline card carries the note "Client matching was
+incomplete this run — some recipients may show as External. Refresh to retry." — so a lower
+client count is never mistaken for a quiet day. **Refresh** (today) or
 **Regenerate** (a past day) tries again. Saving to OneDrive is a separate step from generating
 the report — if the report itself generates fine but the save to OneDrive fails, you're told
 explicitly with an on-screen alert, and the report stays visible so you can try Refresh again
