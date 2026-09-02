@@ -41,6 +41,7 @@
 * [Payroll Review](tool-guides/payroll-review.md)
 * [Payroll Processing](tool-guides/payroll-processing.md)
 * [Access Management](tool-guides/access-management.md)
+* [Daily Progress](tool-guides/daily-progress.md)
 
 ## What's New
 
