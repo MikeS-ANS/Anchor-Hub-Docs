@@ -69,8 +69,9 @@ Every report is written to your own OneDrive, not to a shared Hub database — n
 day is ever stored anywhere Mike, an admin, or anyone else can query. It lives in your OneDrive
 under **Apps/Anchor Hub**, in a folder Microsoft creates specifically for this app. Inside it:
 
-- `index.json` — one row per day you've ever generated a report for, holding just the tile
-  numbers, so the app can list your history without opening every day's file.
+- `index.json` — one row per day you've ever generated a report for, holding the tile numbers
+  plus a few status flags (the client ids, whether the run was partial or empty, and when it was
+  generated), so the app can list your history without opening every day's file.
 - `<year>/<date>.json` — the actual report for that day, and the source of truth the app reads
   back when you reopen it.
 - `<year>/<date>.html` — a standalone, human-readable copy of the same report, viewable on its
@@ -99,8 +100,9 @@ Once this ships, getting to Daily Progress takes three things: an Access Managem
 grant the `daily-progress` tool to your role (or to you specifically), you then have to turn it
 on for yourself in **Settings → Customize** the same way you would any other tool (tools default
 to hidden on a fresh install), and — because this tool needs a new Microsoft permission
-(`Mail.Read`) that wasn't part of the Hub before — everyone needs to sign out and sign back in
-once after the update lands, so that permission is actually on your session.
+(`Mail.Read`) that wasn't part of the Hub before — you may need to sign out and sign back in
+once after the update lands, so that permission is actually on your session (the app tells you
+if it does).
 
 ## History and past days
 
