@@ -263,8 +263,10 @@ open and you're signed in at that moment. It runs every day of the week, not jus
 Anchor Hub is open on a Saturday or Sunday after that time, that day's report (usually empty,
 since there's rarely anything to log on a weekend) is generated and saved the same as any other
 day, and emailed too if **Email me when it generates** is on. If Anchor Hub wasn't open when
-your chosen time arrived, it catches up about ten seconds after your next launch — as long as
-you're still signed in at that moment; if you had signed out, nothing runs then, and that day is
+your chosen time arrived, it catches up shortly after your next launch — the check runs about
+ten seconds in, and the run itself starts up to a minute and a half later (a deliberate spread
+so several open copies of the Hub don't all fire at once) — as long as you're still signed in at
+that moment; if you had signed out, nothing runs then, and that day is
 instead filled in by the next scheduled run's previous-workday check, described next. The same
 run also fills in the **previous workday** if it has no saved report at all: if yesterday — or
 Friday, on a Monday — has no report, it's generated too, so a day the Hub was closed still ends
