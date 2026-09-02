@@ -40,9 +40,12 @@ separate Meetings section below it. Under the timeline, when there's real activi
 one computed sentence summarizes the day (e.g. "7 actions across 3 clients; 2 of them closed
 tickets") — this line is arithmetic on the numbers already shown above it, marked "not AI,"
 never a generated summary. Each sent-email thread in the timeline can also carry one AI-written
-line beneath its subject, marked with a small **AI** chip and the words "written by Hatz.ai" —
-see [AI one-liners](#ai-one-liners) below. Everything else on this page — the four tiles, the
-computed callout, the ticket and meeting entries — is measured, never generated.
+line beneath its subject, marked with a small **AI** chip, with one legend beside the card's
+heading noting that these lines are written by Hatz.ai (the copy of the report saved to your
+OneDrive and the one you email yourself go a step further and label each line "written by
+Hatz.ai" individually) — see [AI one-liners](#ai-one-liners) below. Everything else on this page
+— the four tiles, the computed callout, the ticket and meeting entries — is measured, never
+generated.
 
 A separate **Meetings** card lists the day's whole calendar — past and upcoming, counted and not
 — so you can see what's ahead as well as what's done.
@@ -61,10 +64,12 @@ one call per thread.
 
 Every line that comes back is checked before you ever see it: for a dollar figure or amount of
 money in any currency, as digits or spelled out; for salary, bonus, payroll, or other
-compensation language; and for an email address, link, phone number, long run of digits, or a
-credential. A line that fails any of those checks is withheld, and so is a line Hatz.ai simply
-couldn't produce — missing, empty, or too long. A withheld thread shows a dashed **AI** chip with
-the exact reason instead of a summary line:
+compensation language; and for an email address, link, phone number, a long run of digits, or a
+credential word (password, PIN, API key, secret, token, and the like) that's followed by a value
+— "helped Michael with a password reset" passes, "password: Winter2026!" does not. A line that
+fails any of those checks is withheld, and so is a line Hatz.ai simply couldn't produce — missing,
+empty, or too long. A withheld thread shows a dashed **AI** chip with the exact reason instead of
+a summary line:
 
 - *"No AI line for this thread — Hatz.ai returned nothing usable. Subject shown instead."*
 - *"Line withheld by guardrail — it named an amount. Subject shown instead."*
@@ -125,10 +130,13 @@ answer through, `submit_lines`, requires exactly one `{ key, line }` pair per th
 
 **Guardrails**, checked against every line before it's shown, in plain words: no money amount in
 any currency, as digits or spelled out; no salary, bonus, payroll, or other pay/compensation
-language; no email address, link, phone number, long run of digits, or credential; and no line
-that's missing, empty, or too long. **On any failure** — Hatz.ai unreachable, a bad response, or a
-line that doesn't pass a guardrail — the affected thread simply shows its subject line instead,
-with a note explaining why; nothing else about the report changes, and the report still saves.
+language; no email address, link, phone number, or long run of digits; no credential word
+(password, PIN, API key, secret, token, and the like) followed by a value — a line that merely
+mentions one of those words in passing, with nothing that looks like a value after it, passes;
+and no line that's missing, empty, or too long. **On any failure** — Hatz.ai unreachable, a bad
+response, or a line that doesn't pass a guardrail — the affected thread simply shows its subject
+line instead, with a note explaining why; nothing else about the report changes, and the report
+still saves.
 
 The AI step may also not run at all this time, for reasons that have nothing to do with the model
 itself: Sent Items was unavailable this run, there were no email threads that day to summarise,
