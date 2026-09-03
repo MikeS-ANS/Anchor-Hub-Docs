@@ -594,9 +594,12 @@ held by the Hub's own server identity rather than by anyone's copy of the app �
 CISO knowing that breadth, and this one report function is the only thing in the Hub that uses it;
 reading any other report would be a new decision, not a tweak. Reading your own chats requires
 `Chat.Read`, which needed tenant admin consent, and which is full content access to every chat you
-are in (see [Teams](#teams) for how the code narrows that to who, when and how many). Because
-`Chat.Read` is only added to the app's sign-in as of this build, each person needs to sign out and
-sign back in once before it is on their session.
+are in (see [Teams](#teams) for how the code narrows that to who, when and how many). `Chat.Read`
+is only added to the app's sign-in as of this build, but because it is admin-consented tenant-wide,
+it is normally added to an existing session silently — confirmed live during the build, with no
+re-sign-in and no permission prompt. If for any reason your session can't pick it up, the Teams
+source says so in as many words rather than failing quietly; see [When something is
+unavailable](#when-something-is-unavailable).
 
 Your acknowledgement is recorded against your Microsoft account on each computer you use Daily
 Progress on. If a second person signs in to the Hub on the same computer, they see the notice
@@ -613,10 +616,10 @@ than per person and is no longer trusted.
 Once this ships, getting to Daily Progress takes three things: an Access Management admin has to
 grant the `daily-progress` tool to your role (or to you specifically), you then have to turn it
 on for yourself in **Settings → Customize** the same way you would any other tool (tools default
-to hidden on a fresh install), and — because this tool needs two new Microsoft permissions
-(`Mail.Read` and `Chat.Read`) that weren't part of the Hub before — you may need to sign out and
-sign back in once after the update lands, so those permissions are actually on your session (the
-app tells you if it does).
+to hidden on a fresh install), and — because this tool needs two Microsoft permissions
+(`Mail.Read` and `Chat.Read`) that weren't part of the Hub before — a session that somehow doesn't
+pick them up silently needs one sign-out and sign-in. Both are admin-consented tenant-wide, so
+that should be rare, and the app tells you plainly if it applies to you.
 
 ---
 
@@ -662,10 +665,10 @@ instead: *"could not be read right now — refresh to retry."* A report generate
 existed simply has no Teams data at all: no chats segment in the Actions split, no Teams chats
 card, and no Teams ✓/✗ in the footer, since that run never tried.
 
-If your sign-in doesn't yet carry the Teams permission — which is the case for everyone until
-they sign out and back in once after this update — the Teams source fails with *"Daily Progress
-needs a fresh sign-in to read your mail and Teams chats. Sign out and sign back in."* Everything
-else in the report is unaffected.
+If your sign-in doesn't carry the Teams permission, the Teams source fails with *"Daily Progress
+needs a fresh sign-in to read your mail and Teams chats. Sign out and sign back in."* — and doing
+that once fixes it. This shouldn't be common: `Chat.Read` is admin-consented tenant-wide and is
+normally added to an existing session silently. Everything else in the report is unaffected.
 
 One softer case: if the Autotask *contact* lookup that matches
 your email recipients to client companies fails part-way (the rest of Autotask being fine), the
