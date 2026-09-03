@@ -64,8 +64,9 @@ report saved to your OneDrive and the one you email yourself go a step further a
 "written by Hatz.ai" individually) — see [AI one-liners](#ai-one-liners) below. A day with chat
 entries adds a second legend item, "chat · who, when, how many," and the note above the timeline
 says so in words — *"chat entries show who, when and how many — never what was said"* — followed
-by *"and never an AI line"* on any run where Hatz.ai itself was available. Everything else on this page — the four tiles, the computed callout, the ticket,
-chat and meeting entries — is measured, never generated.
+by *"and never an AI line"* except on a run where Hatz.ai itself was unavailable (there, the note
+already explains that email entries show their subject). Everything else on this page — the four
+tiles, the computed callout, the ticket, chat and meeting entries — is measured, never generated.
 
 A separate **Meetings** card lists the day's whole calendar — past and upcoming, counted and not
 — so you can see what's ahead as well as what's done.
@@ -84,9 +85,9 @@ strip.
 
 **What is read.** The 1:1, group and meeting chats you are in, through your own account only. It
 never reads a Teams channel: the only three things the code asks Microsoft for are your own chat
-list, the messages inside one of your own chats, and that chat's member list. Nothing filters that
-chat list except how recently it was last used, so a chat you've hidden or muted in Teams is
-treated no differently from any other.
+list, the messages inside one of your own chats, and that chat's member list. The Hub applies no
+filter of its own to that list beyond how recently each chat was last used — it walks your chats
+newest-first and stops at the first one with no message that day.
 
 **What counts.** Only a conversation you actually posted in that day becomes an action, and it is
 timed at your first post in it, which is where it lands in the timeline. A chat you only read, or
@@ -111,11 +112,16 @@ And **no AI line, ever**: nothing from Teams goes to Hatz.ai. The AI step is han
 and nothing else, so a chat entry has no AI line to withhold in the first place.
 
 **When the count may be short.** One run looks at up to 40 chats. If there were more than that,
-or if any individual chat couldn't be read, the note above the timeline adds *"Not every chat
-could be counted this run — the chat count may be short."* rather than presenting a short number
-as if it were complete. The same day is also never recorded as a genuinely quiet one, since the
-count that would have proven it was quiet is the count that's in doubt. While a report is
-generating, the loading strip shows a **Teams** line counting off "N of 40 chats."
+if some individual chats couldn't be read, or if reading them was taking too long (the Teams
+read gives itself about 45 seconds and then stops where it is, so a slow day still gets a partial
+count instead of nothing), the note above the timeline adds *"Not every chat could be counted this
+run — the chat count may be short."* rather than presenting a short number as if it were complete.
+The same day is also never recorded as a genuinely quiet one, since the count that would have
+proven it was quiet is the count that's in doubt. If *none* of your chats could be read, that is
+not a short count at all: Teams is treated as unavailable for that run — the banner and "chats
+unavailable" described under [When something is unavailable](#when-something-is-unavailable) —
+never as zero chats. While a report is generating, the loading strip shows a **Teams** line
+counting off "N of 40 chats."
 
 **About the permission.** Reading your own chats needs Microsoft's `Chat.Read`, and `Chat.Read` is
 full content access to every chat you are in — Microsoft offers nothing narrower. The narrower
