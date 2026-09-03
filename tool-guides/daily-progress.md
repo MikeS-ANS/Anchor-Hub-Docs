@@ -1,17 +1,18 @@
 # Daily Progress
 
-> **This tool exists only in an unreleased development branch (all three phases built).** It is not in
+> **This tool exists only in an unreleased development branch (all four phases built).** It is not in
 > the released app you're using today — nothing on this page describes anything you can open
 > right now unless someone has specifically told you they're testing the new build with you.
 > Once it ships, it will also need a grant from **Access Management** before it shows up in
 > anyone's sidebar (see "Getting access" below) — being on a role that normally gets everything
-> is not enough on its own. This page describes the tool as Phases 1–3 actually built it.
+> is not enough on its own. This page describes the tool as Phases 1–4 actually built it.
 
 Daily Progress is a personal report of your own day at ANS: what you actually did, not what you
-were assigned. It reads your own sent email, your own calendar, and your own Autotask activity
-for one day at a time, and turns them into four headline numbers plus a timeline of everything
-that moved forward — sorted earliest to latest. Nothing about it is shared. There is no manager
-view, no team rollup, and no admin view of anyone else's day, including yours.
+were assigned. It reads your own sent email, your own calendar, your own Autotask activity, and
+your own Teams chats — who you talked with, when, and how many messages each way, never what was
+said — for one day at a time, and turns them into four headline numbers plus a timeline of
+everything that moved forward — sorted earliest to latest. Nothing about it is shared. There is no
+manager view, no team rollup, and no admin view of anyone else's day, including yours.
 
 Sidebar tool key: `daily-progress`.
 
@@ -21,8 +22,11 @@ Sidebar tool key: `daily-progress`.
 
 Across the top, four tiles:
 
-- **Actions taken** — sent-mail threads plus Autotask tickets you touched that day, added
-  together, with the split shown underneath (e.g. "3 email threads · 5 tickets").
+- **Actions taken** — sent-mail threads plus Autotask tickets you touched that day plus the Teams
+  chats you posted in, added together, with the split shown underneath (e.g. "12 email threads ·
+  5 tickets · 4 chats · 9 received"). The received figure is how many chat messages reached you
+  across all your chats that day, and it is left out entirely when it's zero — it is never added
+  into the total, because a chat you only read is never an action.
 - **Clients touched** — the number of distinct client companies your email or ticket work
   touched that day, with up to five names listed underneath (and a "+N more" if there were more
   than that). Vendor companies are counted and shown separately in that same line, never folded
@@ -43,22 +47,140 @@ travels with the report — the copy you email yourself or save to OneDrive does
 since they're computed fresh from the history index in your OneDrive each time the page loads,
 not stored as part of the report itself.
 
-Below the tiles, **"What actually moved forward"** is a single timeline combining every sent-mail
-thread, every ticket you touched, and every meeting that's already happened that day — earliest
-first. A meeting that hasn't happened yet does not appear in this timeline; it only shows in the
-separate Meetings section below it. Under the timeline, when there's real activity to describe,
-one computed sentence summarizes the day (e.g. "7 actions across 3 clients; 2 of them closed
-tickets") — this line is arithmetic on the numbers already shown above it, marked "not AI,"
-never a generated summary. Each sent-email thread in the timeline can also carry one AI-written
-line beneath its subject, marked with a small **AI** chip, with one legend beside the card's
-heading noting that these lines are written by Hatz.ai (the copy of the report saved to your
-OneDrive and the one you email yourself go a step further and label each line "written by
-Hatz.ai" individually) — see [AI one-liners](#ai-one-liners) below. Everything else on this page
-— the four tiles, the computed callout, the ticket and meeting entries — is measured, never
-generated.
+Directly under the tiles sits a one-line **Teams · Microsoft's report for this day** strip —
+Microsoft's own daily Teams totals for that day, which are a separate measurement from the chat
+count in the Actions tile and are never added to it. See [Teams](#teams) below.
+
+Below that, **"What actually moved forward"** is a single timeline combining every sent-mail
+thread, every ticket you touched, every Teams chat you posted in, and every meeting that's
+already happened that day — earliest first. A meeting that hasn't happened yet does not appear in
+this timeline; it only shows in the separate Meetings section below it. Under the timeline, when
+there's real activity to describe, one computed sentence summarizes the day (e.g. "7 actions
+across 3 clients; 2 of them closed tickets") — this line is arithmetic on the numbers already
+shown above it, marked "not AI," never a generated summary. Each sent-email thread in the timeline
+can also carry one AI-written line beneath its subject, marked with a small **AI** chip, with one
+legend beside the card's heading noting that these lines are written by Hatz.ai (the copy of the
+report saved to your OneDrive and the one you email yourself go a step further and label each line
+"written by Hatz.ai" individually) — see [AI one-liners](#ai-one-liners) below. A day with chat
+entries adds a second legend item, "chat · who, when, how many," and the note above the timeline
+says so in words — *"chat entries show who, when and how many — never what was said"* — followed
+by *"and never an AI line"* on any run where Hatz.ai itself was available. Everything else on this page — the four tiles, the computed callout, the ticket,
+chat and meeting entries — is measured, never generated.
 
 A separate **Meetings** card lists the day's whole calendar — past and upcoming, counted and not
 — so you can see what's ahead as well as what's done.
+
+---
+
+## Teams
+
+Teams shows up in two completely separate places, measuring two different things. Your own chats
+are read live and become actions and timeline entries. Microsoft's own daily Teams totals are
+pulled server-side and shown in the labelled strip under the tiles. **The two are never added
+together** — the strip's numbers never reach a tile, and the tiles' chat count never reaches the
+strip.
+
+### Your chats (live)
+
+**What is read.** The 1:1, group and meeting chats you are in, through your own account only. It
+never reads a Teams channel: the only three things the code asks Microsoft for are your own chat
+list, the messages inside one of your own chats, and that chat's member list. Nothing filters that
+chat list except how recently it was last used, so a chat you've hidden or muted in Teams is
+treated no differently from any other.
+
+**What counts.** Only a conversation you actually posted in that day becomes an action, and it is
+timed at your first post in it, which is where it lands in the timeline. A chat you only read, or
+one where only other people wrote, is never an action — although the messages that came in still
+count toward the "received" figure in the Actions tile. Messages are counted by when they were
+written, so a much older message that somebody edited or reacted to today doesn't become today's.
+System events (a member added, a chat renamed) and deleted messages are not messages and are not
+counted at all.
+
+**What is shown.** Each counted chat is one timeline entry: a muted **Teams** pill, the chat's
+title, "meeting chat ·" first if it's a meeting's chat, then "3 sent · 2 received," and the word
+"chat" underneath as its type. The title is the chat's own topic whenever it has one (e.g. "Exxel
+— domain consolidation"); with no topic, the shape names the people instead — "Chat with Kate"
+for a 1:1, "Group chat with Kate, Andi +2" for a group (two first names, the rest counted), and
+"Meeting chat" for a meeting's chat. First names are all that's ever kept from the member list —
+at most eight per chat, never an address and never an id — and a bot or app in a chat is recorded
+as "a bot" rather than as a person, so it can never be named as one.
+
+**What is never shown or stored.** The text of any message. Anyone's email address. Any Teams id
+— a chat's id is used for those two follow-up reads and then dropped before anything is returned.
+And **no AI line, ever**: nothing from Teams goes to Hatz.ai. The AI step is handed email threads
+and nothing else, so a chat entry has no AI line to withhold in the first place.
+
+**When the count may be short.** One run looks at up to 40 chats. If there were more than that,
+or if any individual chat couldn't be read, the note above the timeline adds *"Not every chat
+could be counted this run — the chat count may be short."* rather than presenting a short number
+as if it were complete. The same day is also never recorded as a genuinely quiet one, since the
+count that would have proven it was quiet is the count that's in doubt. While a report is
+generating, the loading strip shows a **Teams** line counting off "N of 40 chats."
+
+**About the permission.** Reading your own chats needs Microsoft's `Chat.Read`, and `Chat.Read` is
+full content access to every chat you are in — Microsoft offers nothing narrower. The narrower
+promise is kept in the Hub's own code instead: every message is reduced to when it was created,
+whether you sent it, and whether it's a real message, inside the loop that reads it, before
+anything is stored or returned. That's the same shape of promise `Mail.Read` already carries here:
+mailbox-wide permission, one folder ever queried (Sent Items).
+
+### Microsoft's report (the strip)
+
+Under the four tiles, one line labelled **Teams · Microsoft's report for this day** (in This week
+it reads just **Teams · Microsoft's report**). This is Microsoft's own measurement of your Teams
+day — messages posted, calls, meetings, and the time spent in calls and meetings — not the Hub's
+count of your chats. "Messages posted" is Microsoft's team-chat and private-chat message counts
+added together; the one duration shown is audio time, since video and screen sharing run
+alongside audio and summing the three would overstate it.
+
+The strip has one of these to say:
+
+- **Populated** — e.g. "44 messages posted · 3 calls · 2 meetings · 1 h 25 m in calls and
+  meetings" (the duration is dropped when there was none). Hovering shows *"Microsoft's report ·
+  refreshed"* and the date Microsoft itself last refreshed the report — or just *"Microsoft's
+  report"* if the file didn't carry one.
+- **Pending** — *"pending — Microsoft publishes it a day or two later."* Hover: *"Not yet
+  published by Microsoft."* A day with no row yet reads pending while it's three days old or
+  less; past that it reads not available.
+- **Not available** — *"not available — before the Hub kept this report, or older than 400
+  days."* Hover: *"No row exists for this day."*
+- **Could not be read** — *"could not be read right now — refresh to retry."* Hover: *"The Hub
+  API did not answer."* An unreadable strip never falls back to a zero and never reads "pending."
+- While it's still loading, it reads *"reading Microsoft's report…"*
+
+A day Microsoft published as all zeros is a real measurement — a quiet day — and shows as
+populated with zeros, never as "pending."
+
+In **This week**, the same line sums the week's published days and names the ones it doesn't have:
+e.g. "1 of 3 days in · 44 messages posted · 3 calls · 2 h 05 m — Tue and Wed pending," with the
+per-day refresh dates on hover. Meetings are deliberately not summed in the weekly line.
+
+**It is read fresh every time you look at a day, and it is never part of the report.** It isn't
+saved into the day's JSON, it isn't in the standalone HTML copy in your OneDrive, and it isn't in
+the report you email yourself — the totals often don't exist yet at the moment a report is
+generated, so they're shown at view time only, the same rule the trend strip follows.
+
+**Where the totals come from.** A scheduled job on the Hub's own Azure Functions server downloads
+Microsoft's Teams user-activity report once a day (08:30 UTC — the middle of the night in Denver
+either side of daylight saving) and keeps only the totals in one table. That table holds your
+Entra object id, the date, the counts, the durations, Microsoft's own refresh date, and when it
+was fetched — **and no name, email or user principal name at all**: those columns are read off
+Microsoft's file and discarded, so the table has nowhere to learn a name. Each run pulls the two
+most recently publishable days (three and two days back) and then fills the newest gaps inside a
+28-day window, at most ten days per run, because Microsoft caps these report downloads at
+14 per ten minutes for the whole app — so a newly created table fills itself in over several days
+rather than all at once. Rows older than 400 days are deleted by the same run. If Microsoft's
+report ever comes back with user ids concealed (a tenant-wide report-privacy setting), the run
+refuses before writing anything at all, on the grounds that rows nobody can match to a person are
+worse than no rows.
+
+**Only you can read your own row.** The one route that reads that table filters on your own
+signed-in token's object id and nothing else — you cannot ask it for anybody, and it will only
+answer for at most a week at a time. There is no admin view of it, no team rollup, no export, and
+nothing else in the Hub reads it. The one other thing that can touch it is an admin-only trigger
+to run the same daily pull by hand, which returns counts of what it did and never a row.
+
+---
 
 ## This week
 
@@ -68,15 +190,24 @@ that whole week's Monday through Friday, since there's nothing of its own to sho
 day. The four tiles sum the week's saved daily reports (clients touched are counted once across
 the whole week, not once per day it came up), and below them, "What actually moved forward"
 lists each day's own saved entries grouped under its own heading — oldest day first, with a
-quick tally of that day's actions, clients, and hours next to its heading.
+quick tally of that day's actions, clients, chats (for a day that measured them), and hours next
+to its heading. The weekly
+Actions tile's split adds the week's chat figures the same way the daily one does — "· 8 chats ·
+17 received," with received left out at zero — and the note above the day groups says "chats
+included" when at least one of the week's saved days actually measured them. The **Teams ·
+Microsoft's report** strip sits under the weekly tiles too, summing the week's published days.
 
 A day with no saved report shows "No report saved for this day. Weekly totals above do not
 include it." with a **Generate** button next to it — click it and that one day backfills in
 place, exactly like generating any past day from the Today view, and the week reloads once it's
-saved. A day that couldn't be read instead shows the error it hit and a **Retry** button. Either
-way, a callout under the week's totals names which day or days aren't included in the numbers
-above it, as long as the saved days have any actions at all — a week where every saved day came
-back completely empty shows no callout, even if other days are also missing or unreadable.
+saved. A day that couldn't be read instead shows the error it hit and a **Retry** button. A day
+that was saved with genuinely nothing on it reads "No sent mail, ticket work, chats or meetings
+recorded. The day is saved and left out of your baselines." Either way, a callout under the
+week's totals names which day or days aren't included in the numbers above it, and separately
+names any saved day that had no recorded activity — "Monday had no recorded activity." — so the
+totals read honestly against "N of 5 days." That callout only appears if the saved days have any
+actions at all: a week where every saved day came back completely empty shows no callout, even if
+other days are also missing or unreadable.
 
 The **◀**/**▶** arrows move a week at a time (capped at the current week — you can't go past
 today), and the date picker jumps to the week containing whichever day you pick there: Monday
@@ -87,6 +218,8 @@ recomputed. **Email me** is disabled in this view, since a week is a rollup of s
 a saved report of its own to send. The trend strip's figure under each weekly tile reads
 "typical N/day" — the same daily baseline described above, not a separate weekly one.
 
+---
+
 ## AI one-liners
 
 Every sent-email thread in the timeline can carry one AI-written line underneath its subject —
@@ -96,8 +229,9 @@ first names of the people you sent it to, and the text you personally wrote in u
 your own emails in that thread that day (newest first), each cut off at 1,500 characters. The
 quoted reply chain underneath your own text is never sent, and nothing else about that day ever
 reaches Hatz.ai — not your inbox, not anyone else's message, not your calendar, not anything from
-Autotask. One report means one call to Hatz.ai covering every thread from that day at once, never
-one call per thread.
+Autotask, and **nothing whatsoever from Teams**: the AI step is handed email threads and nothing
+else, so no chat, chat title, participant or message count is ever part of the call. One report
+means one call to Hatz.ai covering every thread from that day at once, never one call per thread.
 
 Every line that comes back is checked before you ever see it: for a money amount written as
 digits or spelled out — a dollar, euro, pound or yen sign in front of a number, or a number followed
@@ -124,7 +258,7 @@ threads simply got nothing usable back from Hatz.ai (not a guardrail refusal, ju
 missing, or malformed answer), the footer separately adds *"N threads got no usable AI line."*;
 a run that hit both counts adds both sentences. Either way, the footer's source list ends with
 **AI ✓** (or, in red, **AI ✗** when the step didn't run this time) alongside the same ✓/✗ shown
-for Sent Items, Calendar, and Autotask, so you can tell at a glance whether the lines you're
+for Sent Items, Calendar, Autotask, and Teams, so you can tell at a glance whether the lines you're
 reading came from this run. A report saved before this update also shows **AI ✗** even though
 nothing actually failed — a Phase 1 report simply has no AI data at all, and that reads the same
 as "unavailable" until you Refresh or Regenerate that day. On a day with no sent-email threads at
@@ -133,6 +267,8 @@ simply absent — there was nothing to summarise, so there's nothing to report o
 
 The text you send is not stored by Daily Progress — only the one screened sentence that comes
 back is kept, saved as part of the report the same as everything else.
+
+---
 
 ## AI Prompt
 
@@ -169,7 +305,9 @@ as a fallback in case a proxy in front of Hatz.ai ever drops that instruction. M
 
 The **user turn** is a single JSON object shaped `{ threads: [{ key, subject, to, sent }] }` —
 one entry per email thread from that day, with a short local key (`t1`, `t2`, …) standing in for
-the thread so nothing resembling a real Graph conversation id is ever sent. The tool Hatz.ai must
+the thread so nothing resembling a real Graph conversation id is ever sent. Email threads are the
+only thing in it: there is no Teams field in this shape at all, so no chat can reach Hatz.ai even
+by accident. The tool Hatz.ai must
 answer through, `submit_lines`, takes a list of `{ key, line }` pairs — the prompt asks for exactly
 one per thread key, and the app keeps only the first line it gets for each key, ignoring duplicates
 and any key it never sent — with `line` documented as one plain-text sentence of at most 30 words.
@@ -191,13 +329,16 @@ itself: Sent Items was unavailable this run, there were no email threads that da
 the privacy notice hasn't been acknowledged yet by the account you're signed in as on this
 machine, or the signed-in account changed partway through the run.
 
+---
+
 ## Email this to me
 
 The **Email me** button in the header sends the report currently on your screen to your own
 mailbox — never anyone else's — with the report itself as the message body, and the same report
 attached again as a standalone `<date>.html` file (e.g. `2026-09-02.html`) so you have a copy that
 opens outside the Hub too. The subject line is always `Daily Progress — ` followed by the report's
-date, written out like `Daily Progress — Wed, Sep 2, 2026`.
+date, written out like `Daily Progress — Wed, Sep 2, 2026`. Chat entries travel with it like any
+other entry; the Teams · Microsoft's report strip does not, since it isn't part of the report.
 
 Click it and the button reads "Sending…" while the send is in flight. On success, a toast reading
 "Emailed to `<your address>`" appears if you're still viewing Daily Progress when it lands, and the
@@ -227,6 +368,8 @@ mailbox. And a report saved by a different, incompatible version of Anchor Hub t
 you're currently running is also refused, with a message naming the version that saved it —
 Regenerate it, or update the app, rather than emailing something this build can't fully read back.
 
+---
+
 ## What counts
 
 **A meeting counts** if it has at least one other attendee, you didn't decline it, it isn't
@@ -236,7 +379,8 @@ but it's never counted and never shown as a meeting elsewhere. A counted meeting
 **past** once its end time has already passed as of when the report was generated — never
 "attended," since Daily Progress has no way to know whether you were actually in it. A private
 event shows as "Private" in place of its real subject, but otherwise counts the same as any other
-meeting.
+meeting. A meeting's own Teams chat is a separate thing from the meeting: if you posted in it, it
+appears as its own chat entry marked "meeting chat," alongside the meeting itself.
 
 **Actions taken**'s ticket half, and **Hours logged**'s ticket count, both mean the same thing:
 the number of distinct Autotask tickets you touched that day. A ticket counts as touched if you
@@ -245,6 +389,12 @@ note a person actually typed. Automated notes from RMM tools, workflow rules, in
 any other system process don't count as touching a ticket. Time logged against a general project
 task (no specific ticket) still adds to your hours and appears in the timeline as its own
 "Project" entry, but it isn't one of the tickets counted in that number.
+
+**Actions taken**'s chat half counts conversations, not messages: one chat you posted in fifty
+times is one action, and the fifty shows in that entry's own "N sent" instead. See
+[Teams](#teams) for what makes a chat count at all.
+
+---
 
 ## Generate at end of day
 
@@ -259,20 +409,19 @@ A gear icon in the header, next to Email me, opens a small settings panel with t
 
 Turning **Generate at end of day** on means today's report generates itself once the time you
 picked has passed — no need to open Daily Progress or click anything — as long as Anchor Hub is
-open and you're signed in at that moment. It runs every day of the week, not just workdays: if
-Anchor Hub is open on a Saturday or Sunday after that time, that day's report (usually empty,
-since there's rarely anything to log on a weekend) is generated and saved the same as any other
-day, and emailed too if **Email me when it generates** is on. If Anchor Hub wasn't open when
-your chosen time arrived, it catches up shortly after your next launch — the check runs about
-ten seconds in, and the run itself starts up to a minute and a half later (a deliberate spread
-so several open copies of the Hub don't all fire at once) — as long as you're still signed in at
-that moment; if you had signed out, nothing runs then, and that day is
-instead filled in by the next scheduled run's previous-workday check, described next. The same
-run also fills in the **previous workday** if it has no saved report at all: if yesterday — or
-Friday, on a Monday — has no report, it's generated too, so a day the Hub was closed still ends
-up with one. A scheduled report's header names its source the same way any report does, with
-"scheduler" in place of the usual tag — for example "as of 4:32 PM · scheduler" for today, or
-"generated Wed 4:31 PM · scheduler" for a filled-in past day.
+open and you're signed in at that moment. It runs Monday through Friday only — a Saturday or
+Sunday never gets a report of its own. If Anchor Hub wasn't open when your chosen time arrived,
+it catches up shortly after your next launch — the check runs about ten seconds in, and the run
+itself starts up to a minute and a half later (a deliberate spread so several open copies of the
+Hub don't all fire at once) — as long as you're signed in at that moment, and if you had signed
+out, the check runs again the moment you sign back in. The same run also fills in the **previous
+workday** if it has no saved report at all: if yesterday — or Friday, on a Monday — has no
+report, it's generated too, so a day the Hub was closed still ends up with one. That
+previous-workday fill is the one part that isn't limited to weekdays: a run over the weekend
+won't generate a Saturday or Sunday report, but it will still fill in Friday if Friday has none.
+A scheduled report's header names its source the same way any report does, with "scheduler" in
+place of the usual tag — for example "as of 4:32 PM · scheduler" for today, or "generated Wed
+4:31 PM · scheduler" for a filled-in past day.
 
 Two edge cases worth knowing: changing the time to a *later* slot after today's report has
 already generated makes today due again at the new time, so a second report — and, with Email me
@@ -302,9 +451,11 @@ no matter which account is signed in when it fires. The scheduler's file also ke
 run's outcome — which day or days it covered, whether each one saved and was emailed, and any
 error text — and that part is shown only to the account it belonged to.
 
+---
+
 ## Where it's saved
 
-Every report is written to your own OneDrive, not to a shared Hub database — nothing about your
+Every report is written to your own OneDrive, not to a shared Hub database — no report about your
 day is ever stored anywhere Mike, an admin, or anyone else can query. It lives in your OneDrive
 under **Apps/Anchor Hub**, in a folder Microsoft creates specifically for this app. Inside it:
 
@@ -321,6 +472,12 @@ Nothing is ever deleted by the app — retention is whatever your organization's
 **Open in OneDrive** link at the bottom of the settings panel (the gear in the header) takes you
 straight to this folder in your browser, so it's yours to open, move, or delete any time you want.
 
+The one thing the Hub's own server-side database holds is Microsoft's daily Teams totals — a
+totals-only table with no name, email or user principal name in it, readable only through a route
+that answers for your own account and nobody else's, and purged after 400 days. Nothing from your
+report is written to it, nothing in it is written into your report, and no admin, manager or
+rollup view of it exists. See [Teams](#teams) and [Privacy](#privacy).
+
 Two more files live on this machine only, and never in OneDrive: your Daily Progress settings and
 the scheduler's own record. The three toggles/time above, and when the scheduler last ran, are
 per computer, not per person — shared by whoever signs in here, the same as described in
@@ -328,85 +485,171 @@ per computer, not per person — shared by whoever signs in here, the same as de
 per account instead: which privacy-notice version you've acknowledged, and the last scheduled
 run's outcome — each visible only to the account it belongs to.
 
+---
+
 ## Privacy
 
-Daily Progress reads three things, and only for the signed-in user running it, one day at a
-time: your **Sent Items** (not your inbox — just what you sent), your **calendar**, and your own
-**Autotask** time entries, ticket notes, and closed tickets. It does not read your inbox, Teams,
-or anyone else's mail, calendar, or tickets. The first time you open the tool, before it ever
-generates a report, a one-time screen spells this out plainly — what it reads, what it doesn't,
-where it's stored, what (if anything) leaves Microsoft, and who can see it — and nothing runs
-until you acknowledge it. A scheduled run reads exactly what a Refresh would, for the
-signed-in account it belongs to only, and applies this same acknowledgement check before it will
-generate an AI one-liner for anything.
+Daily Progress reads four things, and only for the signed-in user running it, one day at a
+time: your **Sent Items** (not your inbox — just what you sent), your **calendar**, your own
+**Autotask** time entries, ticket notes, and closed tickets, and your own **Teams chats** — who
+you talked with, when, and how many messages each way, never what was said. It does not read your
+inbox, the text of any Teams message, any Teams channel, or anyone else's mail, calendar,
+tickets, or chats. The first time you open the tool, before it ever generates a report, a one-time
+screen spells this out plainly — what it reads, what it doesn't, where it's stored, what ANS's own
+report supplies, what (if anything) leaves Microsoft, and who can see it — and nothing runs until
+you acknowledge it. A scheduled run reads exactly what a Refresh would, for the signed-in account
+it belongs to only, and applies this same acknowledgement check before it will generate an AI
+one-liner for anything.
 
-As of Phase 2, one thing does leave Microsoft: the text you wrote in the emails you sent — never
-the quoted reply chain underneath it, and never anyone else's message — goes to Hatz.ai, ANS's AI
-vendor, to be summarised into a single sentence per thread (see [AI one-liners](#ai-one-liners)
-above for exactly what's sent). That text is not stored by Daily Progress; only the one screened
-sentence that comes back is kept. Nothing else leaves Microsoft or Autotask. The privacy notice is
-versioned, and the app remembers which version you last acknowledged — because this is a real
-change in what leaves your machine, not a wording tweak, anyone who had already acknowledged
-Phase 1's notice sees the first-run screen again, once, the next time they open Daily Progress.
-That re-shown screen is headed "What's changed before your next report," with the one new fact
-called out in an amber banner above the same full notice, rather than quietly opting anyone in.
-Acknowledging it again is all it takes to keep going, and nothing about what's read, where it's
-stored, or who can see it has changed.
+One thing does leave Microsoft, and it's the same one thing as before: the text you wrote in the
+emails you sent — never the quoted reply chain underneath it, and never anyone else's message —
+goes to Hatz.ai, ANS's AI vendor, to be summarised into a single sentence per thread (see
+[AI one-liners](#ai-one-liners) above for exactly what's sent). That text is not stored by Daily
+Progress; only the one screened sentence that comes back is kept. **Nothing from Teams leaves
+Microsoft** — the AI step never sees a chat — and nothing else leaves Microsoft or Autotask.
+
+The notice is versioned, and the app remembers which version you last acknowledged. This build
+raises it to **version 3**, because your Teams chats are now read and because Microsoft's own
+Teams report now supplies daily totals to the Hub's server, so anyone who had already
+acknowledged an earlier version sees the screen once more, subtitled "Privacy notice · updated
+for Teams," rather than being quietly opted in. It opens with "One thing changed since you last
+acknowledged this. Here is exactly what it reads, where it keeps the result, and what leaves
+Microsoft 365." — "Two things changed" for anyone still on Phase 1's notice, for whom the Hatz.ai
+call is new as well — and an amber banner above the full notice names exactly what's new:
+
+> One thing is new: your Teams chats are now counted — who, when and how many messages, never
+> what was said — and Microsoft's own Teams usage report supplies your daily totals to the Hub's
+> server, where only you can see your row.
+
+or, for someone who last acknowledged Phase 1's notice:
+
+> Two things are new since you acknowledged this: the text of emails you sent now goes to
+> Hatz.ai to be summarised into one line each; and your Teams chats are now counted — who, when
+> and how many messages, never what was said — with Microsoft's own Teams usage report supplying
+> your daily totals to the Hub's server, where only you can see your row.
+
+The notice itself says, in six rows:
+
+- **What it reads** — "Your Sent Items, your calendar, your Autotask time entries, ticket notes
+  and closed tickets, and your Teams chats — who you talked with, when, and how many messages
+  each way; never what was said. One day at a time."
+- **What it does not read** — "Your inbox. The text of any Teams message, or any channel. Anyone
+  else's mail, calendar, tickets or chats."
+- **Where it is stored** — "Your own OneDrive, in `Apps/Anchor Hub`. Yours to open, move or
+  delete."
+- **What ANS's own report supplies** — "Microsoft's daily Teams usage report gives the Hub your
+  totals — messages posted, calls, meetings, minutes — a day or two later; the Hub's server keeps
+  only your totals, and only you can see your row."
+- **What leaves Microsoft** — "The text of emails you sent goes to Hatz.ai, ANS's AI vendor, to be
+  summarised into one line each. That text is not stored — only the line."
+- **Who can see it** — "Only you. There is no manager view, team rollup or admin view."
+
+**The totals table.** Phase 4 gives Daily Progress its first server-side table, and it holds
+totals only: an Entra object id, a date, Microsoft's message/call/meeting counts, the audio, video
+and screen-share durations, Microsoft's own refresh date, and when the row was fetched. There is
+deliberately no column for a name, an email or a user principal name — those columns exist in
+Microsoft's file and are discarded in code before a row is built — so the table cannot identify
+anyone to anyone who doesn't already hold their object id. It keeps a rolling 400 days and purges
+the rest daily. The only thing that reads it is a route that filters on the caller's own validated
+token, at most a week at a time, which means there is no admin view, no team rollup, no export
+and no comparison with anyone else. That is the same no-manager-view, no-team-rollup principle the
+rest of the tool follows, restated against a shared database instead of your OneDrive.
+
+**Two Microsoft permissions worth naming explicitly.** Reading Microsoft's usage report requires
+`Reports.Read.All`, which is a tenant-wide permission covering every Microsoft 365 usage report,
+held by the Hub's own server identity rather than by anyone's copy of the app — Mike granted it as
+CISO knowing that breadth, and this one report function is the only thing in the Hub that uses it;
+reading any other report would be a new decision, not a tweak. Reading your own chats requires
+`Chat.Read`, which needed tenant admin consent, and which is full content access to every chat you
+are in (see [Teams](#teams) for how the code narrows that to who, when and how many). Because
+`Chat.Read` is only added to the app's sign-in as of this build, each person needs to sign out and
+sign back in once before it is on their session.
 
 Your acknowledgement is recorded against your Microsoft account on each computer you use Daily
 Progress on. If a second person signs in to the Hub on the same computer, they see the notice
 themselves and acknowledge it for themselves — one person's acknowledgement never speaks for
 anyone else's, and until it's given, nothing that person wrote goes to Hatz.ai. One consequence
-of this build: if you acknowledged the notice in an earlier build, you'll see it once more, even
-if you've already acknowledged this version. The older record was kept per computer rather than
-per person, so it is no longer trusted.
+of the per-account change made in an earlier build: if you acknowledged the notice before that
+change, you'll see it once more regardless, because the older record was kept per computer rather
+than per person and is no longer trusted.
+
+---
 
 ## Getting access
 
 Once this ships, getting to Daily Progress takes three things: an Access Management admin has to
 grant the `daily-progress` tool to your role (or to you specifically), you then have to turn it
 on for yourself in **Settings → Customize** the same way you would any other tool (tools default
-to hidden on a fresh install), and — because this tool needs a new Microsoft permission
-(`Mail.Read`) that wasn't part of the Hub before — you may need to sign out and sign back in
-once after the update lands, so that permission is actually on your session (the app tells you
-if it does).
+to hidden on a fresh install), and — because this tool needs two new Microsoft permissions
+(`Mail.Read` and `Chat.Read`) that weren't part of the Hub before — you may need to sign out and
+sign back in once after the update lands, so those permissions are actually on your session (the
+app tells you if it does).
+
+---
 
 ## History and past days
 
 In Today view, the **◀** and **▶** arrows step one day at a time, and the date picker next to
 them jumps straight to any day up through today (you can't pick a future date). If a day you
 navigate to was never generated, you'll see a **"No report saved for this day"** message with a
-**Generate it** button — Sent Items, calendar, and Autotask still have that day's data, so
-generating it later saves it to your OneDrive exactly like any other day. Today's report
-generates itself automatically the first time you open the tool that day; past days only
+**Generate it** button — Sent Items, calendar, Autotask, and your Teams chats still have that
+day's data, so generating it later saves it to your OneDrive exactly like any other day. Today's
+report generates itself automatically the first time you open the tool that day; past days only
 generate when you ask. (This week has its own arrow behaviour — see [This week](#this-week)
 above.)
 
+One caveat specific to chats when you backfill a day well after the fact: a message written that
+day but edited or reacted to more than a couple of days later can drop out of what Microsoft
+returns, so a very old backfill can undercount a chat. A day generated on the day itself, or a
+day or two later, is unaffected.
+
+---
+
 ## When something is unavailable
 
-Each source — Sent Items, calendar, Autotask — is read independently, so one of them being
-temporarily unavailable doesn't stop the other two. When that happens, a banner across the top
+Each source — Sent Items, calendar, Autotask, Teams — is read independently, so one of them being
+temporarily unavailable doesn't stop the other three. When that happens, a banner across the top
 names the source that failed. **Meetings** and **Hours logged** each depend on exactly one
 source (calendar and Autotask respectively), so if that source fails, the tile shows **"—"**
 instead of a number, with a note underneath saying that source is unavailable rather than the
-day genuinely being empty. **Actions taken** and **Clients touched** each depend on *two*
-sources (mail and Autotask); if only one of the two fails, they still show a real number built
-from whichever source succeeded, with a note like "email unavailable" appended — they only drop
-to "—" if both fail at once. The footer at the bottom of every report also shows a ✓ or ✗ per
-source for exactly this reason. One softer case: if the Autotask *contact* lookup that matches
+day genuinely being empty. **Actions taken** and **Clients touched** each depend on more than one
+source; if only some of them fail, they still show a real number built from whichever sources
+succeeded, with a note like "email unavailable" appended — Clients touched only drops to "—" if
+both mail and Autotask fail at once, and Actions taken only if mail, Autotask and Teams all do.
+The footer at the bottom of every report also shows a ✓ or ✗ per source for exactly this reason.
+
+When **Teams** is the source that failed, the banner reads *"Teams was unavailable this run —
+chats are not shown. The email, calendar and ticket sections are complete. Refresh to retry."*,
+the Actions tile's split says "chats unavailable" in place of a chat count, the timeline note
+repeats it, and the footer reads **Teams ✗**. The chat count is left out rather than shown as a
+zero, because nothing was measured. The **Teams · Microsoft's report** strip is completely
+independent of that failure — it is read from the Hub's own API, not from your chats — so it can
+still be populated on a run where your chats couldn't be read. It has its own failure state
+instead: *"could not be read right now — refresh to retry."* A report generated before Phase 4
+existed simply has no Teams data at all: no chats segment in the Actions split and no Teams ✓/✗
+in the footer, since that run never tried.
+
+If your sign-in doesn't yet carry the Teams permission — which is the case for everyone until
+they sign out and back in once after this update — the Teams source fails with *"Daily Progress
+needs a fresh sign-in to read your mail and Teams chats. Sign out and sign back in."* Everything
+else in the report is unaffected.
+
+One softer case: if the Autotask *contact* lookup that matches
 your email recipients to client companies fails part-way (the rest of Autotask being fine), the
 report still generates and is not marked partial, but the **Clients touched** tile gets
 "· matching incomplete" appended and the timeline card carries the note "Client matching was
 incomplete this run — some recipients may show as External. Refresh to retry." — so a lower
-client count is never mistaken for a quiet day. **Refresh** (today) or
+client count is never mistaken for a quiet day. A run that couldn't get through all your chats
+carries its own equivalent note, "Not every chat could be counted this run — the chat count may
+be short." **Refresh** (today) or
 **Regenerate** (a past day) tries again. Saving to OneDrive is a separate step from generating
 the report — if the report itself generates fine but the save to OneDrive fails, you're told
 explicitly with an on-screen alert, and the report stays visible so you can try Refresh again
 rather than losing it. In **This week**, a day that couldn't be read shows its own error and a
 **Retry** button, without affecting the other days already loaded.
 
-The AI step is a fourth, independent piece with two failure states of its own, and — like the
-other three sources — neither one ever marks the whole report partial or stops it from saving.
+The AI step is a fifth, independent piece with two failure states of its own, and — like the
+other four sources — neither one ever marks the whole report partial or stops it from saving.
 **Unavailable** means the AI step didn't produce anything usable this run at all: Hatz.ai couldn't
 be reached or timed out, the privacy notice hasn't been acknowledged by the signed-in account on
 this machine, the signed-in account changed mid-run, or Sent Items itself was unavailable (in which case its own
@@ -418,29 +661,27 @@ pass a guardrail (or came back empty, missing, or too long) — those threads sh
 chip with the specific reason instead of a line, the footer adds "N lines withheld by guardrail."
 and/or "N threads got no usable AI line." instead, and the glyph still reads **AI ✓**, since the
 step itself succeeded overall. A report with AI unavailable, or with some lines withheld, is
-still a complete, saved report like any other.
+still a complete, saved report like any other. Chat entries are untouched by any of this — they
+never had an AI line to lose.
 
 A scheduled run has three cases worth calling out on their own. If nobody is signed in on this
 machine at the scheduled time, nothing runs at all — there's no report to show and no error,
 since there's no one for it to belong to. If Anchor Hub itself was closed at that time, it
-catches up the moment it's next opened, as long as you're still signed in when it opens, as
-described in [Generate at end of day](#generate-at-end-of-day) above — if you had signed out
-instead, that day is filled in by the next scheduled run rather than the moment you sign back in.
+catches up the moment it's next opened, as long as you're signed in when it opens, as
+described in [Generate at end of day](#generate-at-end-of-day) above — and if you had signed out
+instead, the check runs again the moment you sign back in. Remember that the day's own report is
+generated Monday through Friday only, though the previous-workday fill still runs at weekends.
 And if a scheduled run runs into trouble — whether it couldn't generate the report at all, or it
 generated fine but couldn't send the email — you're not left to guess: the inline message
 described above names which of the two happened, and appears the next time you open Daily
 Progress, once, addressed to whoever's run it was.
 
+---
+
 ## Coming next
 
-Phases 1–3 complete the tool as specified: today's report, history and backfill, the first-run
-privacy screen, AI one-liners with guardrails, Email me, end-of-day auto-generate with
-auto-email, This week, and baselines with the trend strip. One more phase is planned. **Teams**
-returns — Mike has decided it comes back with both of the postures the spec describes: (A) who /
-when / how many messages per conversation from your own Teams chats, sent and received, live for
-today, with message text never read and nothing from Teams ever sent to Hatz.ai; and (B) per-day
-totals of messages posted, calls, meetings and audio/video/screen-share minutes from Microsoft's
-own Teams activity report, which runs a day or two behind. That is a change to the spec, so it
-goes through the Analyst seat (the spec amendment) and then Design (the mockup states) first, and
-it becomes **Phase 4** after this release. Nothing in that phase will show anyone else's day —
-the no-manager-view, no-team-rollup principle stands.
+Phase 4 completes the tool as specified. Deliberately not built, and not planned without a new
+spec and a CISO decision: Teams channel messages; any AI reading of Teams text (chat topic
+summaries); received-only chats as actions; any view of another person's Teams data, report, or
+totals — the no-manager-view, no-team-rollup principle stands, including for the server-side
+totals table.
