@@ -9,9 +9,10 @@
 
 Daily Progress is a personal report of your own day at ANS: what you actually did, not what you
 were assigned. It reads your own sent email, your own calendar, your own Autotask activity, and
-your own Teams chats — who you talked with, when, and how many messages each way, never what was
-said — for one day at a time, and turns them into four headline numbers plus a timeline of
-everything that moved forward — sorted earliest to latest. Nothing about it is shared. There is no
+your own Teams chats — who you talked with and how many messages each way, never what was
+said — for one day at a time, and turns them into four headline numbers, a timeline of
+everything that moved forward sorted earliest to latest, and a card of the day's chats.
+Nothing about it is shared. There is no
 manager view, no team rollup, and no admin view of anyone else's day, including yours.
 
 Sidebar tool key: `daily-progress`.
@@ -52,21 +53,27 @@ Microsoft's own daily Teams totals for that day, which are a separate measuremen
 count in the Actions tile and are never added to it. See [Teams](#teams) below.
 
 Below that, **"What actually moved forward"** is a single timeline combining every sent-mail
-thread, every ticket you touched, every Teams chat you posted in, and every meeting that's
-already happened that day — earliest first. A meeting that hasn't happened yet does not appear in
-this timeline; it only shows in the separate Meetings section below it. Under the timeline, when
-there's real activity to describe, one computed sentence summarizes the day (e.g. "7 actions
-across 3 clients; 2 of them closed tickets") — this line is arithmetic on the numbers already
-shown above it, marked "not AI," never a generated summary. Each sent-email thread in the timeline
+thread, every ticket you touched, and every meeting that's already happened that day — earliest
+first. A meeting that hasn't happened yet does not appear in this timeline; it only shows in the
+separate Meetings section below it. Each sent-email thread in the timeline
 can also carry one AI-written line beneath its subject, marked with a small **AI** chip, with one
 legend beside the card's heading noting that these lines are written by Hatz.ai (the copy of the
 report saved to your OneDrive and the one you email yourself go a step further and label each line
-"written by Hatz.ai" individually) — see [AI one-liners](#ai-one-liners) below. A day with chat
-entries adds a second legend item, "chat · who, when, how many," and the note above the timeline
-says so in words — *"chat entries show who, when and how many — never what was said"* — followed
-by *"and never an AI line"* except on a run where Hatz.ai itself was unavailable (there, the note
-already explains that email entries show their subject). Everything else on this page — the four
-tiles, the computed callout, the ticket, chat and meeting entries — is measured, never generated.
+"written by Hatz.ai" individually) — see [AI one-liners](#ai-one-liners) below. Everything else on
+this page — the four tiles, the computed callout, the ticket and meeting entries — is measured,
+never generated.
+
+**Teams chats are not in that timeline.** They have their own card directly beneath it, with no
+times at all: a chat runs across the whole day, so a single clock time next to one would have said
+"this is when you talked," when it was only the first thing you said. The card lists who you talked
+with and how many messages went each way instead — the two things that stay true all day — busiest
+conversation first. See [Teams](#teams) below.
+
+Under both of those cards, when there's real activity to describe, one computed sentence summarizes
+the day (e.g. "7 actions across 3 clients; 2 of them closed tickets") — arithmetic on the numbers
+already shown above it, marked "not AI," never a generated summary. It sits below the chats card
+rather than inside the timeline, because it counts your chats too, and a line claiming nine actions
+directly underneath a list of four would be reconciling two different things.
 
 A separate **Meetings** card lists the day's whole calendar — past and upcoming, counted and not
 — so you can see what's ahead as well as what's done.
@@ -76,10 +83,10 @@ A separate **Meetings** card lists the day's whole calendar — past and upcomin
 ## Teams
 
 Teams shows up in two completely separate places, measuring two different things. Your own chats
-are read live and become actions and timeline entries. Microsoft's own daily Teams totals are
-pulled server-side and shown in the labelled strip under the tiles. **The two are never added
-together** — the strip's numbers never reach a tile, and the tiles' chat count never reaches the
-strip.
+are read live, count as actions, and fill the **Teams chats** card. Microsoft's own daily Teams
+totals are pulled server-side and shown in the labelled strip under the tiles. **The two are never
+added together** — the strip's numbers never reach a tile, and the tiles' chat count never reaches
+the strip.
 
 ### Your chats (live)
 
@@ -89,17 +96,21 @@ list, the messages inside one of your own chats, and that chat's member list. Th
 filter of its own to that list beyond how recently each chat was last used — it walks your chats
 newest-first and stops at the first one with no message that day.
 
-**What counts.** Only a conversation you actually posted in that day becomes an action, and it is
-timed at your first post in it, which is where it lands in the timeline. A chat you only read, or
+**What counts.** Only a conversation you actually posted in that day becomes an action. A chat you only read, or
 one where only other people wrote, is never an action — although the messages that came in still
 count toward the "received" figure in the Actions tile. Messages are counted by when they were
 written, so a much older message that somebody edited or reacted to today doesn't become today's.
 System events (a member added, a chat renamed) and deleted messages are not messages and are not
 counted at all.
 
-**What is shown.** Each counted chat is one timeline entry: a muted **Teams** pill, the chat's
-title, "meeting chat ·" first if it's a meeting's chat, then "3 sent · 2 received," and the word
-"chat" underneath as its type. The title is the chat's own topic whenever it has one (e.g. "Exxel
+**What is shown.** Each counted chat is one row in the **Teams chats** card, which sits under the
+timeline and has no time column: the chat's title, "· meeting chat" after it if it's a meeting's
+chat, and "3 sent · 2 received" on the right. Rows run busiest conversation first (the two counts
+added together), because with no times there is nothing for earliest-first order to mean. The card
+appears on any report whose run asked Teams at all — including a run where Teams failed, or one
+where you posted in nothing, both of which say so in a line of their own rather than leaving you
+guessing. A report generated before Teams was ever part of the tool has no card at all.
+The title is the chat's own topic whenever it has one (e.g. "Exxel
 — domain consolidation"); with no topic, the shape names the people instead — "Chat with Kate"
 for a 1:1, "Group chat with Kate, Andi +2" for a group (two first names, the rest counted), and
 "Meeting chat" for a meeting's chat. First names are all that's ever kept from the member list —
@@ -109,12 +120,13 @@ as "a bot" rather than as a person, so it can never be named as one.
 **What is never shown or stored.** The text of any message. Anyone's email address. Any Teams id
 — a chat's id is used for those two follow-up reads and then dropped before anything is returned.
 And **no AI line, ever**: nothing from Teams goes to Hatz.ai. The AI step is handed email threads
-and nothing else, so a chat entry has no AI line to withhold in the first place.
+and nothing else, so a chat row has no AI line to withhold in the first place. Nor a time — see
+above.
 
 **When the count may be short.** One run looks at up to 40 chats. If there were more than that,
 if some individual chats couldn't be read, or if reading them was taking too long (the Teams
 read gives itself about 45 seconds and then stops where it is, so a slow day still gets a partial
-count instead of nothing), the note above the timeline adds *"Not every chat could be counted this
+count instead of nothing), the Teams chats card adds *"Not every chat could be counted this
 run — the chat count may be short."* rather than presenting a short number as if it were complete.
 The same day is also never recorded as a genuinely quiet one, since the count that would have
 proven it was quiet is the count that's in doubt. If *none* of your chats could be read, that is
@@ -199,9 +211,22 @@ lists each day's own saved entries grouped under its own heading — oldest day 
 quick tally of that day's actions, clients, chats (for a day that measured them), and hours next
 to its heading. The weekly
 Actions tile's split adds the week's chat figures the same way the daily one does — "· 8 chats ·
-17 received," with received left out at zero — and the note above the day groups says "chats
-included" when at least one of the week's saved days actually measured them. The **Teams ·
+17 received," with received left out at zero. The **Teams ·
 Microsoft's report** strip sits under the weekly tiles too, summing the week's published days.
+
+The week gets its own **Teams chats** card under the day groups, on the same no-times principle as
+the daily one — but merged across the week rather than repeated per day: one row per conversation,
+its messages added up over every saved day it appeared on, with "· 3 days" next to a chat that ran
+across several. Busiest conversation first. If Teams happened to be unavailable when one of the
+week's days was generated, the card names that day and says its chats aren't included, rather than
+quietly leaving them out of the totals.
+
+A week with no chats in it is careful about which claim it makes, because "none" and "nobody
+asked" are different facts. It says *"No chats you posted in this week"* only when every day in
+the week was actually measured; when some weren't — a day never generated, a day that couldn't be
+read, a day saved before Teams was part of the tool, or one whose Teams read failed — it says
+*"No chats you posted in on the days that counted them"* instead, and if none of them measured
+chats at all, *"No chats were counted for this week."*
 
 A day with no saved report shows "No report saved for this day. Weekly totals above do not
 include it." with a **Generate** button next to it — click it and that one day backfills in
@@ -343,8 +368,9 @@ The **Email me** button in the header sends the report currently on your screen 
 mailbox — never anyone else's — with the report itself as the message body, and the same report
 attached again as a standalone `<date>.html` file (e.g. `2026-09-02.html`) so you have a copy that
 opens outside the Hub too. The subject line is always `Daily Progress — ` followed by the report's
-date, written out like `Daily Progress — Wed, Sep 2, 2026`. Chat entries travel with it like any
-other entry; the Teams · Microsoft's report strip does not, since it isn't part of the report.
+date, written out like `Daily Progress — Wed, Sep 2, 2026`. The Teams chats card travels with it,
+laid out the same way and with no times either; the Teams · Microsoft's report strip does not,
+since it isn't part of the report.
 
 Click it and the button reads "Sending…" while the send is in flight. On success, a toast reading
 "Emailed to `<your address>`" appears if you're still viewing Daily Progress when it lands, and the
@@ -386,7 +412,8 @@ but it's never counted and never shown as a meeting elsewhere. A counted meeting
 "attended," since Daily Progress has no way to know whether you were actually in it. A private
 event shows as "Private" in place of its real subject, but otherwise counts the same as any other
 meeting. A meeting's own Teams chat is a separate thing from the meeting: if you posted in it, it
-appears as its own chat entry marked "meeting chat," alongside the meeting itself.
+appears as its own row in the Teams chats card marked "· meeting chat," alongside the meeting
+itself in the Meetings card.
 
 **Actions taken**'s ticket half, and **Hours logged**'s ticket count, both mean the same thing:
 the number of distinct Autotask tickets you touched that day. A ticket counts as touched if you
@@ -626,14 +653,14 @@ The footer at the bottom of every report also shows a ✓ or ✗ per source for 
 
 When **Teams** is the source that failed, the banner reads *"Teams was unavailable this run —
 chats are not shown. The email, calendar and ticket sections are complete. Refresh to retry."*,
-the Actions tile's split says "chats unavailable" in place of a chat count, the timeline note
-repeats it, and the footer reads **Teams ✗**. The chat count is left out rather than shown as a
+the Actions tile's split says "chats unavailable" in place of a chat count, the Teams chats card
+says the same thing in place of its rows, and the footer reads **Teams ✗**. The chat count is left out rather than shown as a
 zero, because nothing was measured. The **Teams · Microsoft's report** strip is completely
 independent of that failure — it is read from the Hub's own API, not from your chats — so it can
 still be populated on a run where your chats couldn't be read. It has its own failure state
 instead: *"could not be read right now — refresh to retry."* A report generated before Phase 4
-existed simply has no Teams data at all: no chats segment in the Actions split and no Teams ✓/✗
-in the footer, since that run never tried.
+existed simply has no Teams data at all: no chats segment in the Actions split, no Teams chats
+card, and no Teams ✓/✗ in the footer, since that run never tried.
 
 If your sign-in doesn't yet carry the Teams permission — which is the case for everyone until
 they sign out and back in once after this update — the Teams source fails with *"Daily Progress
