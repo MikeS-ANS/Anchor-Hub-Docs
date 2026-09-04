@@ -107,6 +107,11 @@ The row's button label tracks real progress ("Continue (Step 2 of 3)," etc.) wit
 
 **Billing digest.** The **Digest…** button previews and sends a summary of **confirmed** over-contracted clients (with $ estimate) to the recipients set in Settings — provisional clients are excluded, since they're not yet actionable, and so is any client already dispositioned this cycle (same rule as Confirmed Positives, above). It can also send automatically on a **weekly or monthly** schedule (the Hub must be running for a scheduled send).
 
+Two things about the digest are worth knowing, because both are silent when they happen:
+
+- **It will not send from an incomplete read.** The digest is built from the MSC workbook and the Company Directory. If either fails to load — most often a SharePoint permission problem — the Hub refuses to send rather than mail out a digest that understates what clients owe. The preview still opens so you can see what went wrong, with a red banner naming the source that failed, and **Send** stays disabled until it loads. The same red banner appears on the Contract Review list itself, so a short list is never mistaken for a quiet month. A scheduled send that hits this reports a failed scan rather than sending anything, and — importantly — does **not** consume that week's or month's send: another authorised person's Hub can still send it later in the same window. If nobody else's is open, that scheduled run is simply missed rather than sending something wrong — send it by hand from **Digest…** once the data loads.
+- **Only people with Contract Review access run it.** The scheduled send fires from a running copy of the Hub, and it now only fires from one belonging to someone who actually holds Contract Review access (the Finance or Admin role). Previously any signed-in machine that happened to be open could be the one that ran it.
+
 ### Part-time users
 
 The MSC workbook now has a dedicated **Included Part Time Users** column, separate from the full-time seat count everything above is based on. Part-time seats are tracked for visibility only:
