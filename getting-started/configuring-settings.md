@@ -28,7 +28,7 @@ After saving, navigate to the **Invoice Processor** and load the most recent inv
 
 ## Sidebar Layout — Export / Import
 
-**Sidebar Layout** is its own entry in the bottom-left navigation bar, just under Ideas & Bugs. *(On v4.0.0 and earlier it lives inside Settings, as the **Customize** tab — same screen, same buttons.)* Tick a tool to show it, drag the ⠿ handle to reorder, and use **Add Group** to collect tools into a named section — then **Save Layout**.
+**Sidebar Layout** is its own entry in the bottom-left navigation bar, just under Ideas & Bugs. Tick a tool to show it, drag the ⠿ handle to reorder, and use **Add Group** to collect tools into a named section — then **Save Layout**.
 
 Which tools show in your sidebar, how they're grouped, and your personal quick links are all saved **on this machine only** — they don't follow your Microsoft login. Reinstalling the Hub or moving to a new computer starts you back at the defaults.
 

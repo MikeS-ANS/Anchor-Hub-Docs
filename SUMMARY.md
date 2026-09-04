@@ -45,6 +45,7 @@
 
 ## What's New
 
+* [v4.1.0 — Daily Progress](whats-new/v4.1.0.md)
 * [v3.12.0 — Payroll Processing](whats-new/v3.12.0.md)
 * [v3.11.2 — Contract Review: Part-Time Seats & MRR Auto-Log](whats-new/v3.11.2.md)
 * [v3.11.1 — User Audit Report Improvements & Beta Graduations](whats-new/v3.11.1.md)
