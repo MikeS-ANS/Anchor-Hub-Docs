@@ -85,8 +85,11 @@ Worth knowing:
 - **This applies to sheets generated from now on.** Audits already sitting in clients' inboxes were built without the hidden baseline values this compares against. Those returns keep working exactly as they do today — support option only. Nothing breaks and nothing is lost; the extra fields just aren't picked up.
 - **A blank cell is never read as "delete this."** If a client clears a title, it's left alone. Emptying a field in Autotask stays a manual action — an empty cell is far more often "I didn't fill this in" than "remove this."
 - **Reformatting isn't a change.** A number retyped as `(303) 555-1234` instead of `303-555-1234` is the same number, and is ignored. Same for a title that only gained trailing spaces.
-- **Autotask caps titles at 50 characters and phone numbers at 25.** Anything longer is reported as skipped in the progress list rather than written — a truncated job title or phone number *looks* correct in the PSA, which is worse than one that was never written.
+- **Autotask caps titles at 50 characters and phone numbers at 25.** Anything longer is flagged in the preview *before* you confirm, and reported as skipped in the progress list rather than written — a truncated job title or phone number *looks* correct in the PSA, which is worse than one that was never written. A row where one field was skipped this way shows as a ⚠ warning, and is counted separately from both successes and failures.
+- **An unanswered dropdown doesn't throw the row away.** If a client fixes someone's title but leaves their support option blank, the title still gets written. The blank support option isn't counted as reviewed and is never written back.
 - **A row where only the title changed writes only that title.** It never touches the support option, and it cannot deactivate anyone.
+
+The account note posted to the client's Autotask record lists **support option changes** and **contact detail corrections** as two separate sections, with separate counts, so a batch that only tidied job titles doesn't read as a batch of re-classifications.
 
 ---
 
