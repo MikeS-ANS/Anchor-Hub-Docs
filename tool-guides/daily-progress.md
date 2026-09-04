@@ -156,9 +156,14 @@ The strip has one of these to say:
 - **Populated** — e.g. "44 messages posted · 3 calls · 2 meetings · 1 h 25 m in calls and
   meetings" (the duration is dropped when there was none). Hovering shows *"Microsoft's report ·
   refreshed"* and the date Microsoft itself last refreshed the report — or just *"Microsoft's
-  report"* if the file didn't carry one.
+  report"* if the file didn't carry one. A day Microsoft published as all zeros is a real
+  measurement and shows here as zeros — the same fact as "no activity" below, just spelled out by
+  Microsoft rather than inferred from your absence from the file.
+- **No activity** — *"no Teams activity recorded."* Hover: *"Microsoft's report covers this day —
+  it has no chats, calls or meetings for you in it."* Microsoft published the day; you simply
+  weren't in Teams. This is a real measurement, not a gap.
 - **Pending** — *"pending — Microsoft publishes it a day or two later."* Hover: *"Not yet
-  published by Microsoft."* A day with no row yet reads pending while it's three days old or
+  published by Microsoft."* A day Microsoft hasn't published at all, while it's three days old or
   less; past that it reads not available.
 - **Not available** — *"not available — before the Hub kept this report, or older than 400
   days."* Hover: *"No row exists for this day."*
@@ -166,12 +171,21 @@ The strip has one of these to say:
   API did not answer."* An unreadable strip never falls back to a zero and never reads "pending."
 - While it's still loading, it reads *"reading Microsoft's report…"*
 
-A day Microsoft published as all zeros is a real measurement — a quiet day — and shows as
-populated with zeros, never as "pending."
+**A quiet day and an unpublished one are told apart deliberately, and that distinction cost a
+round of work.** Microsoft is inconsistent about people with nothing to report: on some days its
+file lists you with zeros across the board, and on other days it leaves you out of the file
+altogether. Measured across three real weekends, both happened. So "you have no row" cannot mean
+"Microsoft hasn't published it" — the Hub also checks whether the day's report arrived *at all*,
+which it can tell because the day holds rows for other people. A day that arrived but has nothing
+for you reads "no Teams activity recorded"; only a day that genuinely hasn't arrived reads
+pending. Before this, an ordinary quiet Saturday claimed to be *"not available — before the Hub
+kept this report, or older than 400 days,"* which was simply untrue about a day six days old.
 
-In **This week**, the same line sums the week's published days and names the ones it doesn't have:
-e.g. "1 of 3 days in · 44 messages posted · 3 calls · 2 h 05 m — Tue and Wed pending," with the
-per-day refresh dates on hover. Meetings are deliberately not summed in the weekly line.
+In **This week**, the same line sums the week's published days and names only the ones it doesn't
+have: e.g. "1 of 3 days in · 44 messages posted · 3 calls · 2 h 05 m — Tue and Wed pending," with
+the per-day refresh dates on hover. A quiet day counts toward the "N of N days in" — it's
+accounted for, not missing — and is named on hover as "no activity" rather than being called out
+as a gap in the line itself. Meetings are deliberately not summed in the weekly line.
 
 **It is read fresh every time you look at a day, and it is never part of the report.** It isn't
 saved into the day's JSON, it isn't in the standalone HTML copy in your OneDrive, and it isn't in
@@ -587,6 +601,13 @@ the rest daily. The only thing that reads it is a route that filters on the call
 token, at most a week at a time, which means there is no admin view, no team rollup, no export
 and no comparison with anyone else. That is the same no-manager-view, no-team-rollup principle the
 rest of the tool follows, restated against a shared database instead of your OneDrive.
+
+That route answers with one thing beyond your own rows: **the list of dates in the week you asked
+about for which the table holds any row at all**. It is dates and nothing else — no name, no
+object id, no count, no number, and nothing that changes depending on who is asking — and it is
+what lets the strip say "no Teams activity recorded" instead of wrongly calling a quiet day
+unavailable. It tells you that Microsoft published a day's report, which is a fact about the
+report, not about any person in it.
 
 **Two Microsoft permissions worth naming explicitly.** Reading Microsoft's usage report requires
 `Reports.Read.All`, which is a tenant-wide permission covering every Microsoft 365 usage report,
