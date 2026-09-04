@@ -43,6 +43,22 @@ Check the box on any row (or **Select all**) to build a Markdown export of those
 
 The 🔔 bell in the toolbar shows updates on anything you're following — anything you submitted, anything merged into an item you're attached to, or anything you've commented on yourself. It covers new comments and status changes from other people (not your own actions). A red badge on the bell and on the sidebar nav item shows the unread count; click **Mark all read** to clear it.
 
+### Getting told when someone posts something new
+
+The bell only ever covered items you were *already* involved with, which meant a brand-new idea or bug notified nobody — there was no way to find out people were posting things without going and looking.
+
+**⚙ Notify me**, next to the bell, is where you turn that on. It has two settings, and **both are off for everyone until you switch them on yourself** — nobody is opted in by default, including admins, and nobody can opt you in.
+
+- **New ideas and bugs** — when anyone posts something new, you get a **Teams message** from the Hub bot *and* it appears in your bell here. This is the one that closes the gap above.
+- **Replies on things I follow** — marked **Not active yet**. The setting saves, and replies already show up in your bell today (that has always worked for everyone, whether or not you tick this), but the Teams message for replies isn't switched on yet. It's coming in a later update; ticking it now just means you're set up when it arrives.
+
+Two things worth knowing:
+
+- **You're never notified about your own posts.** Submitting an idea doesn't Teams-message you or add to your own badge, even with the setting on.
+- **If you opt in and no Teams message ever arrives**, the Hub bot probably isn't set up for you personally yet — mention it to Mike rather than assuming it's off. Everything still shows in the bell either way.
+
+It's deliberately here beside the bell rather than buried in Settings: since nothing notifies anyone until they opt in, a switch nobody can find would be a feature that does nothing.
+
 ## Admin actions (`hub.admin`)
 
 - **Change status** — an editable dropdown replaces the read-only status badge on the detail page.
@@ -52,5 +68,5 @@ The 🔔 bell in the toolbar shows updates on anything you're following — anyt
 ## Notes
 
 - This is the first Hub feature built purely against the Sprint 2 Azure SQL + Functions backend (not a migration of an existing tool) — see [Roadmap](../getting-started/roadmap.md) for the Sprint 2 migration this was built on top of.
-- No email or Teams notifications yet (in-app only) — that depends on Microsoft Graph scopes not yet in use elsewhere in the Hub.
+- **Teams messages for new ideas and bugs are live** (opt-in — see [Notifications](#notifications) above); replies and email digests are not. Teams messages are sent by the Hub's own bot rather than through Microsoft Graph, because Graph has no way for an unattended app to send a Teams chat message at all — every permission that can do it has to act as a signed-in person.
 - **First load after being idle can take up to ~a minute.** The backing SQL database runs on Azure's **Serverless** compute tier, which auto-pauses after a period of no activity to save cost. The first request after a pause has to wait for the database to resume before it can query anything — this shows up as Ideas & Bugs (or anything else touching the Azure SQL backend) taking noticeably longer to load than usual. Once resumed, it stays warm and every subsequent load is fast, even across app restarts, until it's idle long enough to auto-pause again. This is a deliberate cost/latency tradeoff, not a bug — decided to keep as-is rather than switch to an always-on tier.
