@@ -26,14 +26,16 @@ Your credentials are stored securely in Windows Credential Manager on your machi
 
 After saving, navigate to the **Invoice Processor** and load the most recent invoice. If the **Push to Autotask** buttons are active and the invoice loads without errors, your setup is complete.
 
-## Sidebar Customization — Export / Import
+## Sidebar Layout — Export / Import
+
+**Sidebar Layout** is its own entry in the bottom-left navigation bar, just under Ideas & Bugs. *(On v4.0.0 and earlier it lives inside Settings, as the **Customize** tab — same screen, same buttons.)* Tick a tool to show it, drag the ⠿ handle to reorder, and use **Add Group** to collect tools into a named section — then **Save Layout**.
 
 Which tools show in your sidebar, how they're grouped, and your personal quick links are all saved **on this machine only** — they don't follow your Microsoft login. Reinstalling the Hub or moving to a new computer starts you back at the defaults.
 
 To carry your setup over:
 
-1. On your **old** machine: Settings → **Customize** tab → **Export**. Save the file somewhere you can get to from the new machine (OneDrive, a USB drive, email it to yourself).
-2. On your **new** machine: sign in, then Settings → **Customize** tab → **Import**, and pick the file you exported.
+1. On your **old** machine: **Sidebar Layout** → **Export**. Save the file somewhere you can get to from the new machine (OneDrive, a USB drive, email it to yourself).
+2. On your **new** machine: sign in, then **Sidebar Layout** → **Import**, and pick the file you exported.
 
 This brings over your sidebar layout (visible tools, groups, order, which groups are collapsed) and your personal quick links in one step — no need to redo either by hand. Do this **before** you start rebuilding your customization from scratch; there's no undo once you've reconfigured everything manually.
 

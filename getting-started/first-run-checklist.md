@@ -35,4 +35,4 @@ Once the invoice loads successfully, Anchor Hub is fully configured. The app upd
 
 ## Moving to a New Computer or Reinstalling?
 
-Your sidebar layout and personal quick links live on this machine only, not tied to your login — reinstalling or switching computers loses them by default. **Before you do either**, export them from Settings → Customize on your current install, then import the file on the new one. See [Configuring Your Settings](configuring-settings.md#sidebar-customization-export--import) for the full steps.
+Your sidebar layout and personal quick links live on this machine only, not tied to your login — reinstalling or switching computers loses them by default. **Before you do either**, export them from **Sidebar Layout** (in the bottom-left navigation bar, under Ideas & Bugs — on v4.0.0 and earlier it’s the **Customize** tab inside Settings) on your current install, then import the file on the new one. See [Configuring Your Settings](configuring-settings.md#sidebar-layout--export--import) for the full steps.

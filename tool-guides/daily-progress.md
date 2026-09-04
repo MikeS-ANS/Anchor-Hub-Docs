@@ -615,7 +615,7 @@ than per person and is no longer trusted.
 
 Once this ships, getting to Daily Progress takes three things: an Access Management admin has to
 grant the `daily-progress` tool to your role (or to you specifically), you then have to turn it
-on for yourself in **Settings → Customize** the same way you would any other tool (tools default
+on for yourself in **Sidebar Layout** the same way you would any other tool (tools default
 to hidden on a fresh install), and — because this tool needs two Microsoft permissions
 (`Mail.Read` and `Chat.Read`) that weren't part of the Hub before — a session that somehow doesn't
 pick them up silently needs one sign-out and sign-in. Both are admin-consented tenant-wide, so
