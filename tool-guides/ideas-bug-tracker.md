@@ -50,14 +50,29 @@ The bell only ever covered items you were *already* involved with, which meant a
 **⚙ Notify me**, next to the bell, is where you turn that on. It has two settings, and **both are off for everyone until you switch them on yourself** — nobody is opted in by default, including admins, and nobody can opt you in.
 
 - **New ideas and bugs** — when anyone posts something new, you get a **Teams message** from the Hub bot *and* it appears in your bell here. This is the one that closes the gap above.
-- **Replies on things I follow** — marked **Not active yet**. The setting saves, and replies already show up in your bell today (that has always worked for everyone, whether or not you tick this), but the Teams message for replies isn't switched on yet. It's coming in a later update; ticking it now just means you're set up when it arrives.
+- **Replies and updates on things I follow** — a **Teams message** when someone comments on an item you follow, or when its status changes. Replies have always shown up in your bell regardless of this setting; what this switches on is the Teams message.
 
-Two things worth knowing:
+Three things worth knowing:
 
-- **You're never notified about your own posts.** Submitting an idea doesn't Teams-message you or add to your own badge, even with the setting on.
+- **You're never notified about your own actions.** Submitting an idea, commenting on one, or changing a status doesn't Teams-message you or add to your own badge, even with the settings on.
+- **A status change counts as an update.** If you follow a bug and someone marks it Fixed, that reaches you the same way a reply does — you don't need to watch the item to find out what happened to it.
 - **If you opt in and no Teams message ever arrives**, the Hub bot probably isn't set up for you personally yet — mention it to Mike rather than assuming it's off. Everything still shows in the bell either way.
 
 It's deliberately here beside the bell rather than buried in Settings: since nothing notifies anyone until they opt in, a switch nobody can find would be a feature that does nothing.
+
+### Following an item you didn't submit
+
+Open any idea or bug and there's a **Follow** button under its status. It works both ways:
+
+- **Follow** an item you care about but had nothing to do with — someone else's bug that affects your clients, an idea you want to see land. You then get its updates like any item of your own.
+- **Following ✓** means you're already getting updates, either because you clicked Follow or because you're involved — you submitted it, you were merged into it, or you've commented on it. Clicking it again **stops** them.
+
+That second half is the part that didn't exist before. Commenting on something used to sign you up permanently, with no way off; now one click walks away from a thread that's gone noisy, and it holds — muting beats being the submitter, beats being merged in, beats having commented.
+
+Two details that come up:
+
+- **Changing a status doesn't sign you up.** Admins move a lot of items through statuses, and being enrolled in every one of them would be unmanageable. If you triage something and *do* want to track it, click Follow.
+- **Merging keeps your choice.** If an item you muted gets merged into another, the mute follows it — you don't get quietly re-subscribed by someone else's cleanup.
 
 ## Admin actions (`hub.admin`)
 
@@ -68,5 +83,5 @@ It's deliberately here beside the bell rather than buried in Settings: since not
 ## Notes
 
 - This is the first Hub feature built purely against the Sprint 2 Azure SQL + Functions backend (not a migration of an existing tool) — see [Roadmap](../getting-started/roadmap.md) for the Sprint 2 migration this was built on top of.
-- **Teams messages for new ideas and bugs are live** (opt-in — see [Notifications](#notifications) above); replies and email digests are not. Teams messages are sent by the Hub's own bot rather than through Microsoft Graph, because Graph has no way for an unattended app to send a Teams chat message at all — every permission that can do it has to act as a signed-in person.
+- **Teams messages are live for new ideas and bugs, for replies, and for status changes** — all opt-in, see [Notifications](#notifications) above. Email digests are still not a thing. Teams messages are sent by the Hub's own bot rather than through Microsoft Graph, because Graph has no way for an unattended app to send a Teams chat message at all — every permission that can do it has to act as a signed-in person.
 - **First load after being idle can take up to ~a minute.** The backing SQL database runs on Azure's **Serverless** compute tier, which auto-pauses after a period of no activity to save cost. The first request after a pause has to wait for the database to resume before it can query anything — this shows up as Ideas & Bugs (or anything else touching the Azure SQL backend) taking noticeably longer to load than usual. Once resumed, it stays warm and every subsequent load is fast, even across app restarts, until it's idle long enough to auto-pause again. This is a deliberate cost/latency tradeoff, not a bug — decided to keep as-is rather than switch to an always-on tier.
