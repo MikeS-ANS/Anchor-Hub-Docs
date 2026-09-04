@@ -59,10 +59,34 @@ Leaving neither option selected excludes that row from the write-back, the same 
 
 On confirm, the tool:
 - Updates each changed contact's **Support Classification** UDF.
+- Writes back any corrected **Title**, **Phone Number** and **VIP** status — see [below](#title-phone-and-vip-corrections).
 - **Deactivates** contacts set to "No Longer Active"; **reactivates** contacts set to a supported classification.
 - **Creates** the checked M365-only contacts (and, if a contact with that email already exists — active or inactive — updates it instead of making a duplicate), or **updates** the linked contact for rows resolved as "Update existing" above.
 - Runs one more **live check** against Autotask's current contacts immediately before each create — not just against the possibly-stale generated report — so a name match that only exists in Autotask today (created after the report was generated, say) is never silently duplicated. These are skipped with a **needs-review** status in the progress list and counted separately in the summary; resolve them manually and re-run write-back for just that person next cycle.
 - Posts an **account note** summarizing confirmed vs. contracted users, the detected changes, and any matched-and-updated or needs-review counts.
+
+### Title, Phone and VIP corrections
+
+Clients often fix more than the support option — a job title, a direct dial, whether someone is a VIP. The workbook has always *had* those columns, but only the support option was ever read, and a row whose support option was left alone was discarded before anything else on it was looked at. A client who corrected twenty job titles and changed no support options therefore appeared to have returned no changes at all.
+
+All four client-editable columns are now compared against what Autotask held when the sheet was sent:
+
+| Column | Written to |
+|---|---|
+| **User Support Options** (A) | Support Classification. Still the only field that can deactivate or reactivate a contact. |
+| **VIP** (C) | The VIP field — accepts only `Yes` or `No`. |
+| **Title** (D) | Contact title. |
+| **Phone** (F) | Whichever phone field the number came from originally, mobile or main — so a correction can't leave a stale number sitting in the other one. |
+
+The preview lists each changed field on its own line, with the support option called out in orange, so you can tell at a glance whether a batch is re-classifying people or just tidying up job titles.
+
+Worth knowing:
+
+- **This applies to sheets generated from now on.** Audits already sitting in clients' inboxes were built without the hidden baseline values this compares against. Those returns keep working exactly as they do today — support option only. Nothing breaks and nothing is lost; the extra fields just aren't picked up.
+- **A blank cell is never read as "delete this."** If a client clears a title, it's left alone. Emptying a field in Autotask stays a manual action — an empty cell is far more often "I didn't fill this in" than "remove this."
+- **Reformatting isn't a change.** A number retyped as `(303) 555-1234` instead of `303-555-1234` is the same number, and is ignored. Same for a title that only gained trailing spaces.
+- **Autotask caps titles at 50 characters and phone numbers at 25.** Anything longer is reported as skipped in the progress list rather than written — a truncated job title or phone number *looks* correct in the PSA, which is worse than one that was never written.
+- **A row where only the title changed writes only that title.** It never touches the support option, and it cannot deactivate anyone.
 
 ---
 
