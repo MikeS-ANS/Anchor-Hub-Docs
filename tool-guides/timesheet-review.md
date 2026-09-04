@@ -62,6 +62,19 @@ Each time entry is bucketed by **account**, not the billable flag — a lot of A
 
 > **⚠ Permission-gap warning.** If an entire scan comes back with zero time-off hours across everyone loaded, the tool shows a banner warning the shared read-only Autotask API key may be missing "can view non-billable time entries" permission — meaning PTO/sick/holiday entries are silently missing and client-facing % is inflated. Check the API user's permissions if you see this.
 
+### The Activity column
+
+Each entry row's **Activity** column names the kind of work, and where that name comes from depends on the entry:
+
+| Entry type | Activity shows |
+|---|---|
+| **Ticket** or **project task** | The entry's Autotask **Work Type** — Remote Support, Onsite Support, Triage, Travel Time, Correspondence, Client Success, and so on. |
+| **General time** (no ticket or task) | Its allocation code name — Administrative, PTO, and so on. This is the value the time-off bucketing above keys off. |
+
+Work Type is **display-only**. It never affects which bucket an entry lands in, and it never moves the client-facing %.
+
+> Rows previously showed a generic `Service Ticket` or `Project Task` here, which told you nothing. If you still see one of those placeholders, that row is being read from a scan cached before this shipped — hit **↻ Refresh** to pull it again. The same placeholder also appears, harmlessly, if the Work Type lookup itself fails.
+
 ---
 
 ## Data-quality flags
