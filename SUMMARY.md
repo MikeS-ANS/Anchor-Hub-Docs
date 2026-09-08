@@ -42,6 +42,7 @@
 * [Payroll Processing](tool-guides/payroll-processing.md)
 * [Access Management](tool-guides/access-management.md)
 * [Daily Progress](tool-guides/daily-progress.md)
+* [Inventory Reports](tool-guides/inventory-reports.md)
 
 ## What's New
 
