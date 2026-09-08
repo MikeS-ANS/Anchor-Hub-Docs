@@ -46,6 +46,7 @@
 
 ## What's New
 
+* [v4.3.0 — Inventory Reports](whats-new/v4.3.0.md)
 * [v4.2.0 — Ideas & Bugs notifications, Timesheet Work Type, User Audit contact write-back](whats-new/v4.2.0.md)
 * [v4.1.0 — Daily Progress](whats-new/v4.1.0.md)
 * [v3.12.0 — Payroll Processing](whats-new/v3.12.0.md)
