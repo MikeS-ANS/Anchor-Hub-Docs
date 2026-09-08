@@ -99,12 +99,38 @@ The tool opens here for account managers (role-gated). It's the lifecycle view, 
 
 > The MSC workbook's part-time column is new and mostly unfilled right now. Until it's filled in for a given client, that client's contracted part-time count reads as zero — so you may see a row like Full Support "7 + 2" next to a plain "7" for Included, with a PT badge showing. That's expected on an unfilled column, not a bug.
 
-- **Needs an audit run** — never run, or last run over 60 days ago.
+- **Needs an audit run** — due this cycle, or carried forward from a missed one (see **Cohorts** below for how each client's schedule is set). Each row shows a colored **ODD**/**EVEN** cohort badge — or "unassigned" for a client the schedule doesn't cover yet — plus a **Due Since** figure: how many days past its due date the client is, or a dash if it has no cohort yet to measure from.
 - **Sent, not returned — pending** — sent and still within the return window.
 - **Sent, not returned — overdue** — past the return-by date, with a **Start Write-Back** button that pre-loads the client and requires a "did not return" note.
 - **Good standing** — recently run/returned, with last-ran and last-returned dates.
 
 Every row also has **+ Time** — a quick time entry (default 15 min, work type **Client Success**, editable notes) logged against the client's linked *User Audits* task.
+
+---
+
+## Cohorts
+
+A new tab, next to the AM Dashboard (same access). It replaces the old "audit every client every 60 days" rule with a fixed bi-monthly schedule: every client sits in either the **Odd** cohort (audited in January, March, May, July, September, November) or the **Even** cohort (audited in February, April, June, August, October, December) — so each client is audited every other month, on a predictable calendar instead of a rolling day count.
+
+**Cohorts are sticky.** A client keeps its assigned month until someone deliberately moves it. Reassigning which account manager owns a client does **not** change its cohort — the two are unrelated.
+
+**A cycle only counts as done once the report was generated *and* the client's write-back was applied.** If a client's audit is missed — no report generated, or a report sent but never returned — that cycle doesn't just disappear: it carries forward. The **Due Since** figure on the AM Dashboard keeps counting from the client's *original* due date, so a client missed for several cycles in a row shows up as increasingly overdue rather than quietly resetting every couple of months.
+
+For each account manager, the tab shows two columns — **Odd** and **Even** — with a running total of clients and included users in each, so a lopsided book is obvious at a glance. A **↔ move** button on any client moves it to the other cohort by hand at any time.
+
+### Generate initial split
+
+The first time you open this tab for an account manager whose clients have never been through the cohort system, a banner offers **Generate initial split** — a **one-time** migration onto the new schedule. It never touches a client that already has a cohort.
+
+It's built to avoid a specific problem: if clients were simply split evenly at random, a client audited a week ago could land in the cohort due right now and get flagged for another audit almost immediately. To prevent that, the split looks at how overdue each client already is (weighted by how many users it has, not just a head count) and puts the more-overdue half of the roster into whichever month is due *right now*, while the more-recently-audited half waits until next month. You'll see exactly who's proposed to land where before anything is saved.
+
+### Rebalance
+
+Once an account manager's roster has been through the initial split, **Rebalance** is available going forward — a separate action from the initial split, doing a different job. Rebalance ignores how recently a client was audited; it only looks at keeping the two cohorts close in both client count and included users, which is useful after a client is added, dropped, or grows significantly. Like the initial split, it shows a preview of every proposed move before anything is saved.
+
+**Rebalance won't run for an account manager until their roster has been through the initial split at least once** — that's deliberate, so it can't be used to skip the recency-aware initial split above.
+
+A brand-new client with no cohort yet is assigned automatically to whichever of its account manager's two cohorts currently has fewer included users — but only once that account manager has already run the initial split; otherwise the new client waits for that migration along with the rest of their roster.
 
 ---
 
