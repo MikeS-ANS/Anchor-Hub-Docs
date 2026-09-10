@@ -93,7 +93,7 @@ The intended first real entries for this list are Autotask company 0 (Anchor Net
 
 The **Export** button, at the top of the screen, is enabled once a month is loaded, and its label names the month (for example "Export 2026-08") so it's always clear which month is about to be saved. Clicking it opens a normal save-as dialog; the suggested file name is `Anchor Tool Inventory <month>.xlsx`.
 
-The file has two sheets. The first is named for the month and carries the same twelve columns, in the same order, as the existing Anchor Tool Inventory workbook's quarterly tabs — Customer, User Count, RMM, RMM Servers/Workstations, BitDefender, CyberQP Elevate, Splashtop Pro, SaaS, RMM DT&LT, LifeCycle Insights, and Liongard — with one column appended at the end, Duo Security, since Duo is tracked in the Hub but wasn't on the old spreadsheet's tabs.
+The file has two sheets. The first is named for the month and carries the same twelve columns, in the same order, as the existing Anchor Tool Inventory workbook's quarterly tabs — Customer, User Count, RMM, RMM Servers, Workstations, BitDefender, CyberQP Elevate, Splashtop Pro, SaaS, RMM DT&LT, LifeCycle Insights, and Liongard — with one column appended at the end, Duo Security, since Duo is tracked in the Hub but wasn't on the old spreadsheet's tabs.
 
 What lands in each cell:
 
@@ -102,7 +102,7 @@ What lands in each cell:
 * **Not read** means the read failed for that client in this snapshot.
 * The Yes/No indicator columns (RMM DT&LT, LifeCycle Insights, Liongard) read **Yes**, **No**, or **Not read**.
 * **User Count** is the client's MSC-contracted baseline number, or the words **No MSC record** or **Unknown** when it isn't known — same meaning as on screen.
-* The BitDefender, CyberQP Elevate, Splashtop Pro, and RMM Servers/Workstations columns are present but always empty — those aren't read yet.
+* The BitDefender, CyberQP Elevate, Splashtop Pro, and RMM Servers, Workstations columns are present but always empty — those aren't read yet.
 
 The second sheet, **About this export**, records the month, when the snapshot was taken (and by whom), whether it was late, when the MSC baseline was read, how many companies and vendor accounts were excluded, whether any source failed to read, how many individual client reads failed, and a short legend explaining the cell rules above. The export carries no pricing anywhere, by design.
 
