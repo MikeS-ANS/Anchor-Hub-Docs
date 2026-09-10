@@ -84,6 +84,6 @@ Taking a snapshot reads six sources live — Datto RMM, Datto SaaS Protection, D
 ## What is not here yet
 
 * Exporting any of this to Excel.
-* A screen for changing which companies are excluded from a snapshot — exclusions can currently only be set outside the app.
+* A screen for managing this tool's own exclusions list. Today a company marked **Excluded** in Company Mapping is left out of every snapshot (and counted under Exclusions in force); a Tool-Inventory-specific list, editable from this screen, is not built yet.
 * An automatic monthly snapshot — every snapshot today is taken by hand with Take Snapshot Now.
 * BitDefender, CyberQP, and Splashtop counts — nothing for these three platforms appears on screen yet.
