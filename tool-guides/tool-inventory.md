@@ -11,7 +11,7 @@ Tool Inventory is intended for the Admin, Finance, and Strategic roles, and acce
 The tool only appears in your sidebar after **two** separate steps, not one:
 
 1. Somebody with admin access grants your role the tool in **Access Management**.
-2. You tick **Tool Inventory** in **Settings → Sidebar Layout** and save.
+2. You tick **Tool Inventory** in **Sidebar Layout** (bottom-left navigation bar, under Ideas & Bugs) and save.
 
 The second step is easy to miss. A newly added tool lands in an existing person's saved sidebar layout switched off, so even after the grant is in place, Tool Inventory stays hidden until you turn it on yourself. If a colleague says they've been granted access and still can't find it, that's almost always the reason.
 
@@ -24,7 +24,7 @@ Beside the picker, four more values describe the month you've selected:
 * **Snapshot** — when it was taken and by whom, and whether it replaced an earlier snapshot for the same month. Snapshots are frozen: once taken, the numbers in them never move, even if a client's contract or vendor account changes afterward.
 * **Baseline read** — when the MSC workbook was read for this snapshot.
 * **Exclusions in force** — how many companies were excluded from this snapshot; hover the value to see their Autotask IDs.
-* **In this snapshot** — a one-line summary of totals: how many clients, how many platforms, how many have no MSC record, how many vendor accounts are unmapped, and how many baselines couldn't be read. It does not carry the Snapshot diagnostics count — that number is on the diagnostics tab itself.
+* **In this snapshot** — a one-line summary of totals: how many clients, how many platforms, how many have no MSC record, how many vendor accounts are unmapped, how many baselines couldn't be read, and — whenever anything failed to read, which is every month for now — how many reads failed. It does not carry the Snapshot diagnostics count — that number is on the diagnostics tab itself.
 
 ## This month is incomplete
 
