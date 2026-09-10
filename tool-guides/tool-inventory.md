@@ -98,7 +98,7 @@ The file has two sheets. The first is named for the month and carries the same t
 What lands in each cell:
 
 * A **number** is a real vendor-reported count. **0** is a real zero, not a placeholder.
-* An **empty** cell in a count column means the vendor listed no account for that client — the same thing "No account" means on screen.
+* An **empty** cell in a count column means the vendor lists no site or sub-account mapped to that client — the same thing "No account" means on screen.
 * **Not read** means the read failed for that client in this snapshot.
 * The Yes/No indicator columns (RMM DT&LT, LifeCycle Insights, Liongard) read **Yes**, **No**, or **Not read**.
 * **User Count** is the client's MSC-contracted baseline number, or the words **No MSC record** or **Unknown** when it isn't known — same meaning as on screen.
@@ -108,7 +108,7 @@ The second sheet, **About this export**, records the month, when the snapshot wa
 
 ## Taking a snapshot
 
-A snapshot of the most recently closed month (Denver time) is now taken automatically: starting at 6:00 AM Denver time on the 1st of the following month, and retried every hour for the rest of that day if a vendor couldn't be reached. From the 2nd of the month onward, the automatic attempt stops for good — after that, only a person can take one, using Take Snapshot Now, and that snapshot is marked **late**.
+A snapshot of the most recently closed month (Denver time) is now taken automatically: on the 1st of the following month, starting at 6:10 AM Denver time and retried each hour through that day if a vendor couldn't be reached. From the 2nd of the month onward, the automatic attempt stops for good — after that, only a person can take one, using Take Snapshot Now, and that snapshot is marked **late**.
 
 **Take Snapshot Now**, at the top of the screen, always targets the most recently closed month — never the month you currently have selected in the picker. Any user with access to Tool Inventory can take the **first** snapshot of a month, on time or late. **Replacing** a month that already has a snapshot is different — that needs the Hub admin role, and the button is disabled with an explanation for anyone else. Either way, a replaced snapshot is kept, not deleted, so nothing is lost for audit purposes.
 
