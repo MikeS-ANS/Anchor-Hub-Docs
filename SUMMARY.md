@@ -43,6 +43,7 @@
 * [Access Management](tool-guides/access-management.md)
 * [Daily Progress](tool-guides/daily-progress.md)
 * [Inventory Reports](tool-guides/inventory-reports.md)
+* [Tool Inventory](tool-guides/tool-inventory.md)
 
 ## What's New
 
