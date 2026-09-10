@@ -6,7 +6,14 @@ Today the report covers three platforms with real counts — **Datto RMM** (devi
 
 ## Who sees it
 
-Admin, Finance, and Strategic roles. Grants are made in Access Management — until a grant exists for your role, Tool Inventory doesn't appear in the sidebar at all.
+Tool Inventory is intended for the Admin, Finance, and Strategic roles, and access is granted in Access Management.
+
+The tool only appears in your sidebar after **two** separate steps, not one:
+
+1. Somebody with admin access grants your role the tool in **Access Management**.
+2. You tick **Tool Inventory** in **Settings → Sidebar Layout** and save.
+
+The second step is easy to miss. A newly added tool lands in an existing person's saved sidebar layout switched off, so even after the grant is in place, Tool Inventory stays hidden until you turn it on yourself. If a colleague says they've been granted access and still can't find it, that's almost always the reason.
 
 ## Picking a stored month
 
@@ -17,11 +24,13 @@ Beside the picker, four more values describe the month you've selected:
 * **Snapshot** — when it was taken and by whom, and whether it replaced an earlier snapshot for the same month. Snapshots are frozen: once taken, the numbers in them never move, even if a client's contract or vendor account changes afterward.
 * **Baseline read** — when the MSC workbook was read for this snapshot.
 * **Exclusions in force** — how many companies were excluded from this snapshot; hover the value to see their Autotask IDs.
-* **In this snapshot** — a one-line summary of totals: how many clients, how many platforms, and how many landed on each of the lists described below.
+* **In this snapshot** — a one-line summary of totals: how many clients, how many platforms, how many have no MSC record, how many vendor accounts are unmapped, and how many baselines couldn't be read. It does not carry the Snapshot diagnostics count — that number is on the diagnostics tab itself.
 
 ## This month is incomplete
 
 A neutral banner appears above the tabs whenever something in the selected snapshot couldn't be read in full — a vendor source failed outright, one or more clients' MSC baselines couldn't be read, or an individual platform read failed for a specific client. It names what went wrong. This is deliberately not styled as a warning or an alert — "incomplete" is a statement about what the snapshot could read, not a judgment about any client. If you see it, the fix is to retake the snapshot once the underlying read problem is resolved; the current, incomplete snapshot is kept either way.
+
+Expect this banner on every month for now: for the same reason **Not read** can't yet be told apart from "no account at that vendor," a client who simply isn't on a platform counts as an unread row, so essentially every snapshot is marked incomplete until that distinction exists.
 
 ## Client matrix
 
@@ -30,7 +39,7 @@ The default tab: one row per client, one column per platform. The Client, Sectio
 Four things can appear in a platform cell, and they mean different things:
 
 * **A number (including 0)** — a real count a vendor reported for that client. A 0 is a real, vendor-reported zero, not a placeholder.
-* **Not read** — the vendor didn't return anything for this client's account in this snapshot. This is not the same as a 0.
+* **Not read** — the vendor didn't return anything for this client's account in this snapshot. This is not the same as a 0. It also does not mean an account exists and failed: a client who has no account at that vendor at all reads **Not read** too, because the snapshot doesn't yet tell "no account" apart from "read failed." In practice most Not read cells are the first of those — a client who simply isn't on that platform.
 * **Unknown** (appears in the Contracted column) — this client's MSC baseline couldn't be read for this snapshot. It is not a contract finding — the client may well have a real contracted number, it just isn't known for this month.
 * **No MSC record** (also in the Contracted column) — the client is mapped to a real Autotask company, and that company has no row in any of the four MSC sections (MRR, TCC, ORR, CoM).
 
@@ -48,7 +57,7 @@ The MSC name mapping column is the thing to check first for each row: if the nam
 
 A different kind of item entirely — this is a mapping to-do, not a client. Each row is a vendor site or sub-account (from Datto RMM, Duo, or Datto SaaS Protection) that didn't match any Autotask company at all. Because there's no client behind it, it never appears on the matrix or in either of the other two lists, and its count isn't included in any client's numbers.
 
-The **How to map** column says where each one gets fixed, and it's different per vendor: a Datto RMM site is mapped by setting the site's Autotask company id inside Datto itself — never by name. Duo and Datto SaaS Protection sub-accounts have no mapping screen in the Hub yet, so an unmapped one there has to wait for a future screen or a direct database entry; the next snapshot will pick it up once it's mapped.
+The **How to map** column says where each one gets fixed, and it's different per vendor: a Datto RMM site is mapped by setting the site's Autotask company id inside Datto itself — never by name. Duo and Datto SaaS Protection accounts are matched by name instead, so there are two ways one gets placed: the next snapshot picks it up on its own once the account's name in the vendor's portal matches an Autotask company name, or once a confirmed name mapping exists for that company and platform in the Hub's records. There's no screen in the Hub for entering that mapping by hand yet, so an account whose vendor-side name can't be corrected has to wait for a future screen or a direct database entry; either way, the next snapshot is what picks it up.
 
 ## Baselines not read
 
