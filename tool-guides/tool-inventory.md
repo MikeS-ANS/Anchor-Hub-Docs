@@ -46,7 +46,7 @@ Four things can appear in a platform cell, and they mean different things:
 * **Not read** — the read genuinely failed for this client's account in this snapshot.
 * **Not in this snapshot** — this column didn't exist in the report yet when the snapshot was taken, so the month simply stored no value for it. It's neither a failed read nor a claim that the client has no account — it's a fact about the report, not the client, and it doesn't make the month read as incomplete on its own (the incomplete banner above is only about reads that were attempted and failed).
 
-A snapshot taken before this rebuild doesn't yet know the difference between "no account" and "read failed" for Datto RMM, Duo, and Datto SaaS Protection — it shows **Not read** for both. That's the case for the stored 2026-08 snapshot specifically, until it's retaken; every snapshot taken from this point forward tells the two apart. That same 2026-08 snapshot also predates RMM DT&LT becoming a real count, so its RMM DT&LT cell reads **Not in this snapshot** for every client — not a failed read, just a column the report gained after that month was taken — until 2026-08 is retaken.
+A month stored before this rebuild doesn't know the difference between "no account" and "read failed" for Datto RMM, Duo, and Datto SaaS Protection — a snapshot that old shows **Not read** for both. Every snapshot taken from this point forward tells the two apart. The stored 2026-08 snapshot predates RMM DT&LT becoming a real count, so its RMM DT&LT cell reads **Not in this snapshot** for every client — not a failed read, just a column the report gained after that month was taken — until 2026-08 is retaken.
 
 ## Single client
 
@@ -97,7 +97,7 @@ The intended first real entries for this list are Autotask company 0 (Anchor Net
 
 The **Export** button, at the top of the screen, is enabled once a month is loaded, and its label names the month (for example "Export 2026-08") so it's always clear which month is about to be saved. Clicking it opens a normal save-as dialog; the suggested file name is `Anchor Tool Inventory <month>.xlsx`.
 
-The file has two sheets. The first is named for the month and carries the same twelve columns, in the same name and order, as the existing Anchor Tool Inventory workbook's quarterly tabs — Customer, User Count, RMM, RMM Servers, Workstations, BitDefender, CyberQP Elevate, Splashtop Pro, SaaS, RMM DT&LT, LifeCycle Insights, and Liongard — with one column appended at the end, Duo Security, since Duo is tracked in the Hub but wasn't on the old spreadsheet's tabs. RMM DT&LT stays in that same column position (column I), but as of this rebuild its cells hold a real device count rather than Yes/No — see below.
+The file has two sheets. The first is named for the month and carries the same eleven columns, in the same name and order, as the existing Anchor Tool Inventory workbook's quarterly tabs — Customer, User Count, RMM, "RMM Servers, Workstations" (a single column, despite the comma in its name), BitDefender, CyberQP Elevate, Splashtop Pro, SaaS, RMM DT&LT, LifeCycle Insights, and Liongard — with a twelfth appended at the end, Duo Security, since Duo is tracked in the Hub but wasn't on the old spreadsheet's tabs. RMM DT&LT stays in that same column position (column I), but as of this rebuild its cells hold a real device count rather than Yes/No — see below.
 
 What lands in each cell:
 
