@@ -2,7 +2,7 @@
 
 Tool Inventory shows, per client, how many seats/devices/users ANS is actually providing them on a handful of vendor platforms, alongside that client's MSC-contracted baseline for comparison — read from a frozen monthly snapshot rather than live every time. It draws no conclusion from what it shows: there is no verdict, no severity, and no dollar figure anywhere on the screen. Actual and contracted sit side by side, and you judge the difference.
 
-Today the report covers three platforms with real counts — **Datto RMM** (devices), **Duo Security** (users), and **Datto SaaS Protection** (users) — plus three Yes/No indicators showing whether a client is licensed for a service: **RMM DT&LT**, **Liongard**, and **LifeCycle Insights** (this last one reads from Lifecycle Manager X; the column is labeled LifeCycle Insights on screen).
+Today the report covers four platforms with real counts — **Datto RMM** (devices), **RMM DT&LT** (devices — a breakdown of that same Datto RMM total, showing how many of those devices are desktops and laptops), **Duo Security** (users), and **Datto SaaS Protection** (users) — plus two Yes/No indicators showing whether a client is licensed for a service: **Liongard** and **LifeCycle Insights** (this last one reads from Lifecycle Manager X; the column is labeled LifeCycle Insights on screen).
 
 ## Who sees it
 
@@ -23,7 +23,7 @@ Beside the picker, four more values describe the month you've selected:
 
 * **Snapshot** — when it was taken and by whom, whether it replaced an earlier snapshot for the same month, and whether it was taken late (after the 1st of the following month). Snapshots are frozen: once taken, the numbers in them never move, even if a client's contract or vendor account changes afterward.
 * **Baseline read** — when the MSC workbook was read for this snapshot.
-* **Exclusions in force** — how many companies and how many vendor accounts were excluded from this snapshot, for example "120 companies · 5 vendor accounts excluded"; hover the value to see the Autotask IDs and vendor account names behind those counts.
+* **Exclusions in force** — how many companies and how many vendor accounts were excluded from this snapshot, for example "120 companies · 5 vendor accounts excluded"; hover the value to see the Autotask IDs and vendor account names behind those counts. A sub-line underneath can add, for example, "5 of them matched an account this snapshot" — how many of the excluded vendor accounts actually matched a real unmapped account when this snapshot was taken. A month taken before that was measured shows no sub-line at all, which is not the same as zero; it's a number that month never counted.
 * **In this snapshot** — a one-line summary of totals: how many clients, how many platforms, how many have no MSC record, how many vendor accounts are unmapped, how many baselines couldn't be read, and — only when something actually failed to read — how many reads failed. It does not carry the Snapshot diagnostics count — that number is on the diagnostics tab itself.
 
 ## This month is incomplete
@@ -32,21 +32,25 @@ A neutral banner appears above the tabs whenever something in the selected snaps
 
 ## Client matrix
 
-The default tab: one row per client, one column per platform. The Client, Section, and Contracted baseline columns stay pinned on the left as you scroll the platform columns across. **Find client** filters the list by name or Autotask ID as you type. Click any row to open that one client on its own.
+The default tab: one row per client, one column per platform. The Client, Section, and Contracted baseline columns stay pinned on the left as you scroll the platform columns across. **Find client** filters the list by name or Autotask ID as you type. Click any row to open that one client on its own. The RMM DT&LT column sits immediately after Datto RMM, and its header reads "devices · via Datto RMM" — a reminder that it's a breakdown of the column right beside it, not a separate vendor or a separate read.
 
-Five things can appear in a platform cell, and they mean different things:
+The Contracted column shows the client's MSC-contracted baseline as **N users** (for an MRR client) or **N endpoints** (every other section) — always the total, full-time plus part-time combined. A sub-line reading **incl. N part-time** appears underneath only when the MSC workbook actually lists part-time users for that client; otherwise there's no sub-line at all. Two other words can appear in this column instead of a number:
+
+* **Unknown** — this client's MSC baseline couldn't be read for this snapshot. It is not a contract finding — the client may well have a real contracted number, it just isn't known for this month.
+* **No MSC record** — the client is mapped to a real Autotask company, and that company has no row in any of the four MSC sections (MRR, TCC, ORR, CoM).
+
+Four things can appear in a platform cell, and they mean different things:
 
 * **A number (including 0)** — a real count a vendor reported for that client. A 0 is a real, vendor-reported zero, not a placeholder.
 * **No account** — the vendor's read succeeded, and it simply listed no site or sub-account mapped to this client. This is a fact about the client, not a failed read.
 * **Not read** — the read genuinely failed for this client's account in this snapshot.
-* **Unknown** (appears in the Contracted column) — this client's MSC baseline couldn't be read for this snapshot. It is not a contract finding — the client may well have a real contracted number, it just isn't known for this month.
-* **No MSC record** (also in the Contracted column) — the client is mapped to a real Autotask company, and that company has no row in any of the four MSC sections (MRR, TCC, ORR, CoM).
+* **Not in this snapshot** — this column didn't exist in the report yet when the snapshot was taken, so the month simply stored no value for it. It's neither a failed read nor a claim that the client has no account — it's a fact about the report, not the client, and it doesn't make the month read as incomplete on its own (the incomplete banner above is only about reads that were attempted and failed).
 
-A snapshot taken before this month's rebuild doesn't yet know the difference between "no account" and "read failed" — it shows **Not read** for both. That's the case for the stored 2026-08 snapshot specifically, until it's retaken; every snapshot taken from this point forward tells the two apart.
+A snapshot taken before this rebuild doesn't yet know the difference between "no account" and "read failed" for Datto RMM, Duo, and Datto SaaS Protection — it shows **Not read** for both. That's the case for the stored 2026-08 snapshot specifically, until it's retaken; every snapshot taken from this point forward tells the two apart. That same 2026-08 snapshot also predates RMM DT&LT becoming a real count, so its RMM DT&LT cell reads **Not in this snapshot** for every client — not a failed read, just a column the report gained after that month was taken — until 2026-08 is retaken.
 
 ## Single client
 
-Opened by clicking a row anywhere in the app (the matrix, or either of the two lists below). The header repeats the client's name, Autotask ID, the MSC name it's mapped to, its MSC section, its contracted baseline, and which snapshot you're looking at — the contracted baseline is one figure for the client as a whole, not a separate number per platform, so it only appears up here. Below that, one table holds two kinds of rows: one row per counted platform (Platform, Unit, Actual, Vendor account, and Read — a date and time if the read succeeded, **No account** if the vendor listed nothing for this client, or **Not read** if the read failed), and one row per Yes/No indicator, with the indicator's source vendor shown in the Vendor account column in place of an account name. A **‹ Back** link above the header returns you to whichever list you opened the client from — the matrix, Clients with no MSC record, or Baselines not read.
+Opened by clicking a row anywhere in the app (the matrix, or either of the two lists below). The header repeats the client's name, Autotask ID, the MSC name it's mapped to, its MSC section, its contracted baseline, and which snapshot you're looking at — the contracted baseline is one figure for the client as a whole, not a separate number per platform, so it only appears up here. Below that, one table holds two kinds of rows: one row for each of the four counted platforms — Datto RMM, RMM DT&LT (the Desktop-and-Laptop devices inside that same client's Datto RMM total, read from the same source, not a separate vendor), Duo Security, and Datto SaaS Protection — each showing Platform, Unit, Actual, Vendor account, and Read (a date and time if the read succeeded, **No account** if the vendor listed nothing for this client, **Not read** if the read failed, or **Not in this snapshot** if the platform was added to the report after this month was taken); and one row for each of the two Yes/No indicators, Liongard and LifeCycle Insights, with the indicator's source vendor shown in the Vendor account column in place of an account name. A **‹ Back** link above the header returns you to whichever list you opened the client from — the matrix, Clients with no MSC record, or Baselines not read.
 
 ## Clients with no MSC record
 
@@ -85,7 +89,7 @@ The **Exclusions…** button, next to Export at the top of the screen, opens a d
 * **Vendor accounts excluded by Tool Inventory** — vendor accounts (Datto RMM, Duo, Datto SaaS Protection) that have no real client behind them at all, such as ANS's own test or internal accounts. The pick list here is drawn from the unmapped accounts of whichever month is currently loaded — if the dialog says the month isn't loaded, load a month first to see them.
 * **Companies excluded in Company Mapping** — read-only here. That Excluded toggle lives on the Company Mapping screen and applies to every tool in the Hub, not just Tool Inventory.
 
-Anyone with access to Tool Inventory can open the dialog and see the current lists, but only a Hub admin can save changes — the Save button only appears for an admin, and everyone else sees a note that these lists are admin-only. Changes take effect starting with the **next** snapshot; a snapshot already stored keeps whichever exclusions were in force when it was taken, so editing the list here never rewrites history.
+Anyone with access to Tool Inventory can open the dialog and see the current lists, but only a Hub admin can save changes — the Save button only appears for an admin, and everyone else sees a note that these lists are admin-only. Changes take effect starting with the **next** snapshot; a snapshot already stored keeps whichever exclusions were in force when it was taken, so editing the list here never rewrites history. Pressing **Escape** closes the dialog too, unless a save is still in progress.
 
 The intended first real entries for this list are Autotask company 0 (Anchor Network Solutions itself, since its own Datto RMM site holds ANS's own devices) and the handful of ANS test/internal vendor accounts that would otherwise show up as unmapped every month.
 
@@ -93,16 +97,17 @@ The intended first real entries for this list are Autotask company 0 (Anchor Net
 
 The **Export** button, at the top of the screen, is enabled once a month is loaded, and its label names the month (for example "Export 2026-08") so it's always clear which month is about to be saved. Clicking it opens a normal save-as dialog; the suggested file name is `Anchor Tool Inventory <month>.xlsx`.
 
-The file has two sheets. The first is named for the month and carries the same twelve columns, in the same order, as the existing Anchor Tool Inventory workbook's quarterly tabs — Customer, User Count, RMM, RMM Servers, Workstations, BitDefender, CyberQP Elevate, Splashtop Pro, SaaS, RMM DT&LT, LifeCycle Insights, and Liongard — with one column appended at the end, Duo Security, since Duo is tracked in the Hub but wasn't on the old spreadsheet's tabs.
+The file has two sheets. The first is named for the month and carries the same twelve columns, in the same name and order, as the existing Anchor Tool Inventory workbook's quarterly tabs — Customer, User Count, RMM, RMM Servers, Workstations, BitDefender, CyberQP Elevate, Splashtop Pro, SaaS, RMM DT&LT, LifeCycle Insights, and Liongard — with one column appended at the end, Duo Security, since Duo is tracked in the Hub but wasn't on the old spreadsheet's tabs. RMM DT&LT stays in that same column position (column I), but as of this rebuild its cells hold a real device count rather than Yes/No — see below.
 
 What lands in each cell:
 
 * A **number** is a real vendor-reported count. **0** is a real zero, not a placeholder.
 * An **empty** cell in a count column means the vendor lists no site or sub-account mapped to that client — the same thing "No account" means on screen.
 * **Not read** means the read failed for that client in this snapshot.
-* The Yes/No indicator columns (RMM DT&LT, LifeCycle Insights, Liongard) read **Yes**, **No**, or **Not read**.
-* **User Count** is the client's MSC-contracted baseline number, or the words **No MSC record** or **Unknown** when it isn't known — same meaning as on screen.
-* The BitDefender, CyberQP Elevate, Splashtop Pro, and RMM Servers, Workstations columns are present but always empty — those aren't read yet.
+* **Not in this snapshot** means the column was added to the report after this month's snapshot was taken, so the month stored no value for it — neither a failed read nor an empty "no account" cell.
+* The Yes/No indicator columns — **LifeCycle Insights** and **Liongard** only — read **Yes**, **No**, or **Not read**. RMM DT&LT is no longer one of these; it's a count column now, with the same four cell rules as any other count column above.
+* **User Count** is the client's MSC-contracted baseline number (users for an MRR client, endpoints otherwise), or the words **No MSC record** or **Unknown** when it isn't known — same meaning as on screen.
+* The BitDefender, CyberQP Elevate, Splashtop Pro, and RMM Servers, Workstations columns are present but always empty — those aren't read yet. RMM Servers, Workstations is a different breakdown from RMM DT&LT: it would split the same RMM total into servers versus workstations, not desktops versus laptops, and Phase 1 doesn't store it.
 
 The second sheet, **About this export**, records the month, when the snapshot was taken (and by whom), whether it was late, when the MSC baseline was read, how many companies and vendor accounts were excluded, whether any source failed to read, how many individual client reads failed, and a short legend explaining the cell rules above. The export carries no pricing anywhere, by design.
 
