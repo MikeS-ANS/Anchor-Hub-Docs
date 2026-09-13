@@ -67,7 +67,22 @@ A different kind of item entirely — this is a mapping to-do, not a client. Eac
 
 While any row for a platform is still listed here, that platform's **No account** cells read **Unconfirmed** instead — for every client on that platform, not just whichever client an unmapped account turns out to belong to, since the report has no way to know that yet. An unmapped Datto RMM row does the same to RMM DT&LT and RMM Servers, Workstations, since both of those columns are broken out of that same Datto RMM read rather than read on their own. See Client matrix, above.
 
-The **How to map** column says where each one gets fixed, and it's different per vendor: a Datto RMM site is mapped by setting the site's Autotask company id inside Datto itself — never by name. Duo, Datto SaaS Protection, and BitDefender accounts are matched by name instead, so there are two ways one gets placed: the next snapshot picks it up on its own once the account's name in the vendor's portal matches an Autotask company name, or once a confirmed name mapping exists for that company and platform in the Hub's records. There's no screen in the Hub for entering that mapping by hand yet, so an account whose vendor-side name can't be corrected has to wait for a future screen or a direct database entry; either way, the next snapshot is what picks it up. As of this update, Duo and BitDefender accounts (along with Liongard and Lifecycle Manager X, the two Yes/No indicators covered below under Snapshot diagnostics) are registered internally as mappable — nothing changed on screen yet, but the screen itself is next. Datto SaaS Protection stays the one exception: it's deliberately never getting a mapping entry point of its own, since an unmatched Datto SaaS Protection account is meant to resolve through whatever Autotask company that client's Kaseya account already maps to, via the existing Kaseya Org Mapping screen — not a future Tool Inventory screen. In the meantime, if an unmapped account genuinely has no client behind it at all — one of ANS's own test or internal accounts, for example — it belongs on the exclusions list instead of waiting to be mapped; see Exclusions below.
+The **How to map** column says where each one gets fixed, and it's different per vendor. A Datto RMM site is mapped by setting the site's Autotask company id inside Datto itself — never by name — so RMM rows show **Not mappable here** rather than an action: a name mapping for RMM would look like it worked and then quietly never take effect. Duo and BitDefender accounts are matched by name instead, and those rows now carry a **Map to a client** action you can use right here (see below). Datto SaaS Protection stays the one deliberate exception: an unmatched Datto SaaS account is meant to resolve through whatever Autotask company that client's Kaseya account already maps to, via the existing Kaseya Org Mapping screen, so it never gets a mapping entry point of its own — giving it one would create a second, competing answer to the same question.
+
+If an unmapped account genuinely has no client behind it at all — one of ANS's own test or internal accounts, for example — it belongs on the exclusions list instead of being mapped; see Exclusions below.
+
+### Mapping an account to a client
+
+Click **Map to a client** on any mappable row, or tick several rows first and use the **Map to a client** button in the selection bar to do them all at once. Either way a panel opens on the right:
+
+* Search by client name **or** Autotask ID — typing part of either narrows the list, so you don't need the exact name to find the client. The list is the Hub's own client directory, not a live Autotask search, so every client offered is one the mapping can actually be saved against.
+* **Nothing is ever auto-matched.** You pick the client yourself and the mapping is written explicitly; the Hub never guesses or approximates a name to place an account for you. That's deliberate — a wrong automatic match wouldn't fail visibly, it would quietly attribute one client's licence count to another client, on a screen finance reads.
+* Pick the client, and a confirmation names exactly what's about to happen before anything is written.
+* **The mapping takes effect from the next snapshot, not the one on screen.** Every snapshot is frozen when it's taken, so mapping an account now never changes a month you've already looked at. The panel and the confirmation both say which month it will first apply to.
+
+If the client you pick already has a different account mapped on that platform, the confirmation says so by name — for platforms that hold only one account per client (Duo, Blackpoint, Cytracom), mapping a new one **replaces** the old one, and anything recorded against the old account doesn't carry over.
+
+Nothing is written until you confirm; **Cancel** closes the panel and changes nothing. The same mappings are visible and editable afterwards in Company Mapping, alongside every other platform.
 
 ## Baselines not read
 
@@ -78,7 +93,7 @@ Clients whose MSC baseline genuinely couldn't be read this snapshot — the work
 Everything the snapshot-taking process couldn't cleanly place, frozen with the month. Sections that have nothing to report simply don't show:
 
 * **Sources that could not be read** — a vendor platform the snapshot couldn't reach at all.
-* **Vendor account names that matched no Autotask company** — for Liongard and Lifecycle Manager X specifically; a name that shows up here may just be a stale name sitting in the vendor's own portal.
+* **Vendor account names that matched no Autotask company** — for Liongard and Lifecycle Manager X specifically; a name that shows up here may just be a stale name sitting in the vendor's own portal. These two are Yes/No indicators rather than counted platforms, so they never appear on the Unmapped vendor accounts tab — this is the only place they show up, and each row carries the same **Map to a client** action described above, opening the same panel and writing the same mapping.
 * **Vendor accounts mapped to a non-client** — an account that maps to something in the Hub's records that isn't an actual client company.
 * **Vendor-name mapping collisions** and **MSC workbook collisions** — cases where more than one thing matched the same name.
 * **Company metadata errors** — problems reading a company's own information.

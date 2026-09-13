@@ -1,6 +1,8 @@
 # Company Mapping (Company Directory)
 
-Company Mapping — shown in the app as the **Company Directory** — is the foundation that connects every platform Anchor Hub touches back to its Autotask company: Pax8, Kaseya/Datto, Blackpoint, Cisco Meraki, the MSC revenue workbook, and CIPP (Microsoft 365 tenants). Every tool that needs to know "which Autotask company is this" — the Kaseya Invoice Processor, Blackpoint, User Audit Report, Client Touch Aging, and others — reads from this same directory instead of keeping its own copy.
+Company Mapping — shown in the app as the **Company Directory** — is the foundation that connects every platform Anchor Hub touches back to its Autotask company: Pax8, Kaseya/Datto, Blackpoint, Cisco Meraki, Cytracom, Duo Security, BitDefender, Liongard, Lifecycle Manager X, the MSC revenue workbook, and CIPP (Microsoft 365 tenants). Every tool that needs to know "which Autotask company is this" — the Kaseya Invoice Processor, Blackpoint, User Audit Report, Client Touch Aging, Tool Inventory, and others — reads from this same directory instead of keeping its own copy.
+
+The platform list is no longer fixed in code: each platform is declared once in a central registry, and this screen renders whatever that registry says. Adding a new vendor portal in future is a one-line entry rather than a code change here.
 
 Mappings live in **Azure SQL**, shared instantly across every signed-in user. There is no SharePoint file to sync and no per-tool re-mapping needed — confirm a match once and every tool sees it immediately.
 
@@ -11,7 +13,10 @@ Mappings live in **Azure SQL**, shared instantly across every signed-in user. Th
 The **Companies** tab lists every company Anchor Hub knows about, one row per Autotask company, sorted alphabetically by default (click a column header to sort by Status instead). Each row shows:
 
 - The Autotask company name (click it to open the company in Autotask) and its Autotask classification
-- A chip for each platform mapping (Kaseya, Blackpoint, Meraki, Pax8) — click **+** to attach one, click an existing chip to reassign or remove it
+- A chip for each platform mapping — click **+** to attach one, click an existing chip to reassign or remove it. There are nine platform columns: Kaseya / Datto, Cisco Meraki, Blackpoint Cyber, Cytracom, Pax8, Duo Security, BitDefender, Liongard, and Lifecycle Manager X. The last four are new, and are the ones Tool Inventory's unmapped accounts get mapped to.
+  - **Pax8 is shown but not editable here** — it has no **+**. Those mappings are written by the Pax8 Sync on the Pax8 Sync tab, not by hand.
+  - **Datto RMM has no column at all**, deliberately: it matches on the Autotask company id set inside Datto rather than on a name, so a name mapping for it would silently never take effect.
+  - The table scrolls sideways at narrower window widths rather than squashing its columns.
 - MSC Name / CIPP Domain — single-value fields with the same attach flow
 - Google Workspace vs. M365 toggle, and a SharePoint Folder field
 
