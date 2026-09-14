@@ -196,6 +196,8 @@ A client whose CyberQP account exists but has no enabled end users reads a real 
 
 **One known gap.** CyberQP splits its customer list across three directories, and only one of them responds; the other two time out every time they're asked. All 74 customers come back from the working one, so nothing is known to be missing — but the report can't *prove* the list is complete. A client existing only in one of the two dead directories would read "No account" here rather than showing an error. This is being raised with CyberQP.
 
+**Don't take two snapshots close together.** CyberQP's sign-in is renewed once per run, and CyberQP rate-limits that renewal — so a second snapshot (or a dry run followed by a snapshot) within roughly an hour will fail the CyberQP read, while every other platform reads normally. It is harmless: the stored sign-in is not consumed or damaged, the column simply reads **Not read** for that month and the month is marked incomplete. Wait an hour and retake, and it fills in. This was hit for real on 2026-09-14, five minutes after a dry run.
+
 **If CyberQP needs reconnecting**, the column reads **Not read** for everyone and the month is marked incomplete, with the reason named under **Sources that could not be read** on Snapshot diagnostics. CyberQP's sign-in works by storing a credential the Hub swaps for a fresh one on every use, and if that chain is ever broken, someone has to sign in to CyberQP in a browser once to restart it. It is deliberately never reported as a zero: a silent zero in a licence report is a client's count quietly disappearing.
 
 ## What is not here yet
