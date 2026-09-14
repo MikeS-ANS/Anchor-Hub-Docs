@@ -47,6 +47,7 @@
 
 ## What's New
 
+* [v4.5.1 — Security patch](whats-new/v4.5.1.md)
 * [v4.5.0 — Tool Inventory](whats-new/v4.5.0.md)
 * [v4.4.0 — User Audit Report: Bi-Monthly Cohort Scheduling](whats-new/v4.4.0.md)
 * [v4.3.1 — Auto-Start and Minimize to Tray](whats-new/v4.3.1.md)
