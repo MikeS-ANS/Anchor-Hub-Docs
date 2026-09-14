@@ -133,12 +133,12 @@ Every line here needs a human decision of some kind, but acting on one never cha
 The **Exclusions…** button, next to Export at the top of the screen, opens a dialog with three sections:
 
 * **Companies excluded by Tool Inventory** — search by name or Autotask ID to add a company, or remove one already on the list.
-* **Vendor accounts excluded by Tool Inventory** — vendor accounts (Datto RMM, Duo, Datto SaaS Protection, BitDefender, Cyrisma) that have no real client behind them at all, such as ANS's own test or internal accounts. The pick list here is drawn from the unmapped accounts of whichever month is currently loaded — if the dialog says the month isn't loaded, load a month first to see them.
+* **Vendor accounts excluded by Tool Inventory** — vendor accounts (Datto RMM, Duo, Datto SaaS Protection, BitDefender, Cyrisma, CyberQP) that have no real client behind them at all, such as ANS's own test or internal accounts. The pick list here is drawn from the unmapped accounts of whichever month is currently loaded — if the dialog says the month isn't loaded, load a month first to see them.
 * **Companies excluded in Company Mapping** — read-only here. That Excluded toggle lives on the Company Mapping screen and applies to every tool in the Hub, not just Tool Inventory.
 
 Anyone with access to Tool Inventory can open the dialog and see the current lists, but only a Hub admin can save changes — the Save button only appears for an admin, and everyone else sees a note that these lists are admin-only. Changes take effect starting with the **next** snapshot; a snapshot already stored keeps whichever exclusions were in force when it was taken, so editing the list here never rewrites history. Pressing **Escape** closes the dialog too, unless a save is still in progress.
 
-The intended first real entries for this list are Autotask company 0 (Anchor Network Solutions itself, since its own Datto RMM site holds ANS's own devices) and the handful of ANS test/internal vendor accounts that would otherwise show up as unmapped every month.
+The intended first real entries for this list are Autotask company 0 (Anchor Network Solutions itself, since its own Datto RMM site holds ANS's own devices) and the handful of ANS test/internal vendor accounts that would otherwise show up as unmapped every month. **CyberQP lists ANS's own tenant as an ordinary customer** ("Anchor Network Solutions, Inc.", 37 accounts when this was written), so it belongs on this list too — it is not a client, and leaving it unmapped keeps every other client's CyberQP cell reading **Unconfirmed**, since the report cannot rule out that the unmapped account is theirs. Cyrisma has the same situation handled for it automatically, because Cyrisma puts the partner at the root of its own hierarchy where it can be recognised; CyberQP gives no such signal, so this one is a human decision.
 
 ## Exporting a month
 
