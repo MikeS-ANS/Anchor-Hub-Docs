@@ -20,6 +20,7 @@
 * [Company Mapping](tool-guides/company-mapping.md)
 * [Kaseya Invoice Processor](tool-guides/kaseya-invoice-processor.md)
 * [Project Time Summary](tool-guides/project-time-summary.md)
+* [Project Portfolio](tool-guides/project-portfolio.md)
 * [Autotask Contract Changes](tool-guides/contract-changes.md)
 * [Autotask Contract Renewals](tool-guides/contract-renewals.md)
 * [BlackPoint Invoice Processor](tool-guides/blackpoint.md)
