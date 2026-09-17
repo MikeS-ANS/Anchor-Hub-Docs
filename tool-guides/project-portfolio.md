@@ -88,7 +88,7 @@ Admins see a **Settings** button in the header. It lists every Autotask project 
 
 An admin can run **Archive status history** once. It copies every project's existing status text into a Project Status note titled "Status history before Anchor Hub", so pre-Hub history is preserved in the notes before the tool ever rebuilds the field. Running it again creates nothing new.
 
-It was run on 2026-09-17 for open projects only (21 notes). Completed projects were left alone — the Hub never rewrites their status field, so nothing there is at risk. Running it again creates nothing new.
+It was run on 2026-09-17 for open projects only (21 notes). Completed projects were left alone — the Hub never rewrites their status field, so nothing there is at risk.
 
 ## Every write is recorded
 
