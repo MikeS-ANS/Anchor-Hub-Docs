@@ -19,7 +19,7 @@ Nothing on this screen is typed in by a person. Every night at about 4 AM Mounta
 
 **Sync Now** runs the same read immediately. It usually takes well under a minute. If it fails, the header says so in red and the grid keeps showing the last good data — nothing is ever half-updated.
 
-Three things can be changed from this screen, and each one writes to Autotask under **your own** Autotask API key (Settings → Autotask): the project's status, a new dated status update, and the scope of work. Everything else is read-only. Labels are edited in a later release.
+Four things can be changed from this screen. Three write to Autotask under **your own** Autotask API key (Settings → Autotask): the project's status, a new dated status update, and the scope of work. The fourth — Labels and the StepUP IT flag — lives only in the Hub and needs no Autotask key. Everything else is read-only.
 
 ## The grid
 
@@ -32,15 +32,21 @@ One row per project, sorted by finish date. Click any column header to sort by i
 * **Start / Finish** — from Autotask. A finish date in the past on an open project shows in red.
 * **% Complete** — computed by Autotask from task completion. It cannot be edited anywhere in the Hub.
 * **Project #**, **Technology Strategist**, **Account Manager**, **TAM** — a dash means no active ANS person holds that role on the account. People who have left ANS are never shown, even if Autotask still lists them on the team.
-* **Labels** — Hub-only tags and the StepUP IT flag. Editing them arrives with the Board view.
+* **Labels** — Hub-only tags and the StepUP IT flag, edited from the detail panel.
 
 ## Filters
 
 **Department** defaults to Professional Services. **Phase** and **Lead** narrow the list. **Scope** is Open by default; **Include completed** adds projects finished within the chosen window (last 30 days, last month, last quarter, last year, or a date range). **Search** matches client, project name or project number.
 
+## The Board view
+
+The **Grid | Board** switch in the header shows the same open projects as cards in six phase columns — Discovery, Planning, Executing, Monitoring & Controlling, Closure, On Hold — plus an **Unmapped** column when a project carries a status the map does not know. The Department, Lead and Search filters apply to both views; the Board never shows completed projects. Each card shows the client and project, the finish date (red when past), the newest status entry, the lead and % complete, and the same **Autotask status** dropdown as the panel: pick a new status, confirm, and the card moves to the column that status maps to. Cards cannot be dragged — several statuses share a phase, so a drag could not tell which status you meant.
+
 ## The detail panel
 
-Click a row. The panel shows the overview (dates, hours against estimate, duration), the account team, labels, the status history Autotask's `statusDetail` field still holds, newest entry first, and the scope of work. **Open in Autotask** jumps to the project in the Autotask web app.
+Click a row or a card. The panel shows the overview (dates, hours against estimate, duration), the account team, labels, the **full status history**, the scope of work, and the most recent writes made through the Hub. **Open in Autotask** jumps to the project in the Autotask web app.
+
+The history merges two sources: the entries still in Autotask's 2,000-character `statusDetail` field, and every **Project Status** note on the project — your Hub status updates, entries the Hub moved into a note when the field filled up, the one-time history archive, and notes typed directly in Autotask. Entries that survive only in notes carry a small **note** badge. The history loads a moment after the panel opens; until then you see the entries from the field.
 
 ## Changing a status
 
@@ -66,11 +72,23 @@ The line under the history — "statusDetail currently mirrors the newest N entr
 
 Click **Edit** beside the counter, change the text and **Write to Autotask**. Autotask holds 8,000 characters; the counter turns red past that and the save is refused rather than letting Autotask truncate the text.
 
+## Labels and the StepUP IT flag
+
+Click **Edit** beside **Labels · Hub-owned**, add labels (pick one already in use from the list or type a new one), remove with ×, tick **StepUP IT project** if it applies, then **Save**. These live in the Hub only — nothing is written to Autotask — and every change is recorded in the same audit table as the Autotask writes so it is clear who changed what. Up to 20 labels of 60 characters each.
+
+## Recent writes from the Hub
+
+The bottom of the panel lists the newest ten writes made through Anchor Hub on this project — status changes, status updates, scope edits and label changes — with who made them and when. Changes made directly in Autotask are not listed; the history above already shows those.
+
+## Settings (admins)
+
+Admins see a **Settings** button in the header. It lists every Autotask project status — including inactive ones and any the board has not seen yet — with the phase it lands in, whether it counts as **Generic** (plain New or In Progress, which raises **Needs a status**), and how many cached projects carry it. A status can also be **Excluded** (never on the board) or left **Not mapped**. Below the table are the job titles that identify a client's **Technology Strategist** and **TAM** on the Autotask account team; a person is shown when their title contains one of them. **Save and re-sync** stores the settings and runs Sync Now so every project's phase follows the new map. Client Touch Aging keeps its own copy of the title lists. If a sync is already running when you save, the header says so and you run Sync Now yourself once it finishes.
+
 ## Archive status history (admins, once)
 
 An admin can run **Archive status history** once. It copies every project's existing status text into a Project Status note titled "Status history before Anchor Hub", so pre-Hub history is preserved in the notes before the tool ever rebuilds the field. Running it again creates nothing new.
 
-It has **not been run yet**: as built it would also archive every completed project still in the cache (about 300 notes), so it is being held until a later release adds an open-projects-only option. Nothing is at risk in the meantime — whenever a status update would push older entries out of the field, they are copied into a note first, automatically.
+It archives **open projects only** and has not been run yet; the count it will create is shown before anything happens. Completed projects are never touched.
 
 ## Every write is recorded
 
@@ -78,6 +96,6 @@ Each status change, status update and scope-of-work edit is written to a Hub aud
 
 ## Known open items
 
-* Label editing, the Board view and a settings screen for the phase map are not built yet (Phase 3).
-* The detail panel's history is read from Autotask's `statusDetail` field; entries that have been archived to notes are visible in Autotask, not yet in the Hub (Phase 3).
-* Writing needs your personal Autotask API key. Without one, the dropdown and buttons are disabled and the panel says why.
+* The Board's Department, Lead and Search filters are shared with the Grid; the Grid's Phase and Scope filters do not apply to the Board.
+* Writing to Autotask needs your personal Autotask API key. Without one, the dropdowns and the status/scope buttons are disabled and the panel says why; Labels can still be edited.
+* If Autotask rejects the Hub's record of a write (someone changed the project in the seconds between the write and the read-back), the Hub offers one retry; if that fails too, the value is correct in Autotask and Sync Now refreshes the row.
