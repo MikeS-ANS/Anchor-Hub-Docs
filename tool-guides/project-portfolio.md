@@ -68,7 +68,9 @@ Click **Edit** beside the counter, change the text and **Write to Autotask**. Au
 
 ## Archive status history (admins, once)
 
-An admin runs **Archive status history** once after this release. It copies every project's existing status text into a Project Status note titled "Status history before Anchor Hub", so pre-Hub history is preserved in the notes before the tool ever rebuilds the field. Running it again creates nothing new.
+An admin can run **Archive status history** once. It copies every project's existing status text into a Project Status note titled "Status history before Anchor Hub", so pre-Hub history is preserved in the notes before the tool ever rebuilds the field. Running it again creates nothing new.
+
+It has **not been run yet**: as built it would also archive every completed project still in the cache (about 300 notes), so it is being held until a later release adds an open-projects-only option. Nothing is at risk in the meantime — whenever a status update would push older entries out of the field, they are copied into a note first, automatically.
 
 ## Every write is recorded
 
