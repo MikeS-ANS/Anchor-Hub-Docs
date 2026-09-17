@@ -80,9 +80,13 @@ Click **Edit** beside **Labels · Hub-owned**, add labels (pick one already in u
 
 The bottom of the panel lists the newest ten writes made through Anchor Hub on this project — status changes, status updates, scope edits and label changes — with who made them and when. Changes made directly in Autotask are not listed; the history above already shows those.
 
+The value shown for each write is the one Anchor Hub read back from Autotask after the change landed. A status row also shows what the app believed the previous value to be, labelled **was reported as** — Autotask keeps no history of previous values, so that half was never verified and is shown as a claim rather than as fact.
+
 ## Settings (admins)
 
 Admins see a **Settings** button in the header. It lists every Autotask project status — including inactive ones and any the board has not seen yet — with the phase it lands in, whether it counts as **Generic** (plain New or In Progress, which raises **Needs a status**), and how many cached projects carry it. A status can also be **Excluded** (never on the board) or left **Not mapped**. Below the table are the job titles that identify a client's **Technology Strategist** and **TAM** on the Autotask account team; a person is shown when their title contains one of them. **Save and re-sync** stores the settings and runs Sync Now so every project's phase follows the new map. Client Touch Aging keeps its own copy of the title lists. If a sync is already running when you save, the header says so and you run Sync Now yourself once it finishes.
+
+Every save is recorded. The bottom of the Settings screen lists the newest five changes — when, who, and a one-line summary of what actually changed (a status that moved phase, a status that became Excluded or Not mapped, a job title added or removed). If a save cannot be recorded, the Hub says so rather than staying quiet; the settings themselves are still saved.
 
 ## Archive status history (admins, once)
 
@@ -98,4 +102,4 @@ Each status change, status update, scope-of-work edit and label or StepUP IT fla
 
 * The Board's Department, Lead and Search filters are shared with the Grid; the Grid's Phase and Scope filters do not apply to the Board.
 * Writing to Autotask needs your personal Autotask API key. Without one, the dropdowns and the status/scope buttons are disabled and the panel says why; Labels can still be edited.
-* If Autotask rejects the Hub's record of a write (someone changed the project in the seconds between the write and the read-back), the Hub offers one retry; if that fails too, the value is correct in Autotask and Sync Now refreshes the row.
+* If Autotask rejects the Hub's record of a write (someone changed the project in the seconds between the write and the read-back), the Hub offers one retry; if that fails too, the value is correct in Autotask and Sync Now refreshes the row. The same offer now appears when a status update reached Autotask as a note but the rest of the write did not — the error dialog gains a **Record this write** button.
