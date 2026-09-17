@@ -40,7 +40,7 @@ One row per project, sorted by finish date. Click any column header to sort by i
 
 ## The detail panel
 
-Click a row. The panel shows the overview (dates, hours against estimate, duration), the account team, labels, the **full status history** with the newest entry first, and the scope of work. **Open in Autotask** jumps to the project in the Autotask web app.
+Click a row. The panel shows the overview (dates, hours against estimate, duration), the account team, labels, the status history Autotask's `statusDetail` field still holds, newest entry first, and the scope of work. **Open in Autotask** jumps to the project in the Autotask web app.
 
 ## Changing a status
 
@@ -57,6 +57,8 @@ If Autotask accepts the write but the read-back shows the old value, you see **W
 ## Adding a status update
 
 Click **Add status update**, type what happened, what is next and when, then **Save to Autotask**. The update is stored as a **Project Status** note on the Autotask project (up to 32,000 characters — the full history lives there permanently). Autotask's older `statusDetail` field, which is capped at 2,000 characters, is then rebuilt to hold the newest entries that fit, newest first, in the same `M/D - text` form the team has always typed, so anyone reading the project in Autotask still sees recent history. Entries that no longer fit are copied into a second note before they are removed — nothing is trimmed until it has been confirmed stored.
+
+If the note saves but the `statusDetail` rebuild does not, the Hub says so and keeps the note — your update is safe; run Sync Now to refresh the row. When older entries are moved to a second note, the confirmation line under the panel says how many.
 
 The line under the history — "statusDetail currently mirrors the newest N entries · X / 2,000 characters" — tells you how much of the history Autotask's own field still shows. The full history is always in the project's notes.
 
