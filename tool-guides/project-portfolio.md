@@ -19,6 +19,8 @@ Nothing on this screen is typed in by a person. Every night at about 4 AM Mounta
 
 **Sync Now** runs the same read immediately. It usually takes well under a minute. If it fails, the header says so in red and the grid keeps showing the last good data — nothing is ever half-updated.
 
+Occasionally the projects read succeeds but the **Project Status** notes behind the detail panel's history do not. The header then says **status notes could not be read** in amber: the grid is current, and the stored notes from the last good run are kept rather than cleared, so the history you see may be a run or two behind. Run Sync Now again to refresh them.
+
 Four things can be changed from this screen. Three write to Autotask under **your own** Autotask API key (Settings → Autotask): the project's status, a new dated status update, and the scope of work. The fourth — Labels and the StepUP IT flag — lives only in the Hub and needs no Autotask key. Everything else is read-only.
 
 ## The grid
@@ -80,7 +82,7 @@ Click **Edit** beside **Labels · Hub-owned**, add labels (pick one already in u
 
 The bottom of the panel lists the newest ten writes made through Anchor Hub on this project — status changes, status updates, scope edits and label changes — with who made them and when. Changes made directly in Autotask are not listed; the history above already shows those.
 
-The value shown for each write is the one Anchor Hub read back from Autotask after the change landed. A status row also shows what the app believed the previous value to be, labelled **was reported as** — Autotask keeps no history of previous values, so that half was never verified and is shown as a claim rather than as fact.
+A status or a note shown on a row was read back from Autotask before the row was recorded. Labels and the StepUP IT flag are Hub-owned, so there is no Autotask value to read back — those rows are simply what the Hub stored. A status row also shows what the app believed the previous value to be, labelled **was reported as** — Autotask keeps no history of previous values, so that half was never verified and is shown as a claim rather than as fact.
 
 ## Settings (admins)
 
@@ -90,13 +92,13 @@ Every save is recorded. The bottom of the Settings screen lists the newest five 
 
 ## Archive status history (admins, once)
 
-An admin can run **Archive status history** once. It copies every project's existing status text into a Project Status note titled "Status history before Anchor Hub", so pre-Hub history is preserved in the notes before the tool ever rebuilds the field. Running it again creates nothing new.
+An admin can run **Archive status history** once. It copies every **open** project's existing status text into a Project Status note titled "Status history before Anchor Hub", so pre-Hub history is preserved in the notes before the tool ever rebuilds the field. Running it again creates nothing new: before recording anything, the Hub re-reads the note from Autotask and checks it really is that project's own archive note.
 
 It was run on 2026-09-17 for open projects only (21 notes). Completed projects were left alone — the Hub never rewrites their status field, so nothing there is at risk.
 
 ## Every write is recorded
 
-Each status change, status update, scope-of-work edit and label or StepUP IT flag change is written to a Hub audit table with who made it and the before/after values. It is separate from the Hub's general activity log because client project narrative should not be readable by every signed-in employee.
+Each status change, status update, scope-of-work edit and label or StepUP IT flag change is written to a Hub audit table with who made it and what it changed to. A previous value is stored alongside where the Hub had one, but only as reported — see **Recent writes from the Hub** above. It is separate from the Hub's general activity log because client project narrative should not be readable by every signed-in employee.
 
 ## Known open items
 
