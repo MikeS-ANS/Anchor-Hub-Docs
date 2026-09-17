@@ -92,7 +92,7 @@ It archives **open projects only** and has not been run yet; the count it will c
 
 ## Every write is recorded
 
-Each status change, status update and scope-of-work edit is written to a Hub audit table with who made it and the before/after values. It is separate from the Hub's general activity log because client project narrative should not be readable by every signed-in employee.
+Each status change, status update, scope-of-work edit and label or StepUP IT flag change is written to a Hub audit table with who made it and the before/after values. It is separate from the Hub's general activity log because client project narrative should not be readable by every signed-in employee.
 
 ## Known open items
 
