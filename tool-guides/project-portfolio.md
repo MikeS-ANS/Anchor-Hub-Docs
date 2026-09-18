@@ -15,7 +15,9 @@ The second step is easy to miss. A newly added tool lands in an existing person'
 
 ## Where the data comes from, and how fresh it is
 
-Nothing on this screen is typed in by a person. Every night at about 4 AM Mountain, the Hub's server reads every open client project from Autotask (plus projects completed in the last year or so), works out who the Technology Strategist, Account Manager and TAM are from the client's Autotask account team, and stores the result. The header shows **Last synced** with the time and whether it was the nightly run or a manual one.
+Nothing on this screen is typed in by a person. Every night at about 4 AM Mountain, the Hub's server reads every open client project from Autotask, plus any project Autotask still shows as recently completed, works out who the Technology Strategist, Account Manager and TAM are from the client's Autotask account team, and stores the result. The header shows **Last synced** with the time and whether it was the nightly run or a manual one.
+
+Once a completed project has been picked up this way, it stays in the Hub for good — a finished project is never removed just because time has gone by. That's what makes the **Completed** and **All** views (see Filters, below) genuinely useful for counting how many projects wrapped up over a longer stretch, not just the last month or two.
 
 **Sync Now** runs the same read immediately. It usually takes well under a minute. If it fails, the header says so in red and the grid keeps showing the last good data — nothing is ever half-updated.
 
@@ -25,20 +27,37 @@ Four things can be changed from this screen. Three write to Autotask under **you
 
 ## The grid
 
-One row per project, sorted by finish date. Click any column header to sort by it; click again to reverse.
+One row per project, sorted by finish date. Click any column header to sort by it; click again to reverse. The grid scrolls inside its own box with the column headers pinned at the top, so on a long list the horizontal scrollbar sits at the bottom of your screen where you're actually looking, instead of trailing off below the last row.
 
 * **Name** — client and project. Pinned on the left so it stays visible as you scroll sideways.
 * **Lead** — the Autotask project lead.
-* **Status** — the newest dated entry in the project's status log (the `statusDetail` field in Autotask), with a note of how many earlier entries exist. "No status yet" means nobody has written one.
+* **Status** — the newest dated entry in the project's status log (the `statusDetail` field in Autotask), with a note of how many earlier entries exist. Long status text is clipped to a few lines in the grid — hover it to read the whole entry without opening the project. "No status yet" means nobody has written one.
 * **Phase** — derived from the Autotask status: Discovery → Planning → Executing → Monitoring & Controlling → Closure, plus On Hold. **Needs a status** in amber means the project is sitting on plain "New" or "In Progress", which tells the board nothing about where it really is — pick a specific status in Autotask (IKO Scheduled, Go-Live Targeted, Schedule CKO, and so on) and it moves to the right phase on the next sync. An **Unmapped** phase means Autotask has a status this tool has not been told about; ask an admin.
 * **Start / Finish** — from Autotask. A finish date in the past on an open project shows in red.
 * **% Complete** — computed by Autotask from task completion. It cannot be edited anywhere in the Hub.
-* **Project #**, **Technology Strategist**, **Account Manager**, **TAM** — a dash means no active ANS person holds that role on the account. People who have left ANS are never shown, even if Autotask still lists them on the team.
+* **Project #** — the Autotask project number.
+* **Billing** — **Fixed fee** or **T&M**, or a dash when a project's contract doesn't say. This is read from the contract's **name** in Autotask, not from Autotask's "contract type" field — every project contract at ANS is set up as Fixed Price in Autotask regardless of how the work is actually billed, so contract type would be actively misleading here. Whoever named the contract typed the real billing arrangement into the name instead, and that's what this column reads. As of this writing that's roughly 40 Fixed fee projects and 27 T&M, with a genuinely large share — over 40% of project contracts — carrying no billing tag at all. Filter to **Not tagged** to pull up that list and clean it up.
+* **Estimated revenue** — the dollar estimate on the project's contract, when there is one. A dash always means there's nothing to show, and it can mean either of two different things: the project has no contract attached in Autotask at all, or it has a contract but that contract carries no revenue estimate. Hover the cell (or open the project) to see which one it is — those are two different problems to chase, not the same gap. A dash is never the same as $0; if a contract's revenue is genuinely set to zero, that's what the cell shows.
+* **Technology Strategist**, **Account Manager**, **TAM** — a dash means no active ANS person holds that role on the account. People who have left ANS are never shown, even if Autotask still lists them on the team.
 * **Labels** — Hub-only tags and the StepUP IT flag, edited from the detail panel.
+
+The summary line above the grid also totals **Estimated revenue** for whatever is currently in view — something like "$125,090 across 15 of 17." The second number is how many of the visible projects actually had a figure to add up, so you can tell a real total from one that's quietly built on top of a lot of dashes.
 
 ## Filters
 
-**Department** defaults to Professional Services. **Phase** and **Lead** narrow the list. **Scope** is Open by default; **Include completed** adds projects finished within the chosen window (last 30 days, last month, last quarter, last year, or a date range). **Search** matches client, project name or project number.
+**Department** defaults to Professional Services. **Phase**, **Lead** and **Billing** narrow the list further. **Scope** has three settings:
+
+* **Open** (the default) — every open project, no time window involved.
+* **Completed** — only projects that have finished, inside a time window you choose.
+* **All** — open projects, plus completed ones inside that same window.
+
+Choosing **Completed** or **All** shows a **Completed within** window — last 30 days, last month, last quarter, last year, or a date range you type in yourself — right there in the filter bar. Because completed projects are kept in the Hub for good (see "Where the data comes from," above), a wide window genuinely shows everything that finished in it, not just whatever happened to still be around.
+
+If you pick a window that reaches further back than the Hub's data actually goes, the summary line above the grid says so plainly — "completed projects are only kept back to [date]" — rather than quietly showing zero results and letting you think nothing finished that far back. An empty result and an out-of-range result are different findings, and this is meant to keep you from mistaking one for the other, especially when counting completions year over year.
+
+**Billing** filters to Fixed fee, T&M, or **Not tagged** — see the Billing column above for what determines each. **Search** matches client, project name or project number.
+
+Every other filter — Department, Phase, Lead, Scope, the completed window and its dates, Billing, and whichever column you last sorted by — is remembered for you individually the next time you open Project Portfolio on this machine. If something you had selected no longer exists in the data (a department or a lead that's gone away, say), that one filter quietly resets to its default rather than leaving you staring at an empty grid with no idea why. **Search is the one filter that is deliberately not remembered** — starting with a clean search box every time means an old search term can never silently hide rows you didn't mean to filter out.
 
 ## The Board view
 
@@ -47,6 +66,10 @@ The **Grid | Board** switch in the header shows the same open projects as cards 
 ## The detail panel
 
 Click a row or a card. The panel shows the overview (dates, hours against estimate, duration), the account team, labels, the **full status history**, the scope of work, and the most recent writes made through the Hub. **Open in Autotask** jumps to the project in the Autotask web app.
+
+Scrolling down to read something, then expanding a status entry or clicking "Show full scope," no longer bounces you back up to the top of the panel — your place holds. Opening a *different* project does start you back at the top, since that's a new project to read from the beginning.
+
+Beside **Open in Autotask** is **Open project folder**, which tries to open the matching folder in SharePoint. Be aware this is the exception rather than the rule right now: a check of the real SharePoint library found a folder matching the project number for only about 1 in 10 open projects. For the rest, the button opens that client's whole **Projects** folder instead, and a line under the panel says so along with noting that no subfolder matches this project's number yet. If it can't tell which client's folder to look in at all, it says that plainly and opens nothing — it will never guess and open a different client's folder by mistake. If more than one folder looks like a match, it also opens nothing rather than picking one for you.
 
 The history merges two sources: the entries still in Autotask's 2,000-character `statusDetail` field, and every **Project Status** note on the project — your Hub status updates, entries the Hub moved into a note when the field filled up, the one-time history archive, and notes typed directly in Autotask. Entries that survive only in notes carry a small **note** badge. The history loads a moment after the panel opens; until then you see the entries from the field.
 
@@ -105,3 +128,8 @@ Each status change, status update, scope-of-work edit and label or StepUP IT fla
 * The Board's Department, Lead and Search filters are shared with the Grid; the Grid's Phase and Scope filters do not apply to the Board.
 * Writing to Autotask needs your personal Autotask API key. Without one, the dropdowns and the status/scope buttons are disabled and the panel says why; Labels can still be edited.
 * If Autotask rejects the Hub's record of a write (someone changed the project in the seconds between the write and the read-back), the Hub offers one retry; if that fails too, the value is correct in Autotask and Sync Now refreshes the row. The same offer now appears when a status update reached Autotask as a note but the rest of the write did not — the error dialog gains a **Record this write** button.
+* **Open project folder** finds a project-specific subfolder for only about 1 in 10 open projects today — the rest of the time it opens the client's Projects folder instead, which is still a useful shortcut but not the exact folder. About 40 clients also don't yet have their Autotask name matched to their SharePoint folder name; until that list is filled in, those clients get a "could not identify the client folder" message instead of even the Projects folder. Both should improve over time as that folder-name matching is filled in — they're a known gap, not a bug to report.
+
+---
+
+*Imagined by Andi Gingerich. Project Portfolio replaced the Planner board she kept by hand for the Professional Services team, and this round of improvements came directly from her own feedback after using the tool day to day.*
