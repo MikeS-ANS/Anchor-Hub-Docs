@@ -14,9 +14,6 @@ Click **Browse Past Invoices** to select a specific month from a dropdown. Each 
 
 > **Caching:** The first time you load a past invoice via the API, the raw line items are saved to SharePoint automatically. The next time anyone on the team opens the same invoice, it loads from that cache instantly — no API call required. A banner appears at the top of the results showing when the data was last fetched, with a **↺ Reprocess** button to force a fresh pull from Pax8 if needed.
 
-### Browse CSV
-Fallback option if the Pax8 API is unavailable. Export a CSV from the Pax8 portal and load it manually here. CSV loads are not cached.
-
 ---
 
 ## Reading the Results
@@ -37,14 +34,16 @@ After loading, the results show:
 
 ## Company Mapping
 
-Invoice results rely on mapping each Pax8 company to its Autotask counterpart. All mappings are managed through the **Company Directory** and stored in SharePoint — any company you link there is automatically recognised the next time an invoice is processed.
+Invoice results rely on mapping each Pax8 company to its Autotask counterpart. All mappings are managed through the **Company Directory** — any company you link there is automatically recognised the next time an invoice is processed.
 
-When you load an invoice, the processor checks for any unmapped Pax8 companies and tries to match them automatically:
+When you load an invoice, the processor checks for any unmapped Pax8 companies and tries to match them automatically. Every match is a **suggestion**. Nothing is written to the Company Directory until you click **Confirm** — including a 97% match.
 
-- **High-confidence match (≥ 85%)** — saved silently to the Company Directory.
-- **Medium-confidence suggestion** — shown in the **Needs Confirmation** panel at the bottom of the results. Review the suggested match and click **Confirm** to save it.
+- **"N Companies Need Confirmation"** — every suggested match, strongest first, in a panel at the bottom of the results. Review the suggested match and click **Confirm** to save it.
+- **"Could not check"** — shown above the suggestions if the Autotask lookup itself failed for a company (a timeout, a rate limit). That is *not* the same as "no match found" — those companies were never searched. Reprocess the invoice to try again.
 
-Confirmed matches persist to SharePoint and apply to all future invoices automatically.
+> **Why confirmation is required.** The matcher strips words like "Group", "Technologies", "Solutions" and "Inc" before comparing, so "Anchor Group" scores 97% against "Anchor Technologies" — and they are different companies. A high score is a reason to look, not proof.
+
+Confirmed matches persist to the Company Directory and apply to all future invoices automatically.
 
 ---
 
@@ -67,6 +66,28 @@ The app reads the current seat count from the contract, calculates the differenc
 
 ---
 
+### What the confirmation shows
+
+Before anything is written, the confirmation reads the current values straight from Autotask and shows you, per client:
+
+- the exact **contract and service line** being written to
+- **current → new** — the seat count, or the cost and price
+- the **change**, so a seat count that moved further than you expected is obvious
+
+It also calls out separately:
+
+- **rows writing a zero** — a $0 price or a quantity of 0. Both are legitimate and both are destructive, so they are shown rather than blocked.
+- **fractional quantities** on anything other than Nerdio, which are pushed exactly as they arrive, never rounded
+- **rows that will be skipped** — already matching Autotask, not mapped to a company, or no matching contract
+- **rows that will NOT be pushed — ambiguous mapping** — more than one Pax8 account resolves to the same Autotask company, so the push refuses to guess how to merge them
+- **rows that could not be checked** — the Autotask lookup failed. These are not "unchanged"; pushing will still attempt them.
+
+Reading these values can take up to a minute. The Push button stays disabled until they arrive, and if they cannot be read the panel says so rather than showing an empty table.
+
+> A client who is **absent** from the invoice keeps their current Autotask quantity — nothing is written for them. A client who appears on the invoice **at zero** is pushed as zero, because that is evidence the service ended.
+
+---
+
 ## Reading Push Results
 
 After each push, a results modal shows the outcome per client:
@@ -77,6 +98,7 @@ After each push, a results modal shows the outcome per client:
 | – No change | Seat count or price already matches — nothing to do |
 | – No AT mapping | This client isn't linked to an Autotask company yet |
 | ⚠ No contract found | Client is mapped but no matching contract exists in Autotask |
+| ⚠ Ambiguous mapping | More than one Pax8 account maps to this Autotask company — not pushed |
 | ✗ Error | Something went wrong — the error message will say what |
 
 Results are saved to **Push History** (bottom of the results page) so you can review them any time.
@@ -97,9 +119,11 @@ Click **Export to Excel** to download the full invoice breakdown as a formatted 
 
 ## Settings
 
-**Prompt Templates** (Settings → Prompt Templates) hold the AI prompt headers used when generating the Autotask update prompt for Azure pricing and for seat-count services — shared with Kaseya Invoice Processor's prompt template.
+The tool has its own **Settings** tab, next to **Invoice** at the top.
 
-> **Global setting — shared by everyone.** Centrally managed via Azure App Configuration. The Settings screen shows the current templates but the Save button won't apply a change — contact Mike (or whoever holds the `hub.admin` role) to update one.
+**Default Azure margin %** — the margin every client's Azure line starts at when an invoice is processed. Prices are rounded **up** to the next $5 from it. You can still change the margin or the price on any individual row before pushing; this only sets where each row starts.
+
+> **Global setting — shared by everyone.** Stored centrally, so it is the same number for every member of staff. Saving needs the Hub admin role; without it the save is refused and the current value is kept. A blank or out-of-range value is also refused rather than being read as zero.
 
 ---
 
@@ -109,7 +133,7 @@ Click **Export to Excel** to download the full invoice breakdown as a formatted 
 Click **↺ Reprocess** in the banner at the top. This deletes the cached copy and fetches fresh line items from Pax8, then re-runs mapping against the current Company Directory.
 
 **Push buttons are grayed out / missing**
-Your Autotask write key isn't configured. Go to Settings → Autotask PSA and add your credentials.
+Your Autotask write key isn't configured. Go to the Hub's own **Settings** page (sidebar, not this tool's Settings tab) → Autotask PSA and add your credentials.
 
 **Client shows "no contract found" every month**
 The contract in Autotask is probably named differently than expected. Check that the contract name contains "Azure" (for Azure/Nerdio) or "Managed Cloud" (for Exclaimer, Ironscales, Printix). Contact Mike if it needs to be updated.
@@ -119,3 +143,6 @@ The Pax8 company isn't linked to Autotask yet. Open **Company Directory**, find 
 
 **Invoice fails to load**
 Check your internet connection. If the error mentions credentials, the Pax8 API keys in Azure Key Vault may need to be refreshed — contact Mike.
+
+**A total looks about a third of what it should be**
+This is the bug the September 2026 hardening pass fixed. If you see it on a build older than that, reprocess on a current build: the invoice fetch used to swallow a failed page and report success with a partial total, and the partial number was then cached.
