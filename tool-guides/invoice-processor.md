@@ -49,7 +49,7 @@ Confirmed matches persist to the Company Directory and apply to all future invoi
 
 ## Pushing to Autotask
 
-> **Requires** your personal Autotask write key to be configured in Settings.
+> **Needs your personal Autotask key** (Hub **Settings** → Autotask PSA). Nothing is gated on it — the push buttons appear either way — but without one the Hub falls back to a shared read-only key and every row comes back `✗ Error`.
 
 ### Azure Pricing
 1. Review the Azure table — adjust any margins if needed
@@ -77,7 +77,7 @@ Before anything is written, the confirmation reads the current values straight f
 It also calls out separately:
 
 - **rows writing a zero** — a $0 price or a quantity of 0. Both are legitimate and both are destructive, so they are shown rather than blocked.
-- **fractional quantities** on anything other than Nerdio, which are pushed exactly as they arrive, never rounded
+- **fractional quantities** on anything other than Nerdio (where they are normal). The tool passes the value through exactly as it arrived and never rounds or truncates it — but it does not promise what Autotask will then do with it. Autotask's quantity-adjustment field takes whole numbers, so a fraction on one of these services is more likely to be rejected or truncated at their end than applied. That is precisely why it is put in front of you before you push rather than sent quietly.
 - **rows that will be skipped** — already matching Autotask, not mapped to a company, or no matching contract
 - **rows that will NOT be pushed — ambiguous mapping** — more than one Pax8 account resolves to the same Autotask company, so the push refuses to guess how to merge them
 - **rows that could not be checked** — the Autotask lookup failed. These are not "unchanged"; pushing will still attempt them.
@@ -132,8 +132,11 @@ The tool has its own **Settings** tab, next to **Invoice** at the top.
 **Results show "Loaded from cache" but mappings look outdated**
 Click **↺ Reprocess** in the banner at the top. This deletes the cached copy and fetches fresh line items from Pax8, then re-runs mapping against the current Company Directory.
 
-**Push buttons are grayed out / missing**
-Your Autotask write key isn't configured. Go to the Hub's own **Settings** page (sidebar, not this tool's Settings tab) → Autotask PSA and add your credentials.
+**A service's push button is missing**
+Nothing in this tool hides a push button when credentials are missing, so this is never a key problem. The Azure section's button always appears. A per-service button — Nerdio, Exclaimer, Ironscales, Printix — appears only when that service actually has lines on the invoice you loaded. If Nerdio has no button this month, this month's invoice has no Nerdio lines.
+
+**Every row comes back ✗ Error when you push**
+This is what a missing personal Autotask key really looks like. The push is not blocked; the Hub falls back to a shared read-only Autotask key, runs the push, and Autotask refuses each write. Go to the Hub's own **Settings** page (sidebar, not this tool's Settings tab) → Autotask PSA and add your credentials. An error naming a particular contract or service is a different problem — see the two entries below.
 
 **Client shows "no contract found" every month**
 The contract in Autotask is probably named differently than expected. Check that the contract name contains "Azure" (for Azure/Nerdio) or "Managed Cloud" (for Exclaimer, Ironscales, Printix). Contact Mike if it needs to be updated.
