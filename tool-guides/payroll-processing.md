@@ -42,7 +42,7 @@ Edits save as you go — there's no Save button to forget. When you're finished,
 
 You don't have to remember the deadline or wait for a banner to find out about it — it's shown from the start, right in the line under the heading alongside the period dates and pay date, as **"sign-off due" and the date**, with **"(due today)"** added once it arrives. If the deadline passes and your department still hasn't signed off, that same line switches to **"(past due)"**, and a past-due banner also appears at the top of your own screen.
 
-The Hub creates each upcoming pay period on its own, so there's nothing to set up at the start of a period — when a new period opens, it's simply there.
+The Hub creates each upcoming pay period on its own, a few days before it starts, so the entry window opens a little early and gives you room to get ahead. Once a period's been sent to Puzzle, it steps out of the way — so the next one is there waiting for you, not hidden behind the one that just finished.
 
 ---
 
