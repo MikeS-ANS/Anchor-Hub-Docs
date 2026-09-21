@@ -25,7 +25,7 @@ A manager's scope isn't a UI filter. The server works out which employees belong
 
 ## My People — what a manager does each period
 
-Open **Payroll Processing** and the **My People** tab shows the currently open pay period, its dates, its pay date, and every employee you're responsible for. Each employee is one row:
+Open **Payroll Processing** and the **My People** tab shows the currently open pay period, its dates, its pay date, its sign-off deadline, and every employee you're responsible for. Each employee is one row:
 
 | Column | Who fills it in |
 |---|---|
@@ -40,7 +40,7 @@ Open **Payroll Processing** and the **My People** tab shows the currently open p
 
 Edits save as you go — there's no Save button to forget. When you're finished, tick **"I've completed my updates for this period"** at the bottom. That's one checkbox for you, not one per employee: it records that your whole department is done, with your name and the time, and it's what Heather and Mike watch to know whether they're still waiting on you. You can untick it and keep editing if something changes.
 
-If the period's deadline passes and your department hasn't signed off, a past-due banner appears at the top of your own screen.
+You don't have to remember the deadline or wait for a banner to find out about it — it's shown from the start, right in the line under the heading alongside the period dates and pay date, as **"sign-off due" and the date**, with **"(due today)"** added once it arrives. If the deadline passes and your department still hasn't signed off, that same line switches to **"(past due)"**, and a past-due banner also appears at the top of your own screen.
 
 The Hub creates each upcoming pay period on its own, so there's nothing to set up at the start of a period — when a new period opens, it's simply there.
 
@@ -89,7 +89,7 @@ Heather and Mike can also run it on demand — **Sync expenses & mileage**, on b
 
 ## Review & Send — the cross-department screen
 
-Heather and Mike get a **Review & Send** tab: every department's employees for a chosen period in one grid, grouped by the manager who actually owns them, with the counts across the top — employees, sign-offs collected, flagged entries, total changes, and expense reports read.
+Heather and Mike get a **Review & Send** tab: every department's employees for a chosen period in one grid, grouped by the manager who actually owns them, with the counts across the top — employees, sign-offs collected, flagged entries, total changes, and expense reports read. The header also shows **"sign-off due" and the date** right next to the pay date — but deliberately with no "(past due)" state, the way the manager's own screen has. This tab can pull up any past period, finished ones included, and a blanket "is this past due" check would end up wrongly flagging a period that was completed and sent months ago.
 
 - **Sign-off cards** show each manager, the department (or departments) they actually own, how many employees that comes to, and whether they've signed off yet — with the time they did it. The cards are per *manager*, not per department: if a few people in a department have been reassigned to somebody else, that second manager gets their own card and their own sign-off, and the grid below groups the same way. A department with two managers in it therefore appears twice, once per manager, which is the honest picture — they sign off separately because they're responsible for different people.
 - **Flags** mark anything unusual on an individual value — hover a flag for the detail.
@@ -168,18 +168,19 @@ The warning only appears when the count is above zero; a period with nothing out
 
 Anchor Hub can nag people about the two things this tool asks them to remember: a manager's sign-off, and the expense reports still waiting to be marked Paid in Autotask by hand. They arrive as a **Teams direct message from "Anchor Hub"** — the Teams app of that name, not an email and not a channel post.
 
-There are four, and these are the only four:
+There are five, and these are the only five:
 
 | Reminder | Who gets it | When |
 |---|---|---|
 | **Heads-up before the deadline** | Each manager on the open period who hasn't signed off | Once, first thing (8 a.m. Denver) on the day **two business days before** the sign-off deadline |
+| **Due today** | Each manager on the open period who hasn't signed off | Once, at **9 a.m. Denver on the deadline day itself** |
 | **Overdue sign-off** | The same managers, until they sign off | From the day **after** the deadline: **8 a.m., noon and 4 p.m.** every business day, and **8 a.m. only** on Saturday and Sunday |
 | **Weekly expense-flip digest** | The payroll admins configured in the settings (below) | **Monday morning** — and only when something is actually waiting |
 | **Signed off on your behalf** | The manager it happened to | Queued the moment a payroll admin signs off or reopens for them, delivered on the next hourly pass |
 
-Those are real Denver local times all year round — unlike the morning expense sync, they don't drift by an hour across daylight saving.
+Those are real Denver local times all year round — unlike the morning expense sync, they don't drift by an hour across daylight saving. The due-today message is the one exception to "business day" thinking in that table: it goes out on the deadline date itself, full stop, with no weekend or holiday check at all — that was Mike's explicit call, on the reasoning that a sign-off deadline should never be allowed to land on a weekend in the first place.
 
-**What stops them.** The overdue nagging stops the moment that manager's sign-off is recorded, or the moment the period is no longer open — whichever comes first. There's nothing to dismiss and no snooze. The heads-up and the weekly digest are sent once each and never repeat: one heads-up per manager per period, one digest per admin per week. A Monday with nothing waiting produces no digest at all rather than a "nothing to do" message.
+**What stops them.** The overdue nagging stops the moment that manager's sign-off is recorded, or the moment the period is no longer open — whichever comes first. There's nothing to dismiss and no snooze. The heads-up, the due-today message, and the weekly digest are sent once each and never repeat: one heads-up per manager per period, one due-today message per manager per period, one digest per admin per week. A Monday with nothing waiting produces no digest at all rather than a "nothing to do" message.
 
 **What's in them — deliberately less than the screen shows.** A Teams message can be forwarded, screenshotted and read on a personal phone, and it lands outside the role gate that protects everything else in this tool. So **no reminder ever carries a dollar amount or an employee's name.** The period, the deadline, how many days overdue it is, how many employees are waiting on you, expense report ids and how long each has been waiting: those are fine. Anything more specific is "open Anchor Hub."
 
@@ -189,7 +190,7 @@ Those are real Denver local times all year round — unlike the morning expense 
 
 The switch is on **Review & Send**, in the **Teams reminders** panel (Mike and Heather only — a manager never sees it):
 
-- **"Send reminders automatically, every hour"** — the on/off switch for all four. While it's off, the panel says so in red every time the screen is opened, so it can't quietly be off without anyone noticing.
+- **"Send reminders automatically, every hour"** — the on/off switch for all five. While it's off, the panel says so in red every time the screen is opened, so it can't quietly be off without anyone noticing.
 - **Payroll-admin recipients** — a comma-separated list of addresses. **This list is the entire audience for the weekly expense-flip digest; with nobody in it, that digest is sent to nobody.** Reminders can't be switched on while it's empty — the save is refused and says why. (Manager sign-off reminders don't use this list; those go to the managers themselves.)
 - **Save settings.** Turning reminders *on* asks you to confirm, and the confirmation spells out exactly what will start happening on its own. Turning them off doesn't ask.
 
@@ -208,7 +209,7 @@ Preview also loads the full send history: every reminder recently attempted, who
 
 A reminder can reach nobody, and the failure is completely invisible to the person it was meant for. So the panel carries a standing delivery line on every visit, with nothing to click:
 
-- **A red banner — "N reminders reached nobody"** — means exactly that. Those people were never told, and nothing retries on its own. The rows underneath name who, and say what went wrong in plain language: the Anchor Hub app isn't installed in their Teams, they've blocked or removed it, or their email address couldn't be matched to a Teams account at all. **Treat it as reminders not working for that person until it's fixed** — for a heads-up, a digest, or a delegated-sign-off notice there is no second attempt.
+- **A red banner — "N reminders reached nobody"** — means exactly that. Those people were never told, and nothing retries on its own. The rows underneath name who, and say what went wrong in plain language: the Anchor Hub app isn't installed in their Teams, they've blocked or removed it, or their email address couldn't be matched to a Teams account at all. **Treat it as reminders not working for that person until it's fixed** — for a heads-up, a due-today message, a digest, or a delegated-sign-off notice there is no second attempt.
 - **"Reminder delivery could not be checked" is not the same as everything being fine.** The check itself failed, so whether anybody is silently receiving nothing is simply unknown at that moment. It's shown in red for that reason.
 - **"Reminder delivery checked — no reminder has failed permanently in the last 30 days"** is the all-clear, and it's said in words rather than left as blank space, because silence and "never checked" look identical.
 
