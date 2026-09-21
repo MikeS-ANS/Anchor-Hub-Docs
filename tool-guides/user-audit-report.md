@@ -30,7 +30,7 @@ Most of this tool reads from the **Company Directory** so it doesn't hit the API
    - **Full report (6 tabs)** — adds Service Accounts, Unlicensed, External, and an internal Summary.
    - **Both** — produces both files in one run.
 3. Use the **search box** to filter, then check the clients to run (nothing is selected by default). Unlinked clients show "Not linked" and can't be run until linked in the Company Directory.
-4. *(Optional)* **Create Autotask CRM note** logs a "User Count Audit" To-Do on each company. Requires your personal key.
+4. *(Optional)* **Create Autotask CRM note** logs a "User Count Audit" To-Do on each company, titled `User Audit — Report Generated — <Month Year>`. Requires your personal key.
 5. Click **Generate**.
 
 Each report is saved to the client's **ANS-Clients / {folder} / User Audits / {year}** location (and your Downloads). If a client has no SharePoint folder, it saves to Downloads only and says so.
@@ -40,6 +40,8 @@ Each report is saved to the client's **ANS-Clients / {folder} / User Audits / {y
 **Watch for the ⚠ no-M365-data warning.** If a client isn't Google Workspace but CIPP returned no users, the run is flagged (not silently "successful") — check the tenant match / CIPP domain.
 
 **Email to client.** After a run, enter one or more recipients (separate with `;` or `,`) and Send. The email uses an action-oriented template with the return-by deadline, and attaches the **current SharePoint copy** — so edits you make in SharePoint after generating are included. The subject and intro are editable in Settings; your cloud email signature is applied automatically.
+
+**The send is also recorded on the account — when there's a note to record it on.** If you created the CRM note for this run (the optional checkbox above) and hold a personal Autotask key, sending retitles that note to `User Audit — Report Generated & Sent — <Month Year>` and adds a line naming the date and every recipient, so the account shows at a glance whether the report has actually gone out, and to whom. This happens after the email is already sent, so a failure here never fails the send itself — if the account note can't be verified as updated, you'll just see a small ⚠ account note not updated next to the send confirmation.
 
 ---
 
@@ -63,7 +65,7 @@ On confirm, the tool:
 - **Deactivates** contacts set to "No Longer Active"; **reactivates** contacts set to a supported classification.
 - **Creates** the checked M365-only contacts (and, if a contact with that email already exists — active or inactive — updates it instead of making a duplicate), or **updates** the linked contact for rows resolved as "Update existing" above.
 - Runs one more **live check** against Autotask's current contacts immediately before each create — not just against the possibly-stale generated report — so a name match that only exists in Autotask today (created after the report was generated, say) is never silently duplicated. These are skipped with a **needs-review** status in the progress list and counted separately in the summary; resolve them manually and re-run write-back for just that person next cycle.
-- Posts an **account note** summarizing confirmed vs. contracted users, the detected changes, and any matched-and-updated or needs-review counts.
+- Posts an **account note**, titled `User Audit — Write-Back — <Month Year>`, summarizing confirmed vs. contracted users, the detected changes, and any matched-and-updated or needs-review counts. Its title is deliberately distinct from the generate note's — the two used to share one identical title, which made it impossible to tell a generated report from a completed write-back on a client's account without opening each note.
 
 ### Title, Phone and VIP corrections
 
@@ -93,16 +95,40 @@ The account note posted to the client's Autotask record lists **support option c
 
 ---
 
+## History
+
+Every audit run ever generated, for any client, newest first — a permanent record, separate from the current-state view on the Account Manager Dashboard below. Use the **Client** dropdown to narrow the list to one client, or **↻ Reload** to pick up runs generated elsewhere.
+
+Each row shows:
+
+- **Client**, **Generated** (date and time) and **By** — who ran it.
+- **Type** — Client, Full, or Both, matching the report type chosen at Generate.
+- **Contracted**, **Full Support** and **Over/Under** — the same full-time-only figures as the Account Manager Dashboard and Contract Review, as of this run.
+- **M365-only** and **Admin** counts from this run.
+- **M365** — whether CIPP returned clean data for this run (✓), hit the ⚠ no-M365-data warning, or the client is Google Workspace (GWS) and wasn't checked at all.
+- **Sent** — a ✓ with the date the report was last emailed for this run, or a dash if it was generated but never sent — which is itself worth noticing. Hover to see every send tied to this run, each with its own date and exact recipients. A run can legitimately show more than one send — a report re-sent to a second contact at the client, say — and the tooltip lists every one.
+- **Write-back** — a ✓ with the number of fields changed, once the client's return has been processed; hover for the date, who ran it, and whether a note was posted. A dash means no write-back has landed for this run yet.
+- **File** — opens the saved report(s) directly in SharePoint, or reads "Downloads only" for a client with no SharePoint folder configured.
+
+---
+
 ## Account Manager Dashboard
 
 The tool opens here for account managers (role-gated). It's the lifecycle view, with collapsible sections filtered to your own clients by default (toggle to All). Every client row also shows **Included** (contracted seat count from the MSC workbook), **Full Support** (the client's current full-support user count from the latest audit or write-back), and **Over/Under** (the difference between the two, color-coded) — so drift from the contract is visible without opening Contract Review. These three columns are **full-time seats only**. A client with any part-time users shows Included and Full Support as **"X + Y"** (full-time + part-time) instead of a plain number, and a **PT +N** badge appears next to the client's name whenever more part-time users are supported than contracted — a signal that a manual contract conversation is needed, not something the Hub acts on. Part-time counts never affect Over/Under and are never written back anywhere automatically.
 
 > The MSC workbook's part-time column is new and mostly unfilled right now. Until it's filled in for a given client, that client's contracted part-time count reads as zero — so you may see a row like Full Support "7 + 2" next to a plain "7" for Included, with a PT badge showing. That's expected on an unfilled column, not a bug.
 
-- **Needs an audit run** — due this cycle, or carried forward from a missed one (see **Cohorts** below for how each client's schedule is set). Each row shows a colored **ODD**/**EVEN** cohort badge — or "unassigned" for a client the schedule doesn't cover yet — plus a **Due Since** figure: how many days past its due date the client is, or a dash if it has no cohort yet to measure from.
-- **Sent, not returned — pending** — sent and still within the return window.
-- **Sent, not returned — overdue** — past the return-by date, with a **Start Write-Back** button that pre-loads the client and requires a "did not return" note.
-- **Good standing** — recently run/returned, with last-ran and last-returned dates.
+A client appears in **exactly one** of the four sections below. A report that's been emailed and not yet returned always sorts under **Sent** — never under "Needs an audit run" — because the action that moves it forward from here is chasing the client or doing the write-back, not running the audit again.
+
+- **Needs an audit run** — due this cycle, or carried forward from a missed one (see **Cohorts** below for how each client's schedule is set), and not currently out with the client. Each row shows a colored **ODD**/**EVEN** cohort badge — or "unassigned" for a client the schedule doesn't cover yet — plus a **Due Since** figure: how many days past its due date the client is, or a dash if it has no cohort yet to measure from.
+- **Sent, not returned — pending** — emailed and still inside the return window.
+- **Sent, not returned — overdue** — past the return-by date. Has a **Start Write-Back** button that pre-loads the client and requires a "did not return" note, and now also a **Run Audit** button, for a client who's gone dark and whose cycle you want to deliberately restart.
+- **Good standing** — returned and not currently due.
+
+Two things worth knowing here, since both can otherwise look like something's wrong:
+
+- **The due-since line.** A client can be waiting on a return *and* overdue on its cohort schedule at the same time. It's listed once, under Sent, with a small grey `audit due since <date>` line under the client's name so the schedule fact isn't lost — or `audit due — no cohort assigned` if it has no cohort yet.
+- **Re-running mid-cycle moves a client back.** Generating a fresh report starts a new cycle, so the client returns to "Needs an audit run" until the new report is emailed. That's correct — the report now on file genuinely hasn't been sent — but it looks like a regression if you don't expect it.
 
 Every row also has **+ Time** — a quick time entry (default 15 min, work type **Client Success**, editable notes) logged against the client's linked *User Audits* task.
 
