@@ -14,7 +14,7 @@ Payroll Processing does **not** use the Hub's general Role Matrix. Like Payroll 
 
 | Role | Who | What they see |
 |---|---|---|
-| `hub.payroll` | Mike, Heather | Everything: My People, Departments, Autotask Match, and the cross-department Review & Send screen |
+| `hub.payroll` | Mike, Heather | Everything: My People, Departments, Autotask Match, Pay Calendar, and the cross-department Review & Send screen |
 | `hub.payrollmanager` | A department manager | **My People only** — their own employees, for the open period, and nothing else |
 
 A manager's scope isn't a UI filter. The server works out which employees belong to whoever is asking (from their department assignment, plus any per-employee overrides Heather and Mike have set) and simply never returns anybody else's row — so a manager cannot see, edit, or sign off on another department's people even by asking for them directly.
@@ -164,6 +164,40 @@ The warning only appears when the count is above zero; a period with nothing out
 
 ---
 
+## Pay Calendar
+
+Mike and Heather have one more tab: **Pay Calendar**. It sits behind the same admin gate as Departments, Autotask Match and Review & Send — a manager never sees it.
+
+**The reason it exists is holidays.** The Hub works out every sign-off deadline the same way: four business days before the pay date. "Business day" only ever means *not a weekend* to that calculation — the Hub has no concept of Thanksgiving, Christmas Eve, or any other company holiday. So a deadline can land squarely on one, and the reminder messages described below don't know any better either — they go out on the date the calendar says, holiday or not. Pay Calendar is how that gets caught and moved, well ahead of time, by a person who does know the holiday is coming.
+
+**What it shows.** The tab lists the **next 24 pay periods — a full year out** — each one's dates, its pay date, when its entry window opens, and its sign-off deadline. A year is far enough ahead to see every holiday on the calendar coming before it turns into a live problem.
+
+**How that squares with only three periods actually existing.** At any given moment there are only three real pay periods in the system — the Hub creates each one a few days before it starts, the same way it always has. Pay Calendar doesn't wait for that: it works out all 24 future periods from the pay schedule itself and shows them as if they already existed, and it only ever stores the *changes* made against one. The day a future period is actually created, months later, whatever adjustment was saved here for it is applied automatically — there's nothing to remember to come back and do. Adjusting a deadline a year out is just as real as adjusting one for next week; it just sits quietly until its period exists.
+
+**Reading a row:**
+
+- **A deadline that falls on a Saturday or Sunday is badged**, so a weekend deadline is visible at a glance rather than something you have to check date by date.
+- **A row that's been adjusted is marked**, showing who changed it and when.
+- Each row saves **on its own**, with its own **Save** button — there's no save-all, and nothing here saves automatically. A save can take up to a minute on some connections, and the row shows it's working while it does.
+- An optional **Reason** box sits next to the date, for the same purpose reasons serve everywhere else in this tool — it's what answers "why was this moved" months later, when nobody remembers.
+- **Reset** puts a row back to the ordinary four-business-day rule.
+
+**A deadline has to stay inside its own period.** It has to fall on or after the period's own start date and on or before its pay date — anything outside that range is refused, with an explanation, rather than quietly clipped to fit.
+
+### Moving a deadline on an open period re-sends its reminders
+
+If the period is already open and a manager has already been told the old deadline, changing it here does something worth knowing about rather than discovering by surprise: it clears the record of what's already been sent for that period, and the reminder sequence starts fresh against the new date.
+
+The reason is the same logic the reminders themselves run on: the heads-up, the due-today message, and the overdue nagging are each sent once per manager per period, never twice. If a manager was told the deadline was the 23rd, and it turns out the 23rd is a holiday and gets moved to the 24th, they need a fresh heads-up for the 24th — not silence, because the Hub thinks it already warned them once. Without this, a manager would keep working to a date that no longer exists, having been told about it exactly once, and never corrected.
+
+The Hub asks you to confirm before doing this, and tells you afterward how many reminder records were reset — so it's visible, not a guess.
+
+### A period already sent to Puzzle is locked
+
+A deadline can't be changed once its period has been sent. At that point the sign-off deadline is history — the period is closed, sign-offs are finished, and Approve & Send has already gone out. Those rows show locked on the calendar, and a save attempted against one anyway is refused, the same as every other edit restriction on a sent period.
+
+---
+
 ## Teams reminders
 
 Anchor Hub can nag people about the two things this tool asks them to remember: a manager's sign-off, and the expense reports still waiting to be marked Paid in Autotask by hand. They arrive as a **Teams direct message from "Anchor Hub"** — the Teams app of that name, not an email and not a channel post.
@@ -226,5 +260,6 @@ A reminder can reach nobody, and the failure is completely invisible to the pers
 
 - **No settings screen yet for the internal reminder recipient.** Puzzle's own To/Cc are remembered automatically after the first successful send (see above) — but if nobody's configured a specific person or distribution list to receive the internal "reports to flip" email, it defaults to whoever pressed Send. Never lost, just not yet routed anywhere fixed.
 - **A manager can't trigger their own sync from the UI yet** — the server-side permission is in place, the button isn't. The daily automatic sync covers it; this is a convenience gap, not a blocker.
-- **Teams reminders only reach somebody who has the Anchor Hub app installed in their Teams, and there's no per-person opt-out.** A missing install shows up as a delivery failure on the Review & Send screen rather than quietly doing nothing — see [Teams reminders](#teams-reminders). Company holidays aren't modelled either, so a deadline landing on one still produces its reminders that day.
+- **Teams reminders only reach somebody who has the Anchor Hub app installed in their Teams, and there's no per-person opt-out.** A missing install shows up as a delivery failure on the Review & Send screen rather than quietly doing nothing — see [Teams reminders](#teams-reminders).
+- **Company holidays still aren't detected automatically.** The Hub only knows about weekends, so a deadline landing on a holiday won't move on its own. What's changed is that there's now a way to catch it: the Pay Calendar tab (Mike and Heather only, see above) lists a full year of upcoming deadlines, so a holiday collision can be spotted and moved well before the reminders would ever fire. It still takes a person looking ahead and making the change — the Hub doesn't notice the holiday itself — but it's no longer a problem with no fix at all.
 - **A department row added by mistake can't be removed from the UI.** The suggested rows on the Departments tab now come from the real roster, so they no longer offer a department that doesn't exist — but if a wrong one does get saved, ask for it to be cleaned up rather than leaving a department that matches nobody.
