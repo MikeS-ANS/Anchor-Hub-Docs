@@ -186,7 +186,7 @@ Those are real Denver local times all year round — unlike the morning expense 
 
 ### Switching them on
 
-**Reminders ship switched off, and off means nobody is reminded of anything** — no heads-up, no overdue nagging, no Monday digest, and a "signed off on your behalf" notice sits in the queue until somebody sends by hand. That's on purpose: a system that messages real people on a timer shouldn't start doing it the moment it's installed, before anybody has seen what it sends.
+**Reminders ship switched off, and off means nobody is reminded of anything** — no heads-up, no due-today message, no overdue nagging, no Monday digest, and a "signed off on your behalf" notice sits in the queue until somebody sends by hand. That's on purpose: a system that messages real people on a timer shouldn't start doing it the moment it's installed, before anybody has seen what it sends.
 
 The switch is on **Review & Send**, in the **Teams reminders** panel (Mike and Heather only — a manager never sees it):
 
