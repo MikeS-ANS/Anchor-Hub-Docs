@@ -48,6 +48,7 @@
 
 ## What's New
 
+* [v4.6.3 — Setup fix for new computers](whats-new/v4.6.3.md)
 * [v4.6.2 — Pax8 Invoice Processor hardening](whats-new/v4.6.2.md)
 * [v4.6.1 — Project Portfolio: Completed Projects, Billing & Revenue](whats-new/v4.6.1.md)
 * [v4.5.1 — Security patch](whats-new/v4.5.1.md)
