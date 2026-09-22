@@ -17,12 +17,11 @@ Before running, pick your look-ahead window using the **30 / 60 / 90 days** tabs
 
 ## Settings
 
-Click **⚙ Settings** in the tool's toolbar to open its settings. Both items are **shared by everyone** — one value for the whole team, stored centrally:
+Click **⚙ Settings** in the tool's toolbar to open its settings. It holds one list, **shared by everyone** — one value for the whole team, stored centrally:
 
-- **Eligible Services for % Price Increase** — service-name phrases, one per line (partial match). Any contract service whose name contains one of them shows the % increase column at renewal. Changes apply the next time you click **Run**, and at least one phrase is required.
-- **Comparison Prompt Template** — the AI prompt used by **Compare All with Claude** on already-renewed contracts. Leave it blank for the built-in default.
+- **Eligible Services for % Price Increase** — service-name phrases, one per line (partial match). Any contract service whose name contains one of them is marked **✦ eligible**, and those are the services **Apply Rates** updates using the client's MSC agreement increase (the S+ rate for services with "Security" in the name, the TC rate for the rest). Changes apply the next time you click **Run**, and at least one phrase is required.
 
-> **Only Hub admins can save these.** Everyone else sees the current values read-only. If the shared settings store can't be reached, the window shows built-in fallback values with a warning, and Save stays off until it can be reached again.
+> **Only Hub admins can save this list.** Everyone else sees it read-only. If the shared settings store can't be reached, the window shows the built-in fallback list with a warning, and Save stays off until it can be reached again.
 
 ---
 
