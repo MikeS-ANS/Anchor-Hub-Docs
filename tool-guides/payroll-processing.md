@@ -42,7 +42,7 @@ Edits save as you go — there's no Save button to forget. When you're finished,
 
 You don't have to remember the deadline or wait for a banner to find out about it — it's shown from the start, right in the line under the heading alongside the period dates and pay date, as **"sign-off due" and the date**, with **"(due today)"** added once it arrives. If the deadline passes and your department still hasn't signed off, that same line switches to **"(past due)"**, and a past-due banner also appears at the top of your own screen.
 
-The Hub creates each upcoming pay period on its own, a few days before it starts, so the entry window opens a little early and gives you room to get ahead. Once a period's been sent to Puzzle, it steps out of the way — so the next one is there waiting for you, not hidden behind the one that just finished.
+The Hub creates each upcoming pay period on its own, a few days before it starts — but your entry window doesn't open right away. It opens three business days before your sign-off deadline, once the period's well underway and there's actually something worth entering. Until then, the screen names the period and tells you the date you'll be able to start, rather than just showing nothing. Once a period's been sent to Puzzle, it steps out of the way — so the next one is there waiting for you, not hidden behind the one that just finished.
 
 ---
 
@@ -170,7 +170,7 @@ Mike and Heather have one more tab: **Pay Calendar**. It sits behind the same ad
 
 **The reason it exists is holidays.** The Hub works out every sign-off deadline the same way: four business days before the pay date. "Business day" only ever means *not a weekend* to that calculation — the Hub has no concept of Thanksgiving, Christmas Eve, or any other company holiday. So a deadline can land squarely on one, and the reminder messages described below don't know any better either — they go out on the date the calendar says, holiday or not. Pay Calendar is how that gets caught and moved, well ahead of time, by a person who does know the holiday is coming.
 
-**What it shows.** The tab lists the **next 24 pay periods — a full year out** — each one's dates, its pay date, when its entry window opens, and its sign-off deadline. A year is far enough ahead to see every holiday on the calendar coming before it turns into a live problem.
+**What it shows.** The tab lists the **next 24 pay periods — a full year out** — each one's dates, its pay date, when its entry window opens (three business days before the deadline next to it), and its sign-off deadline. A year is far enough ahead to see every holiday on the calendar coming before it turns into a live problem.
 
 **How that squares with only three periods actually existing.** At any given moment there are only three real pay periods in the system — the Hub creates each one a few days before it starts, the same way it always has. Pay Calendar doesn't wait for that: it works out all 24 future periods from the pay schedule itself and shows them as if they already existed, and it only ever stores the *changes* made against one. The day a future period is actually created, months later, whatever adjustment was saved here for it is applied automatically — there's nothing to remember to come back and do. Adjusting a deadline a year out is just as real as adjusting one for next week; it just sits quietly until its period exists.
 
