@@ -1,6 +1,6 @@
 # Payroll Processing
 
-> **Not yet released.** Built and in testing — this page describes the tool exactly as it works today, and is updated as it changes. Every planned piece is now built, Teams reminders included. Access is restricted — see [Access](#access) below.
+> **Shipped in v3.12.0.** This page describes the tool exactly as it works today, and is updated as it changes. Access is restricted — see [Access](#access) below.
 
 Payroll Processing replaces the manually-maintained **"2026 Leadership Approved Payroll.xlsx"** spreadsheet — the one with a separate tab for every pay period, where each department manager's changes were collected by hand before payroll was sent off. Managers now enter their own people's per-period changes directly in the Hub, sign off once per period, and Heather and Mike review every department in a single screen before sending the period on to Puzzle.
 
