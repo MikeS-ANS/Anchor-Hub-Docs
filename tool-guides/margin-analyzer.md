@@ -18,7 +18,7 @@ Each row shows a client with:
 
 Clients with red or yellow margins are candidates for a price review in the Invoice Processor.
 
-Line items the analyzer can't match show up as **unmapped**, with the reason *"No client mapping in Company Mapping"* or *"No product mapping in Company Mapping"*. Fix those in the **Company Mapping** tool. If the Company Directory can't be loaded when the analysis starts, it stops with *"Could not load the Company Directory … Nothing was checked"* rather than reporting every client as unmapped.
+Line items the analyzer can't match show up as **unmapped**. *"No client mapping in Company Mapping"* or *"No product mapping in Company Mapping"* means the mapping is missing — fix it in the **Company Mapping** tool. *"Mapped service not found in AT contract"* means the mapping exists but that service isn't on the client's Autotask contract, so the fix is in Autotask. If the Company Directory can't be loaded when the analysis starts, it stops with *"Could not load the Company Directory … Nothing was checked"* rather than reporting every client as unmapped.
 
 ## Exporting
 

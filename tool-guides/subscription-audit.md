@@ -27,7 +27,7 @@ The Pax8 subscription list is cached to SharePoint per billing month, since it's
 
 ## Where mappings come from
 
-The audit matches Pax8 clients and products to Autotask using the **Company Mapping** tool, and nothing else. If a client or product shows as unmapped, fix it in Company Mapping and run the audit again. If the Company Directory can't be loaded when you click **Run Audit**, the audit stops straight away with *"Could not load the Company Directory … Nothing was checked"*, and no tickets are created. Wait a minute and run it again.
+The audit matches Pax8 clients to Autotask companies using the **Company Mapping** tool only — if a client shows as unmapped, fix it in Company Mapping and run the audit again. Products are matched through Company Mapping first; when a product has no mapping there, the audit also tries matching the product's name against the services already on that client's Autotask contracts. If the Company Directory can't be loaded when you click **Run Audit**, the audit stops straight away with *"Could not load the Company Directory … Nothing was checked"*, and no tickets are created. Wait a minute and run it again.
 
 ---
 
