@@ -17,12 +17,12 @@ Before running, pick your look-ahead window using the **30 / 60 / 90 days** tabs
 
 ## Settings
 
-The tool's **Settings** tab holds two shared items:
+Click **⚙ Settings** in the tool's toolbar to open its settings. Both items are **shared by everyone** — one value for the whole team, stored centrally:
 
-- **Eligible Services for % Price Increase** — a list of service-name phrases (partial match, one per line); any matching service shows the % increase column at renewal
-- **Renewal Info Prompt** — an AI prompt override used elsewhere in the renewal workflow
+- **Eligible Services for % Price Increase** — service-name phrases, one per line (partial match). Any contract service whose name contains one of them shows the % increase column at renewal. Changes apply the next time you click **Run**, and at least one phrase is required.
+- **Comparison Prompt Template** — the AI prompt used by **Compare All with Claude** on already-renewed contracts. Leave it blank for the built-in default.
 
-> **Global setting — shared by everyone.** Both are centrally managed via Azure App Configuration. The Settings screen shows the current values but the Save button won't apply a change — contact Mike (or whoever holds the `hub.admin` role) to update either one.
+> **Only Hub admins can save these.** Everyone else sees the current values read-only. If the shared settings store can't be reached, the window shows built-in fallback values with a warning, and Save stays off until it can be reached again.
 
 ---
 
