@@ -1,55 +1,60 @@
 # MSC Agreements
 
-The MSC Agreements tool gives you a revenue overview for each managed service client — including what they're currently worth, what they're projected to be worth long-term, and key contract details like renewal dates and annual uplift. Use it to understand your recurring revenue base, prepare for renewal conversations, and identify high-value clients.
+MSC Agreements shows the **Agreements tab** of the shared MSC workbook (*ANS-Finance → Managed Service Clients → Managed Service Client MSC*) inside the Hub, and lets you edit each client's agreement terms without opening Excel. The TC and S+ increase percentages here are the same ones **Contract Renewals** shows next to each expiring contract.
 
 ---
 
-## What's Shown
+## What's shown
 
-Each client row displays:
-
-| Field | Meaning |
+| Column | Where it comes from |
 |---|---|
-| **Company** | Client name |
-| **Industry** | The industry sector the client is in |
-| **User Supported Revenue** | Monthly revenue based on the number of supported users |
-| **Total MSA Revenue** | Total monthly recurring revenue from this client's Managed Services Agreement |
-| **Lifetime Revenue** | Projected value assuming 7 years at the current MSA rate — a long-term view of client worth |
-| **Contract End Date** | When the current MSA is set to expire |
-| **Last Signed Year** | The year the client last signed a contract (not necessarily their onboarding date) |
-| **Uplift %** | The annual price increase percentage written into their contract for yearly renewals |
+| **Company** | The Revenue tab (calculated) |
+| **Users** | The Revenue tab (calculated) |
+| **Monthly MSA** | The Revenue tab (calculated) |
+| **Month** | Typed in on the Agreements tab: the month the agreement renews |
+| **Year Signed** | Typed in: the year the client last signed |
+| **TC Increase** | Typed in: the annual TotalCommITment increase written into the agreement |
+| **S+ Increase** | Typed in: the annual Security+ increase |
+| **Industry** | Typed in |
+| **Lifetime Value** | The Revenue tab (calculated) |
+
+The cards along the top total the clients, the monthly MSA, the average MSA per client, and how many clients have an increase rate on file.
 
 ---
 
-## Using the Data
+## Editing
 
-**Renewal planning**
-Sort by **Contract End Date** to see which clients have agreements expiring soon. Combine with the **Uplift %** column to estimate what the renewal will be worth.
+1. Click a **Month**, **Year Signed**, **TC Increase**, **S+ Increase** or **Industry** cell and type the new value. Increases are entered as a percentage, e.g. `5` for 5%.
+2. Press **Enter** to keep the change or **Esc** to cancel it. Edited cells turn amber until you save.
+3. Click **Save to MSC Sheet**. The changes are written straight into the shared workbook, and the table reloads from the sheet so you see exactly what landed.
 
-**Client value at a glance**
-The **Lifetime Revenue** figure (7× annual MSA) gives a quick sense of the long-term impact of retaining or losing a client — useful when prioritizing account management time.
+**Greyed-out columns can't be edited here.** Company, Users, Monthly MSA and Lifetime Value are formulas that pull from the Revenue tab. Change those on the Revenue tab itself; **Open MSC Sheet** takes you there.
 
-**Renewal uplift tracking**
-The **Uplift %** column shows what's contractually agreed for each annual renewal. Use this when preparing renewal invoices to confirm the correct rate increase is being applied.
+### When a change isn't saved
+
+The Hub checks every cell before writing it, and tells you which changes it skipped and why:
+
+- **Changed in the sheet since you loaded it.** Someone edited that cell in Excel while you had the Hub open. Nothing is overwritten; reload, check their value, and edit again if needed.
+- **The cell is a formula.** It stays a formula; change it in the sheet.
+- **Client not found / appears twice.** The client was renamed, removed, or duplicated on the tab. Fix the row in the sheet.
+- **The rate must be between 0% and 100%.**
 
 ---
 
-## Updating Records
+## Access
 
-To update a client's contract details (end date, signed year, uplift %, industry):
-
-1. Click the row for the client you want to edit
-2. Update the fields inline
-3. Click **Save**
-
-Changes are saved locally and persist across sessions.
+The Hub reads and writes the workbook **as you**, so you can see and edit exactly what your own SharePoint access to ANS-Finance allows, no more. If you can't open the workbook in SharePoint, this tool will show an error saying so.
 
 ---
 
 ## Troubleshooting
 
-**A client is missing**
-Clients must be added to the MSC Agreements data file to appear here. If a managed service client isn't listed, add them by clicking **Add Client** and filling in their details.
+**"Couldn't load the Agreements tab"**: check you can open the MSC workbook in SharePoint. If the message says a column is missing, the tab's header row was renamed; the Hub finds columns by their header text (Company, User Support, MSA Total, Month, Year Signed, TC Increase, S+ Increase, Industry, Lifetime Value).
 
-**Revenue figures look wrong**
-Check that the MSA revenue amount on the client's record is current. If their contract was recently renewed at a new rate, update the Total MSA Revenue field to reflect the new amount.
+**A client is missing**: the list is the Agreements tab itself. Add the client there (usually by adding them to the Revenue tab, which feeds it), then click **Reload**.
+
+**Loading is slow**: the first load can take up to a minute on some networks; the status line shows while it works.
+
+---
+
+*Imagined by: Mike Stewart*
