@@ -25,6 +25,10 @@ Click **Export** to download the discrepancies as a spreadsheet for review or to
 
 The Pax8 subscription list is cached to SharePoint per billing month, since it's stable once the month is underway and re-fetching it on every run is one of the slower calls in the Hub. A banner above the log shows whether the current run loaded from cache or fetched live, along with when it was cached. Click **Refresh** to force a live re-fetch and overwrite the cache — useful if subscriptions changed mid-month. Company Directory changes (exclusions, mappings) are never cached and always apply fresh.
 
+## Where mappings come from
+
+The audit matches Pax8 clients and products to Autotask using the **Company Mapping** tool, and nothing else. If a client or product shows as unmapped, fix it in Company Mapping and run the audit again. If the Company Directory can't be loaded when you click **Run Audit**, the audit stops straight away with *"Could not load the Company Directory … Nothing was checked"*, and no tickets are created. Wait a minute and run it again.
+
 ---
 
 > **Guide in progress.** More detail will be added here as the tool evolves.
