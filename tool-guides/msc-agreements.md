@@ -28,7 +28,7 @@ The cards along the top total the clients, the monthly MSA, the average MSA per 
 2. Press **Enter** to keep the change or **Esc** to cancel it. Edited cells turn amber until you save.
 3. Click **Save to MSC Sheet**. The changes are written straight into the shared workbook, and the table reloads from the sheet so you see exactly what landed.
 
-**Greyed-out columns can't be edited here.** Company, Users, Monthly MSA and Lifetime Value are formulas that pull from the Revenue tab. Change those on the Revenue tab itself; **Open MSC Sheet** takes you there.
+**Greyed-out columns can't be edited here.** Company, Users, Monthly MSA and Lifetime Value are formulas that pull from the Revenue tab. Change those on the Revenue tab itself; **Open MSC Sheet** opens the workbook in your browser.
 
 ### When a change isn't saved
 
@@ -37,13 +37,16 @@ The Hub checks every cell before writing it, and tells you which changes it skip
 - **Changed in the sheet since you loaded it.** Someone edited that cell in Excel while you had the Hub open. Nothing is overwritten; reload, check their value, and edit again if needed.
 - **The cell is a formula.** It stays a formula; change it in the sheet.
 - **Client not found / appears twice.** The client was renamed, removed, or duplicated on the tab. Fix the row in the sheet.
+- **It starts with =, +, - or @.** Excel would treat it as a formula, so the Hub won't write it.
+- **The row moved while saving.** Someone inserted or deleted rows at that moment; nothing was written to the wrong client. Reload and try again.
+- **Written, but the sheet reads something else.** Excel changed the value as it landed (for example, turning text into a date). Check that cell in Excel.
 - **The rate must be between 0% and 100%.**
 
 ---
 
 ## Access
 
-The Hub reads and writes the workbook **as you**, so you can see and edit exactly what your own SharePoint access to ANS-Finance allows, no more. If you can't open the workbook in SharePoint, this tool will show an error saying so.
+The Hub reads and writes the workbook **as you**, so you can see and edit exactly what your own SharePoint access to ANS-Finance allows, no more. If you can't open the workbook in SharePoint, this tool will show an error saying so. If you don't have access, the tool says so when it loads.
 
 ---
 
