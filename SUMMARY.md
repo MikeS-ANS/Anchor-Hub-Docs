@@ -45,7 +45,7 @@
 * [Daily Progress](tool-guides/daily-progress.md)
 * [Inventory Reports](tool-guides/inventory-reports.md)
 * [QuickBooks Connection](tool-guides/quickbooks-connection.md)
-* [Daily On-Site Briefing](tool-guides/daily-onsite-briefing.md)
+* [Who is Where (Daily On-Site Briefing)](tool-guides/daily-onsite-briefing.md)
 * [Tool Inventory](tool-guides/tool-inventory.md)
 
 ## What's New
