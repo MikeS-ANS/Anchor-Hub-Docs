@@ -64,9 +64,34 @@ If marks can't be loaded for some reason, an amber banner says so and the Checke
 
 ## QuickBooks total
 
-Each tab — On Hand, Added, and Picked — has its own **QB total** field on the totals bar at the top. Type in the total from QuickBooks for that report and month; it saves automatically when you click away from the field.
+Each tab — On Hand, Added, and Picked — has its own **QB total** field on the totals bar at the top. You can fill it two ways: type in the total from QuickBooks for that report and month (it saves automatically when you click away from the field), or, once the QuickBooks connection is live, pull it straight from QuickBooks with **Get from QuickBooks** (see below).
 
-**Variance vs QB** shows Autotask's total minus the QuickBooks total you entered — green when they match exactly, amber when they don't. Until a QuickBooks total is entered, it reads "not entered." Underneath the field, the Hub shows who entered the QuickBooks total and when.
+**Variance vs QB** shows Autotask's total minus the QuickBooks total — green when they match exactly, amber when they don't. Until a QuickBooks total is entered, it reads "not entered." Underneath the field, the Hub shows where the total came from (see Labels below).
+
+### Get from QuickBooks
+
+Next to the QB total field there is a **Get from QuickBooks** button. While the Hub points at Intuit's test company it reads **Get from QuickBooks (test company)**. The button appears only on a tab that has a QuickBooks figure set up for it. It is disabled while QuickBooks isn't connected (hover text: "QuickBooks isn't connected — ask Mike or Heather."), and enabled otherwise (hover text: "Read this month's figure from QuickBooks and save it here.").
+
+Clicking it shows "Getting the figure from QuickBooks…" under the field. The Hub server reads exactly one QuickBooks report for that tab and month and saves the figure into the QB total. No dollar value ever travels from your screen to the server — the server is the source of the number.
+
+**Labels under the field.** A hand-typed total shows "Typed · <initials> · <date and time>". A pulled one shows "From QuickBooks · pulled <date and time> by <name>". Hover over that label to see exactly what was read: which report, which account name and id, the date or date range, and the accounting basis — for example "Balance as of · Inventory Asset (acct 81) · as of 2026-08-31 · Accrual". The Summary tab's QuickBooks totals grid shows "from QuickBooks" or "typed" under each figure the same way.
+
+**If someone already typed a different total.** The pull does not overwrite it silently. A confirmation shows both amounts: "<Name> typed $X on <date>. QuickBooks now says $Y. Replace the typed figure with QuickBooks'?" Choose No and nothing changes; choose Yes and the typed figure is replaced. (If the typed figure already equals QuickBooks' to the cent, there is nothing to argue about and the figure is simply relabelled as From QuickBooks.)
+
+**If a pulled figure changes.** When a figure that was pulled earlier is pulled again and QuickBooks now returns a different number — because a transaction was added or changed in QuickBooks since — the note shows "QuickBooks figure changed from $X to $Y since the last pull on <date>."
+
+**When a pull is refused.** Each of these shows a plain sentence and saves nothing:
+
+* The month hasn't ended yet in Denver time: "<month> hasn't ended yet, so there is no month-end QuickBooks figure for it."
+* QuickBooks isn't connected: "QuickBooks isn't connected — ask Mike or Heather."
+* QuickBooks isn't answering: "QuickBooks didn't respond. Try again in a minute."
+* The Hub's monthly read cap has been reached.
+
+If the Hub itself doesn't answer in time, the note says the figure may or may not have been saved, and the field shows whatever the Hub has stored.
+
+A failed pull never saves a zero or a blank, and never touches a typed figure.
+
+See the **QuickBooks Connection** guide for who can connect, the alerts, and the current go-live status.
 
 ## Summary
 
@@ -87,7 +112,7 @@ If this is the first month with a snapshot (no snapshot exists for the prior mon
 
 Below the ledger:
 
-* **QuickBooks totals** — the Autotask total, the QuickBooks total you entered, and the variance, for each of On Hand, Added, and Picked.
+* **QuickBooks totals** — the Autotask total, the QuickBooks total (typed or pulled), and the variance, for each of On Hand, Added, and Picked.
 * **Reconciled** — how many rows on each tab are currently checked, out of the total rows on screen for that month.
 * **Where the variance usually hides** — six expandable lists of the rows most likely to explain a difference between the two snapshots:
   * **Unit cost changed between snapshots** — items whose Autotask unit cost changed since last month, and what that changed the extended cost by. Autotask doesn't tell the Hub who made a cost change or when, so there's no "Edited by" column here — that detail simply isn't something Autotask exposes.
