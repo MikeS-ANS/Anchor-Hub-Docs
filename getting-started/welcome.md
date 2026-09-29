@@ -7,6 +7,7 @@ Anchor Hub is Anchor Network Solutions' internal platform for managing recurring
 When you open Anchor Hub you land on the **daily start page**:
 - **Quick Links** — one-click tiles to your most-used portals (Autotask, IT Glue, RMM, M365, Pax8). Admins manage the base set; each user can add personal links
 - **Today's Calendar** — your Outlook calendar events for the day
+- **Today's On-Sites** — who is on-site with a client today, from Autotask service calls (the same feed behind the Who is Where Dispatch Teams post)
 - **Autotask Tickets** — a live snapshot of your assigned tickets with critical/high count, overdue count, and your top 5 by priority
 
 All tools are accessible from the sidebar or via the **Apps** nav item.
