@@ -4,7 +4,7 @@
 
 Who is Where (the Daily On-Site Briefing) answers one question every weekday morning: **who is on-site with a client today, where, and when?** It reads the service calls dispatch schedules in Autotask and shows them in two places:
 
-- **A Teams post** in the *Who is Where Dispatch* channel (All Staff team), posted at 7:00am and updated in place through the day until 5:00pm.
+- **A Teams post** in the *Who is Where Dispatch* channel (All Staff team), posted at 7:00am and updated in place through the day until 5:00pm. When a visit is added after the morning post, the bot replies in the post's own thread so the team is notified.
 - **A "Who is Where" widget** on the Hub home screen, a full-width card under Today's calendar and My Rocks & To-Dos, with Today, Tomorrow, This Week and Next Week views and a month calendar.
 
 Both come from the same feed, so they always agree.
@@ -30,6 +30,7 @@ Only service calls are read. Nothing comes from Outlook calendars, and the descr
 - If Autotask can't be read at 7:00, nothing is posted yet and it tries again on the next half-hour. If it still can't be read from 8:00 on, the card says so plainly instead of pretending the day is empty. It is replaced by the real list as soon as Autotask answers.
 - Visits with no Onsite/Remote status and no other clue appear under **"Service calls without a type set (may be on-site)"**.
 - Every card ends with a reminder and a **Create a service call** button that opens Autotask's new-service-call screen. Heading to a client? Create the service call and you'll be on the card within 30 minutes.
+- Teams never notifies anyone about an edited card, so whenever a visit is **added** after the morning post, the bot also replies in the post's own thread — one line per new visit (**Added: client (city) · time block · tech(s) · number**). Removals and completions update the card quietly.
 - If today's post is deleted in Teams, it is not re-posted that day.
 
 Don't want the card? Mute the channel in Teams — there are no direct messages.
@@ -63,7 +64,7 @@ Tomorrow, This Week, Next Week and the calendar exist so teams can coordinate ah
 
 ## Behind the scenes
 
-The feed runs in Azure every 30 minutes on weekdays between 7:00am and 5:00pm Denver time, using the Hub's read-only Autotask access. The feed can be asked for any range up to about two months, within about a year either way of today. It never writes to Autotask. The only thing it stores is which Teams post belongs to which day and two counts (on-site, untyped), so the post can be updated in place and adoption of the new statuses can be measured. The untyped count includes only visits still open: completing a service call makes Autotask overwrite its Onsite/Remote status, so a completed call with no other clue is not held against dispatch.
+The feed runs in Azure every 30 minutes on weekdays between 7:00am and 5:00pm Denver time, using the Hub's read-only Autotask access. The feed can be asked for any range up to about two months, within about a year either way of today. It never writes to Autotask. The only things it stores are which Teams post belongs to which day, two counts (on-site, untyped), and the id numbers of the service calls already on the card — so the post can be updated in place, adoption of the new statuses can be measured, and a newly added visit can be told apart from one that was already there. Nothing else about a service call is kept: the widget and the card are re-read from Autotask, and the server shares each read for two minutes so thirty people opening the Hub at once cost Autotask one read rather than thirty. The Teams post itself always comes from a fresh read. The untyped count includes only visits still open: completing a service call makes Autotask overwrite its Onsite/Remote status, so a completed call with no other clue is not held against dispatch.
 
 ---
 
