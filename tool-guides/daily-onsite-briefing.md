@@ -47,7 +47,7 @@ Hover a row for the tech(s) and the ticket, task or project title. Click a ticke
 The **Calendar** button on the widget opens a month view inside the Hub (an overlay, not a separate window):
 
 - Weekday columns run Monday to Sunday. The forward and back arrows move a month at a time and grey out beyond about a year either way.
-- Each day shows a chip per visit with the client name. Hover a chip for the tech(s), ticket or task number, project and time; click a chip to open the ticket or project in Autotask.
+- Each day shows a chip per visit with the client name. Hover a chip for the tech(s), ticket or task number, the ticket or task title, project and time; click a chip to open the ticket or project in Autotask.
 - A visit spanning several days shows on every day it covers, with **"↔"** on the later days.
 - Close it with the **Close** button, the **Escape** key, or by clicking outside it.
 
