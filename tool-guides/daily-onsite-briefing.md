@@ -19,11 +19,11 @@ A service call is classified in this order, and the first match wins:
 
 A service call with none of those clues appears in a second group, **"Service calls without a type set"**, so a visit nobody labelled is still visible rather than hidden. When that group is empty for a week, dispatch has fully adopted the Onsite/Remote statuses.
 
-Only service calls are read. Nothing comes from Outlook calendars, and the description of a call is never shown — only the client, city, time window, ticket number and the assigned tech(s).
+Only service calls are read. Nothing comes from Outlook calendars, and the description of a call is never shown — only the client, city, time window, ticket or task number and the assigned tech(s).
 
 ## The Teams post
 
-- Grouped by tech, earliest start first. A call with two techs shows under both.
+- Grouped by client, earliest visit first: the client (and city) in bold, then each visit beneath it as tech · time · ticket number. A call with two techs lists both on one line. A project-task visit shows its task number.
 - A completed call stays on the list with a ✓ so the card remains a record of the day.
 - On a day with nothing scheduled, the card says **"No on-sites scheduled today."**
 - If Autotask can't be read at 7:00, nothing is posted yet and it tries again on the next half-hour. If it still can't be read from 8:00 on, the card says so plainly instead of pretending the day is empty. It is replaced by the real list as soon as Autotask answers.
@@ -34,7 +34,7 @@ Don't want the card? Mute the channel in Teams — there are no direct messages.
 
 ## The home widget
 
-Same content as the card, one row per tech and visit: time, tech name, then client, city, time window and ticket number underneath. A completed visit shows a ✓ and the row is dimmed with the client and time line struck through (the tech's name is not). Hover a row for the ticket title; click it to open the ticket in Autotask. The widget has the same **Create a service call** button. If the schedule can't be read it says **"On-site schedule unavailable."** — it never shows an empty day it didn't actually confirm.
+Same content as the card, one row per visit: the time on the left, the client in bold, and beneath it the tech, the time block and the ticket or task number. A completed visit shows a ✓ and the row is dimmed with that line struck through. Hover a row for the ticket or task title; click a ticket-linked row to open the ticket in Autotask. The widget has the same **Create a service call** button. If the schedule can't be read it says **"On-site schedule unavailable."** — it never shows an empty day it didn't actually confirm.
 
 ## For dispatch
 
