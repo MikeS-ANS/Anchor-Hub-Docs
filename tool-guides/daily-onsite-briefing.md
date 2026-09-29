@@ -36,7 +36,7 @@ Don't want the card? Mute the channel in Teams — there are no direct messages.
 
 ## The home widget
 
-The widget is titled **Who is Where**. Toggle between **Today | Tomorrow | This Week | Next Week** (Today is the default; weeks run Monday to Sunday). The week views group rows under day headings such as "Wed Sep 30" and skip days with nothing scheduled.
+The widget is titled **Who is Where**. Toggle between **Today | Tomorrow | This Week | Next Week** (Today is the default; weeks run Sunday to Saturday). The week views group rows under day headings such as "Wed Sep 30" and skip days with nothing scheduled.
 
 Each row is one visit on one day it covers: the time on the left, the client (with city) in bold, and beneath it a ✓ when the visit is complete, the time block, the tech(s) and the ticket or task number. A task-linked visit also shows its project name. A visit that started on an earlier day shows **"↔ cont."** in the time column. A completed visit's row is dimmed with that line struck through.
 
@@ -46,7 +46,7 @@ Hover a row for the tech(s) and the ticket, task or project title. Click a ticke
 
 The **Calendar** button on the widget opens a month view inside the Hub (an overlay, not a separate window):
 
-- Weekday columns run Monday to Sunday. The forward and back arrows move a month at a time and grey out beyond about a year either way.
+- Weekday columns run Sunday to Saturday. The forward and back arrows move a month at a time and grey out beyond about a year either way.
 - Each day shows a chip per visit with the client name. Hover a chip for the tech(s), ticket or task number, the ticket or task title, project and time; click a chip to open the ticket or project in Autotask.
 - A visit spanning several days shows on every day it covers, with **"↔"** on the later days.
 - Close it with the **Close** button, the **Escape** key, or by clicking outside it.
