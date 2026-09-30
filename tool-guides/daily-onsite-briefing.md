@@ -1,6 +1,6 @@
 # Who is Where (Daily On-Site Briefing)
 
-> **Not yet in the released app.** This describes the feature as built on the `feature/onsite-briefing` branch. Once it ships, the Teams post appears in the *Who is Where Dispatch* channel and the widget appears on everyone's Hub home screen — there is nothing to turn on per person.
+> **Released in v4.7.0.** The Teams post appears in the *Who is Where Dispatch* channel and the widget is on everyone's Hub home screen; there is nothing to turn on per person.
 
 Who is Where (the Daily On-Site Briefing) answers one question every weekday morning: **who is on-site with a client today, where, and when?** It reads the service calls dispatch schedules in Autotask and shows them in two places:
 
@@ -14,7 +14,7 @@ Both come from the same feed, so they always agree.
 A service call is classified in this order, and the first match wins:
 
 1. Its status is **Onsite** (the new status dispatch sets when creating the call) — it is an on-site. A status of **Remote** means it is left out.
-2. It was created by TimeZest — those are always remote sessions and are left out.
+2. It was created by TimeZest and has no Onsite or Remote status — it is treated as remote and left out. TimeZest now sets the Onsite or Remote status itself based on the type of booking, so this rule only catches older bookings made before that change, and bookings whose status Autotask has overwritten on completion.
 3. Its description mentions "onsite" or "on-site" — it is an on-site. A description that only says "remote" is left out.
 
 A service call with none of those clues appears in a second group, **"Service calls without a type set"**, so a visit nobody labelled is still visible rather than hidden. When that group is empty for a week, dispatch has fully adopted the Onsite/Remote statuses.
@@ -60,7 +60,7 @@ Tomorrow, This Week, Next Week and the calendar exist so teams can coordinate ah
 
 - Set **Onsite** or **Remote** as the status when creating a service call. That replaces "New"; completing the call later works exactly as before.
 - Recurring on-sites (like a weekly Wednesday visit) need a real recurring service call, not just a placeholder ticket — a ticket alone never appears on the card.
-- TimeZest bookings need nothing; they are recognised automatically.
+- TimeZest bookings need nothing; TimeZest sets Onsite or Remote itself based on the type of booking.
 
 ## Behind the scenes
 
@@ -68,4 +68,4 @@ The feed runs in Azure every 30 minutes on weekdays between 7:00am and 5:00pm De
 
 ---
 
-*This was Hub idea #51, "Daily on-site briefing posted to Teams", submitted in Ideas & Bugs by Mike Stewart, and shaped by him on 2026-09-29 into the channel post plus home widget built here.*
+*This was Susan Castle's idea. It was entered in Ideas & Bugs as Hub idea #51, "Daily on-site briefing posted to Teams", by Mike Stewart, who shaped it on 2026-09-29 into the channel post plus home widget built here.*

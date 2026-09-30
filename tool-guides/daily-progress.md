@@ -1,11 +1,8 @@
 # Daily Progress
 
-> **This tool exists only in an unreleased development branch (all four phases built).** It is not in
-> the released app you're using today — nothing on this page describes anything you can open
-> right now unless someone has specifically told you they're testing the new build with you.
-> Once it ships, it will also need a grant from **Access Management** before it shows up in
+> **Released in v4.1.0.** It needs a grant from **Access Management** before it shows up in
 > anyone's sidebar (see "Getting access" below) — being on a role that normally gets everything
-> is not enough on its own. This page describes the tool as Phases 1–4 actually built it.
+> is not enough on its own.
 
 Daily Progress is a personal report of your own day at ANS: what you actually did, not what you
 were assigned. It reads your own sent email, your own calendar, your own Autotask activity, and

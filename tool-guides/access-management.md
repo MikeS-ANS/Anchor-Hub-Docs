@@ -1,20 +1,11 @@
 # Access Management
 
-> **This screen is now the real thing — in an unreleased development build.** The Hub's own
-> Access Management tables decide who sees what tool, replacing the **Hub Role Matrix** and
-> **Hub User Overrides** SharePoint lists described in
-> [Roles & Permissions](../getting-started/roles-and-permissions.md). That cutover is now
-> complete on the server side too — every server-side action the Hub takes, not just what
-> the sidebar shows, checks these same tables directly, the same way tool visibility does.
-> That's all genuinely true today — but only inside an unreleased development branch.
-> **The released app you're using today still runs on the old SharePoint-based system**,
-> unchanged, until this branch finishes and ships. Nothing in this page describes your
-> access right now unless someone has specifically told you they're testing the new build
-> with you. Once it ships, this page is simply how the Hub decides access from then on.
+> **Released in v4.0.0.** The Hub's own Access Management tables decide who sees what tool.
+> They replaced the **Hub Role Matrix** and **Hub User Overrides** SharePoint lists that
+> earlier versions used, and every server-side action the Hub takes checks these same tables.
 
 Access Management is where roles and individual permissions are managed for the whole Hub.
-This page describes everything that exists today, including the parts that only apply once
-the branch above ships.
+This page describes how it works today.
 
 ---
 
@@ -64,7 +55,7 @@ own separate permission, described
 
 ## How access is actually decided now
 
-Once the branch above ships, every tool's visibility comes from four tables this screen
+Every tool's visibility comes from four tables this screen
 manages: who someone is (**Users**), what a role includes (**Roles**), an optional
 person-by-person exception on top of a role (**overrides**, part of the Users tab), and
 the master list of tools that exist at all (**Tools**). Nothing about visibility is read
@@ -760,7 +751,3 @@ actually handed over for real use:
   comparison, not a small follow-on to this one. See
   [Payroll Review and Payroll Processing are a special case](#payroll-review-and-payroll-processing-are-a-special-case)
   above.
-- **This whole feature is still on an unreleased development branch.** Everything on this
-  page describes how access works inside that branch — the app you're actually using today
-  still runs on the old SharePoint-based system until that branch ships. Watch for an
-  announcement when it does; nothing about your day-to-day access changes silently.
