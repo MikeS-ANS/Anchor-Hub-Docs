@@ -10,6 +10,7 @@
 * [First-Run Checklist](getting-started/first-run-checklist.md)
 * [Roles & Permissions](getting-started/roles-and-permissions.md)
 * [Connected Services](getting-started/connected-services.md)
+* [Troubleshooting](getting-started/troubleshooting.md)
 * [Roadmap](getting-started/roadmap.md)
 
 ## Tool Guides

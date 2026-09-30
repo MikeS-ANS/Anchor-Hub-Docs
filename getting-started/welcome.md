@@ -76,7 +76,9 @@ Roles are assigned in Entra ID. Contact your admin to request a role change.
 
 If something isn't working as expected:
 1. Check the relevant **Tool Guide** in this help center
-2. Use the **Request Support** button on the Help page inside the app to send a message directly to your admin
-3. Use **Report a Bug** to flag something that looks wrong
+2. Click **Help** in the sidebar. It opens this Help Center inside the Hub, with **Back**, **Forward**, **Home** and **Open in browser** at the top
+3. Use **Request Support** there to send a message straight to your admin, or **Report a Bug** to open the Ideas & Bug Tracker and flag something that looks wrong
 
 For urgent issues, reach out to Mike directly.
+
+*The in-app Help Center was Mike Stewart's idea.*
