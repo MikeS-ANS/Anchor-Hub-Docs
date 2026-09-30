@@ -50,6 +50,7 @@
 
 ## What's New
 
+* [v4.7.0 — Who is Where, and the full Today's Calendar](whats-new/v4.7.0.md)
 * [v4.6.6 — Settings clean-up, part 1](whats-new/v4.6.6.md)
 * [v4.6.5 — Payroll Processing: due-day reminders, deadline visibility, and Pay Calendar](whats-new/v4.6.5.md)
 * [v4.6.4 — User Audit Report: a sent report reads as sent](whats-new/v4.6.4.md)
