@@ -24,7 +24,7 @@ Only service calls are read. Nothing comes from Outlook calendars, and the descr
 ## The Teams post
 
 - Strictly chronological, earliest visit first: for each visit, the client (and city) in bold, then a line of **time block · tech(s) · ticket or task number**. A call with two techs lists both on the line.
-- The number is a clickable link: a ticket-linked visit links to the ticket in Autotask, and a project-task visit links to its project, followed by the project name.
+- The number is a clickable link: a ticket-linked visit links to the ticket in Autotask, and a project-task visit links to that task in Autotask, followed by the project name.
 - A completed call stays on the list with a ✓ so the card remains a record of the day.
 - On a day with nothing scheduled, the card says **"No on-sites scheduled today."**
 - If Autotask can't be read at 7:00, nothing is posted yet and it tries again on the next half-hour. If it still can't be read from 8:00 on, the card says so plainly instead of pretending the day is empty. It is replaced by the real list as soon as Autotask answers.
@@ -41,14 +41,14 @@ The widget is titled **Who is Where**. Toggle between **Today | Tomorrow | This 
 
 Each row is one visit on one day it covers: the time on the left, the client (with city) in bold, and beneath it a ✓ when the visit is complete, the time block, the tech(s) and the ticket or task number. A task-linked visit also shows its project name. A visit that started on an earlier day shows **"↔ cont."** in the time column. A completed visit's row is dimmed with that line struck through.
 
-Hover a row for the tech(s) and the ticket, task or project title. Click a ticket-linked row to open the ticket in Autotask; a task-linked row opens its project. An empty view says **"No on-sites today."**, **"No on-sites tomorrow."**, **"No on-sites this week."** or **"No on-sites next week."** If the schedule can't be read it says **"On-site schedule unavailable."** — it never shows an empty view it didn't actually confirm. The reminder and the **Create a service call** button stay at the bottom.
+Hover a row for the tech(s) and the ticket, task or project title. Click a ticket-linked row to open the ticket in Autotask; a task-linked row opens the task. An empty view says **"No on-sites today."**, **"No on-sites tomorrow."**, **"No on-sites this week."** or **"No on-sites next week."** If the schedule can't be read it says **"On-site schedule unavailable."** — it never shows an empty view it didn't actually confirm. The reminder and the **Create a service call** button stay at the bottom.
 
 ### The calendar
 
 The **Calendar** button on the widget opens a month view inside the Hub (an overlay, not a separate window):
 
 - Weekday columns run Sunday to Saturday. The forward and back arrows move a month at a time and grey out beyond about a year either way.
-- Each day shows a chip per visit with the client name. Hover a chip for the tech(s), ticket or task number, the ticket or task title, project and time; click a chip to open the ticket or project in Autotask.
+- Each day shows a chip per visit with the client name. Hover a chip for the tech(s), ticket or task number, the ticket or task title, project and time; click a chip to open the ticket or task in Autotask.
 - A visit spanning several days shows on every day it covers, with **"↔"** on the later days.
 - Close it with the **Close** button, the **Escape** key, or by clicking outside it.
 
