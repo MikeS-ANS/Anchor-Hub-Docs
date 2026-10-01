@@ -64,6 +64,10 @@ Some invoice processors (Kaseya, Cytracom and Duo invoices) don't connect to tha
 
 - **GitHub** — the Hub checks here for new versions of itself and downloads them. **Reads only.**
 
+### Help
+
+- **This Help Center** — the Help screen, and the round **?** at the top right of the window, show these pages inside the Hub. It's a public site, so the Hub sends no sign-in or account details to it. **Reads only.**
+
 ## A note on AI
 
 Features that use **Hatz.ai** send the relevant data to it so it can write the summary, draft or answer you asked for. Where a tool's guide has an **AI Prompt** section, it shows the instructions the Hub gives the AI.
