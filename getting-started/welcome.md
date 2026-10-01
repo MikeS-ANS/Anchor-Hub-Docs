@@ -76,7 +76,7 @@ Roles are assigned in Entra ID. Contact your admin to request a role change.
 
 If something isn't working as expected:
 1. Check the relevant **Tool Guide** in this help center
-2. Click **Help** in the sidebar. It opens this Help Center inside the Hub, with **Back**, **Forward**, **Home** and **Open in browser** at the top
+2. Click **Help** in the sidebar. It opens this Help Center inside the Hub, with the back, forward and home arrows and the open-in-browser button at the top
 3. Use **Request Support** there to send a message straight to your admin, or **Report a Bug** to open the Ideas & Bug Tracker and flag something that looks wrong
 
 For urgent issues, reach out to Mike directly.
