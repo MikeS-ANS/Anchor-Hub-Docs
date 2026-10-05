@@ -50,6 +50,7 @@
 
 ## What's New
 
+* [v4.8.1 — Pop-ups that answer the keyboard, and payroll totals](whats-new/v4.8.1.md)
 * [v4.8.0 — The Help Center comes into the Hub](whats-new/v4.8.0.md)
 * [v4.7.0 — Who is Where, and the full Today's Calendar](whats-new/v4.7.0.md)
 * [v4.6.6 — Settings clean-up, part 1](whats-new/v4.6.6.md)
