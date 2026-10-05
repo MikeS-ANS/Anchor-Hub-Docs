@@ -38,6 +38,8 @@ Open **Payroll Processing** and the **My People** tab shows the currently open p
 | Regular Hours | You |
 | Notes | You |
 
+The grid ends in a **Total** row that adds up each money and hours column for everyone on the screen. Mileage and Expenses that still say "not synced" count as zero in it. If you type something that isn't a valid number, it's left out of that column's total and the total shows a `*` — hover it to see how many values were skipped. Totals update when you tab out of a cell.
+
 Edits save as you go — there's no Save button to forget. When you're finished, tick **"I've completed my updates for this period"** at the bottom. That's one checkbox for you, not one per employee: it records that your whole department is done, with your name and the time, and it's what Heather and Mike watch to know whether they're still waiting on you. You can untick it and keep editing if something changes.
 
 You don't have to remember the deadline or wait for a banner to find out about it — it's shown from the start, right in the line under the heading alongside the period dates and pay date, as **"sign-off due" and the date**, with **"(due today)"** added once it arrives. If the deadline passes and your department still hasn't signed off, that same line switches to **"(past due)"**, and a past-due banner also appears at the top of your own screen.
@@ -92,6 +94,7 @@ Heather and Mike can also run it on demand — **Sync expenses & mileage**, on b
 Heather and Mike get a **Review & Send** tab: every department's employees for a chosen period in one grid, grouped by the manager who actually owns them, with the counts across the top — employees, sign-offs collected, flagged entries, total changes, and expense reports read. The header also shows **"sign-off due" and the date** right next to the pay date — but deliberately with no "(past due)" state, the way the manager's own screen has. This tab can pull up any past period, finished ones included, and a blanket "is this past due" check would end up wrongly flagging a period that was completed and sent months ago.
 
 - **Sign-off cards** show each manager, the department (or departments) they actually own, how many employees that comes to, and whether they've signed off yet — with the time they did it. The cards are per *manager*, not per department: if a few people in a department have been reassigned to somebody else, that second manager gets their own card and their own sign-off, and the grid below groups the same way. A department with two managers in it therefore appears twice, once per manager, which is the honest picture — they sign off separately because they're responsible for different people.
+- **A Total row** closes the grid, adding up every department's Mileage, Expenses, On Call, Performance Bonus, CrewHu Rewards, Commission and Regular Hours. Mileage and Expenses still marked "not synced" count as zero, and a value that isn't a valid number is left out, with a `*` on that total. It updates as soon as you tab out of an edited cell. The file sent to Puzzle is not affected.
 - **Flags** mark anything unusual on an individual value — hover a flag for the detail.
 - **Any editable cell can be corrected here**, and the edit is logged against the name of whoever made it. Mileage and Expenses stay read-only on this screen too, for everyone.
 - A warning appears if any employee has **no manager assigned** — they're still listed, but nobody can sign them off.
@@ -263,3 +266,7 @@ A reminder can reach nobody, and the failure is completely invisible to the pers
 - **Teams reminders only reach somebody who has the Anchor Hub app installed in their Teams, and there's no per-person opt-out.** A missing install shows up as a delivery failure on the Review & Send screen rather than quietly doing nothing — see [Teams reminders](#teams-reminders).
 - **Company holidays still aren't detected automatically.** The Hub only knows about weekends, so a deadline landing on a holiday won't move on its own. What's changed is that there's now a way to catch it: the Pay Calendar tab (Mike and Heather only, see above) lists a full year of upcoming deadlines, so a holiday collision can be spotted and moved well before the reminders would ever fire. It still takes a person looking ahead and making the change — the Hub doesn't notice the holiday itself — but it's no longer a problem with no fix at all.
 - **A department row added by mistake can't be removed from the UI.** The suggested rows on the Departments tab now come from the real roster, so they no longer offer a department that doesn't exist — but if a wrong one does get saved, ask for it to be cleaned up rather than leaving a department that matches nobody.
+
+---
+
+*The Total row at the bottom of both grids was Chris Heck's idea, entered in Ideas & Bugs as Hub idea #49.*
