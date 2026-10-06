@@ -242,6 +242,8 @@ Each managed client has a *Service Plan Pricing Calculator* workbook in their Sh
 
 **Running it again is safe.** A second run against the same snapshot finds nothing to change, writes nothing and adds no new note.
 
+**Digest emails.** The **Digest emails** card under the Calculators header holds a list of people who get an email summary when an update finishes — who ran it, from which snapshot, and for every client what was written (each Units cell before → after), what failed and why, what could not be served, what was skipped, and how many were unchanged, with an **Open** link to each workbook. Only a Hub admin can change the list, and it is shared by every admin rather than kept per machine. The summary is sent from the mailbox of the admin who ran the update, the moment the run finishes, whenever at least one recipient is set; clear the list and nothing is sent. Nothing priced is ever in the email. The finished run's bar says whether the summary went out ("Summary emailed to 3 people") or why it didn't, for the run you just made.
+
 ## What is not here yet
 
 * Reminders when a new snapshot is ready for a calculator update — a later alerting phase.
