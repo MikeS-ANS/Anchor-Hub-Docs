@@ -22,7 +22,7 @@ There is one exception, and it matters: **anything the Hub writes to Autotask is
 
 ### Microsoft 365
 
-- **Microsoft 365 (as you)** — signs you in, shows your photo, your calendar on Home, and the SharePoint files each tool works from (invoices, reports, workbooks). It **reads and saves files** in SharePoint folders you already have access to, and **sends email from your mailbox** when you click send on something like a client report or a bug report. Daily Progress, only if you use it, also reads your own sent mail, calendar and Teams chats to build your personal report. Timesheet Review looks up who reports to you.
+- **Microsoft 365 (as you)** — signs you in, shows your photo, your calendar on Home, and the SharePoint files each tool works from (invoices, reports, workbooks). It **reads and saves files** in SharePoint folders you already have access to, and **sends email from your mailbox** when you click send on something like a client report or a bug report. Daily Progress, only if you use it, also reads your own sent mail, calendar and Teams chats to build your personal report. Timesheet Review looks up who reports to you. When a Hub admin runs Tool Inventory's calculator update, it also **updates the tool-count cells** in each client's Service Plan Calculator workbook in SharePoint — as that admin, and only after they've previewed every change.
 - **Microsoft 365 (the Hub's own access)** — the Hub's server has a small amount of its own access: it looks up staff job titles and whether an account is still active (for access management), pulls Microsoft's daily Teams activity totals for Daily Progress, and reads one billing spreadsheet for Tool Inventory. **Reads only.**
 
 ### Autotask & billing
