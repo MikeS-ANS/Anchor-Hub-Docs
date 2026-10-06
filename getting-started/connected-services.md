@@ -40,6 +40,7 @@ Some invoice processors (Kaseya, Cytracom and Duo invoices) don't connect to tha
 - **BitDefender** — reads device counts for Tool Inventory. **Reads only.**
 - **CyberQP** — reads counts for Tool Inventory. **Reads only.**
 - **Cyrisma** — reads information for Tool Inventory. **Reads only.**
+- **Splashtop** — not connected at all (Splashtop has no API). Tool Inventory counts it from a computer list a person exports from Splashtop and uploads on its Imports tab; the file is kept in SharePoint. **No connection.**
 
 ### Monitoring & networking
 
