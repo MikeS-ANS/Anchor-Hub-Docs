@@ -30,7 +30,9 @@ If the value you're attaching is already on a different company, the popover off
 
 A nightly identity sync automatically adds every Autotask company matching your current filter settings (Account Type, Status, and Classification — configurable via **⚙ Sync Settings**, admin only) as a bare, unmapped row — so a brand-new Autotask client always has a directory row waiting for it, rather than only appearing once some platform's own match flow happens to create one. Use **⟳ Sync Now** to run it immediately instead of waiting for the nightly run (useful right after onboarding a new client).
 
-A company outside your current filter settings (e.g. a vendor or a different account type) can still be added manually with **+ Add Company** — it won't be pruned if the filter settings change later, and any manual exclude/include you set on a company always wins over what the filter would otherwise decide.
+**Where companies come from.** Every company in the Hub comes from Autotask. There is no way to add one by hand: if it doesn't exist in Autotask as an active Customer, it doesn't exist in the Hub. For an urgent new client, use **Sync Now** and the nightly sync's rules apply immediately.
+
+**Account Type matters now.** Each night (and on Sync Now), a company whose Autotask Account Type is no longer Customer — for example switched to Cancellation or Prospect during an offboarding — is hidden across every Hub tool, the same as if it had been deactivated. Switching it back to Customer brings it back the next night. Its mappings are never deleted. The sync log says why each company changed ("no longer Customer" or "inactive in Autotask"). The same pass now refreshes each company's Classification daily, so the Classification shown in the Companies tab no longer waits for the Update Classifications button.
 
 ---
 
