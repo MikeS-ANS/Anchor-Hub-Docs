@@ -29,8 +29,8 @@ Most of this tool reads from the **Company Directory** so it doesn't hit the API
    - **Client-facing (2 tabs)** — Instructions + User Review. This is what the client sees.
    - **Full report (6 tabs)** — adds Service Accounts, Unlicensed, External, and an internal Summary.
    - **Both** — produces both files in one run.
-3. Use the **search box** to filter, then check the clients to run (nothing is selected by default). Unlinked clients show "Not linked" and can't be run until linked in the Company Directory.
-4. *(Optional)* **Create Autotask CRM note** logs a "User Count Audit" To-Do on each company, titled `User Audit — Report Generated — <Month Year>`. Requires your personal key.
+3. Use the **search box** to filter, then check the clients to run. Nothing is ticked when you open this tab, and ticks don't carry over — leave the tab and come back, and you start fresh. **Run Audit** on the AM Dashboard opens this tab with just that one client ticked. Unlinked clients show "Not linked" and can't be run until linked in the Company Directory.
+4. **Create Autotask CRM note** is ticked by default. It logs a "User Count Audit" To-Do on each company, titled `User Audit — Report Generated — <Month Year>`. Requires your personal key. Untick it to skip the note.
 5. Click **Generate**.
 
 Each report is saved to the client's **ANS-Clients / {folder} / User Audits / {year}** location (and your Downloads). If a client has no SharePoint folder, it saves to Downloads only and says so.
@@ -41,7 +41,9 @@ Each report is saved to the client's **ANS-Clients / {folder} / User Audits / {y
 
 **Email to client.** After a run, enter one or more recipients (separate with `;` or `,`) and Send. The email uses an action-oriented template with the return-by deadline, and attaches the **current SharePoint copy** — so edits you make in SharePoint after generating are included. The subject and intro are editable in Settings; your cloud email signature is applied automatically.
 
-**The send is also recorded on the account — when there's a note to record it on.** If you created the CRM note for this run (the optional checkbox above) and hold a personal Autotask key, sending retitles that note to `User Audit — Report Generated & Sent — <Month Year>` and adds a line naming the date and every recipient, so the account shows at a glance whether the report has actually gone out, and to whom. This happens after the email is already sent, so a failure here never fails the send itself — if the account note can't be verified as updated, you'll just see a small ⚠ account note not updated next to the send confirmation.
+Email is only offered when you generated **one** client. If more than one client was ticked, the results say email is turned off for that run — generate the client on its own to email it. This keeps one client's report from ever going to another client's address. The Generate button shows a reminder as soon as you tick a second client.
+
+**The send is also recorded on the account — when there's a note to record it on.** If you created the CRM note for this run (the checkbox above, ticked by default) and hold a personal Autotask key, sending retitles that note to `User Audit — Report Generated & Sent — <Month Year>` and adds a line naming the date and every recipient, so the account shows at a glance whether the report has actually gone out, and to whom. This happens after the email is already sent, so a failure here never fails the send itself — if the account note can't be verified as updated, you'll just see a small ⚠ account note not updated next to the send confirmation.
 
 ---
 
@@ -122,13 +124,16 @@ A client appears in **exactly one** of the four sections below. A report that's 
 
 - **Needs an audit run** — due this cycle, or carried forward from a missed one (see **Cohorts** below for how each client's schedule is set), and not currently out with the client. Each row shows a colored **ODD**/**EVEN** cohort badge — or "unassigned" for a client the schedule doesn't cover yet — plus a **Due Since** figure: how many days past its due date the client is, or a dash if it has no cohort yet to measure from.
 - **Sent, not returned — pending** — emailed and still inside the return window.
-- **Sent, not returned — overdue** — past the return-by date. Has a **Start Write-Back** button that pre-loads the client and requires a "did not return" note, and now also a **Run Audit** button, for a client who's gone dark and whose cycle you want to deliberately restart.
+- **Sent, not returned — overdue** — past the return-by date. Has a **Start Write-Back** button that pre-loads the client and requires a "did not return" note, and now also a **Run Audit** button, for a client who's gone dark. The client stays under Overdue until you actually email the new report.
 - **Good standing** — returned and not currently due.
+
+The dashboard refreshes itself after you generate or send, so going back to it shows the current state — no Reload needed.
 
 Two things worth knowing here, since both can otherwise look like something's wrong:
 
 - **The due-since line.** A client can be waiting on a return *and* overdue on its cohort schedule at the same time. It's listed once, under Sent, with a small grey `audit due since <date>` line under the client's name so the schedule fact isn't lost — or `audit due — no cohort assigned` if it has no cohort yet.
-- **Re-running mid-cycle moves a client back.** Generating a fresh report starts a new cycle, so the client returns to "Needs an audit run" until the new report is emailed. That's correct — the report now on file genuinely hasn't been sent — but it looks like a regression if you don't expect it.
+- **Regenerating doesn't undo a send.** If a report has been emailed and you generate a fresh one (to look at newer data, say), the client stays under **Sent** with the original sent date and return-by date until you email the new one. A small amber line under the client name — *Newer report generated <date>, not sent* — tells you a newer report exists. Send it and it becomes the active report, with its own return-by date.
+- **Not sent yet.** A client whose latest report hasn't been emailed shows *Report generated <date>, not sent yet* under its name — so you can see a report already exists instead of generating it again. A client in Good standing that you regenerate for fresh data stays in Good standing with the same line.
 
 Every row also has **+ Time** — a quick time entry (default 15 min, work type **Client Success**, editable notes) logged against the client's linked *User Audits* task.
 
@@ -216,3 +221,5 @@ The moment Step 3 of an Increase (the MSC sheet update) succeeds, the Hub writes
 - **Matching is by email** (M365 UPN/mail ↔ any of the Autotask contact's three email fields — primary plus the two secondary slots) for the main report. Write-back adds a name-based safety net on top (see **Write-back** above) to catch a drifted-email duplicate, but it's a review-flag heuristic, not a source of truth — always confirm the flagged match is actually the same person before choosing "Update existing."
 - Reports and lifecycle data are stored in SharePoint and shared across the team; history is retained long-term.
 - Time entries, notes, and dispositions post as **To-Do items assigned to whoever records them** (a property of the "User Count Audit" Action Type). The Action Type ID is set in Settings.
+
+*Generate and dashboard safety fixes reported by Gary (October 2026).*
