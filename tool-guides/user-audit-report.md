@@ -52,6 +52,7 @@ Email is only offered when you generated **one** client. If more than one client
 When the client returns their workbook:
 
 1. Open **Write-back** and pick the client — the tool **auto-loads their latest report from SharePoint**. (Or upload a returned file manually; manual uploads are pushed back to SharePoint.)
+   If you open Write-back from **Start Write-Back** on the AM Dashboard for a client who has a newer report that was generated *after* the one you sent, the tab shows an amber warning: the file it loads is the newest one in SharePoint, which may not be the copy the client returned. Check the file name shown, or upload the client's returned copy instead.
 2. The preview shows **only the changed rows** (current → new), plus a **"New Autotask contacts to create"** list for any M365-only rows the client re-classified (with a per-row classification drop-down and bulk-set).
 3. Add an optional account note, choose whether to post it as a CRM To-Do, and **Confirm**.
 
