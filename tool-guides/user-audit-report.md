@@ -129,7 +129,7 @@ A client appears in **exactly one** of the four sections below. A report that's 
 
 The dashboard refreshes itself after you generate or send, so going back to it shows the current state — no Reload needed.
 
-Two things worth knowing here, since both can otherwise look like something's wrong:
+A few things worth knowing here, since each can otherwise look like something's wrong:
 
 - **The due-since line.** A client can be waiting on a return *and* overdue on its cohort schedule at the same time. It's listed once, under Sent, with a small grey `audit due since <date>` line under the client's name so the schedule fact isn't lost — or `audit due — no cohort assigned` if it has no cohort yet.
 - **Regenerating doesn't undo a send.** If a report has been emailed and you generate a fresh one (to look at newer data, say), the client stays under **Sent** with the original sent date and return-by date until you email the new one. A small amber line under the client name — *Newer report generated <date>, not sent* — tells you a newer report exists. Send it and it becomes the active report, with its own return-by date.
