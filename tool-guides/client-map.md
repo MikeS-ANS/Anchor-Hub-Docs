@@ -66,6 +66,7 @@ Click a pin to open the client's card:
 - **Plan type**, with the real Autotask classification.
 - **Sites**, with a switcher when the client has more than one.
 - **Address**, with a **Copy** button.
+- **Approximate location.** When Azure Maps could only place the pin at street level rather than the building, the card says so. Add a street number to the location in Autotask for an exact pin.
 - **Last touched.**
 - **Account manager.**
 - **Seats:** the number **contracted** in the MSC workbook, **not a live count** of users or devices.
