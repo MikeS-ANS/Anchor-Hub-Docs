@@ -110,19 +110,18 @@ Use the planner to line up several client visits into one driving route.
 
 ## Privacy of a typed start
 
-A start address you type is used **once** to draw that route. It is **never saved or logged anywhere**: not in the Hub app, not in the Hub's service, and not in Microsoft's map service telemetry. A home address is fine. Only the map service's own spelling of the address is shown back to you.
+A start address you type is used **once** to draw that route. The Hub never saves or logs it: not in the app, not in the Hub's own service, and not in our Azure monitoring. It goes to Microsoft's map service once to be placed, the same way client addresses do, and only the map service's own spelling of the address is shown back to you. A home address is fine.
 
 ## Admin settings
 
 Admins see a gear in the Client Map header.
 
-- **Route start (ANS office).** The address visit-day routes start from by default. Edit it and Save. The suite number is dropped before the address is placed, and it has to be a real street address or Save refuses it.
-- **Map locations.** Client site addresses are checked from Autotask every hour. **Refresh locations now** runs that check on demand and shows how many sites were checked, added or updated, placed on the map, and left unplaced. If the hourly run is already going it tells you; wait and try again. After a refresh, use the header **Refresh** to see new pins.
+- **Route start (ANS office).** The address visit-day routes start from by default. Edit it and Save. The suite number is dropped before the address is placed, and it has to be a real street address or Save refuses it. The Hub re-checks the office's position on the map about every five months on its own; there is nothing to do.
+- **Map locations.** Client site addresses are checked from Autotask every hour. **Refresh locations now** runs that check on demand and shows how many sites were checked, added or updated, looked up, and left unplaced. If the hourly run is already going it tells you; wait and try again. After a refresh, use the header **Refresh** to see new pins.
 
 ## Later
 
 Not planned for now: a **staff layer** (waiting on an HR decision), a **places layer**, and a **Home-page widget** (Hub idea #66).
-
 
 ## If the map won't load
 
