@@ -26,7 +26,7 @@ A **Refresh** button appears in the library header for `hub.admin` users only. A
 
 ## AI Prompt
 
-Sent to Hatz.ai (Claude Haiku, via the `/v1/anthropic/messages` endpoint — `main/ipc/valuesNorms.js`, `generateBlurb`) once per day for the featured item. No model picker — single hardcoded model, matching the "no settings tab" v1 scope.
+Sent to Claude (Anthropic's Claude Haiku 5.5) through the Hub's own server — no AI key on your machine — once per day for the featured item. No model picker — single fixed model, matching the "no settings tab" v1 scope.
 
 **Prompt (built fresh per day, for the current cycle item):**
 > You are helping reinforce the culture of Anchor Network Solutions, a managed service provider (MSP) in Denver, CO with ~35 staff.

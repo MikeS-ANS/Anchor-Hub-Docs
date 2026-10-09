@@ -57,7 +57,8 @@ Some invoice processors (Kaseya, Cytracom and Duo invoices) don't connect to tha
 ### Team & AI
 
 - **Strety** — reads Rocks and To-Dos so you can see them in the Hub. **Reads only.**
-- **Hatz.ai** — powers the Hub's AI features (summaries, drafts, answers). See the AI note below.
+- **Claude (Anthropic)** — writes the AI summaries and lines in Pax8 Invoice Comparison, Values & Norms and Daily Progress, through the Hub's own server. Other AI features still use Hatz.ai for now.
+- **Hatz.ai** — powers the Hub's other AI features (summaries, drafts, answers) that haven't moved to Claude yet. See the AI note below.
 - **Microsoft Teams notifications** — the Hub's own Teams bot sends you messages, such as payroll reminders and Ideas & Bugs updates, and posts the daily Who is Where briefing to its channel. It only sends; it doesn't read your chats.
 - **Document text-reading (Project Analysis)** — when you run Project Analysis on a document, the document is sent to Microsoft's document-reading service to pull the text out of it.
 
@@ -75,7 +76,7 @@ Some invoice processors (Kaseya, Cytracom and Duo invoices) don't connect to tha
 
 ## A note on AI
 
-Features that use **Hatz.ai** send the relevant data to it so it can write the summary, draft or answer you asked for. Where a tool's guide has an **AI Prompt** section, it shows the instructions the Hub gives the AI.
+Features that use **Claude (Anthropic)** or **Hatz.ai** send the relevant data to them so they can write the summary, draft or answer you asked for. Where a tool's guide has an **AI Prompt** section, it shows the instructions the Hub gives the AI. The Hub keeps a record of each AI request — which feature, how many words went in and out, and who asked — never the text itself.
 
 ## Questions?
 

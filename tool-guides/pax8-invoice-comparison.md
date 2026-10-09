@@ -47,7 +47,7 @@ The 3-month view shows whether a client's spend is consistently growing, shrinki
 
 ## AI Prompt
 
-When changes are detected, Anchor Hub sends them to Hatz.ai (Claude Haiku, via the `/v1/anthropic/messages` endpoint — `main/ipc/invoiceMonitor.js`, `callClaude`) for a plain-English summary. No model picker for this one — it's a single hardcoded model call.
+When changes are detected, Anchor Hub sends them to Claude (Anthropic's Claude Haiku 5.5) through the Hub's own server — no AI key on your machine — for a plain-English summary. No model picker for this one — it's a single fixed model.
 
 **Prompt (built fresh per run, current invoice + detected changes):**
 > You are a billing analyst reviewing an MSP's monthly Pax8 invoice.
@@ -63,7 +63,7 @@ When changes are detected, Anchor Hub sends them to Hatz.ai (Claude Haiku, via t
 >
 > Write a concise plain-text executive summary (4-6 sentences) of the most significant billing changes. Do NOT use markdown, bold, asterisks, or headers — plain sentences only. Call out anything that looks like a potential error or needs immediate attention. Be specific about company names and dollar amounts. End with a recommended action if warranted.
 
-The `Total` figure is the sum of current-period line items, not the invoice's Total Due (see the v2.4.0 release notes on the Net 45 fix). If no changes are detected, the AI step is skipped entirely. If the Hatz.ai call fails, the AI summary is simply omitted from the results — no error is shown.
+The `Total` figure is the sum of current-period line items, not the invoice's Total Due (see the v2.4.0 release notes on the Net 45 fix). If no changes are detected, the AI step is skipped entirely. If the Claude call fails, the AI summary is simply left out of the results and the rest of the comparison still completes.
 
 ---
 

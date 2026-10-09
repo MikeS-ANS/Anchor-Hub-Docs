@@ -115,6 +115,9 @@
 
 These tools have detailed specs written and are ready to build. See the `Idea MD Files/` folder for the full spec on each.
 
+- [ ] **Claude API migration** *(in progress — spec: `HATZ_TO_CLAUDE_API_MIGRATION_SPEC.md`)*
+  Moving the Hub's AI features from Hatz.ai to Anthropic's Claude API, called only from the Hub's own server. **Phase 1 is built on `feature/claude-api-migration`** (platform + Pax8 Invoice Comparison, Values & Norms, Daily Progress; Payroll Review chat built, off until ZDR) and is not released yet.
+
 
 - [ ] **Newsletter Builder** *(spec: `NEWSLETTER_BUILDER_SPEC.md`)*
   Compose and send formatted internal company newsletters from within the Hub. Section-based form (Announcements, Team Highlights, Project Wins, Tech Tips, etc.), live HTML preview, and delivery via Microsoft Graph `Mail.Send` to a distribution group. Stores sent history with duplicate-and-edit support.

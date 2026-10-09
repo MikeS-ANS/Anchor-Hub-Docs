@@ -54,9 +54,10 @@ thread, every ticket you touched, and every meeting that's already happened that
 first. A meeting that hasn't happened yet does not appear in this timeline; it only shows in the
 separate Meetings section below it. Each sent-email thread in the timeline
 can also carry one AI-written line beneath its subject, marked with a small **AI** chip, with one
-legend beside the card's heading noting that these lines are written by Hatz.ai (the copy of the
+legend beside the card's heading noting that these lines are written by Claude (the copy of the
 report saved to your OneDrive and the one you email yourself go a step further and label each line
-"written by Hatz.ai" individually) — see [AI one-liners](#ai-one-liners) below. Everything else on
+"written by Claude" individually; reports saved before the move to Claude still say Hatz.ai, because
+Hatz wrote them) — see [AI one-liners](#ai-one-liners) below. Everything else on
 this page — the four tiles, the computed callout, the ticket and meeting entries — is measured,
 never generated.
 
@@ -116,7 +117,7 @@ as "a bot" rather than as a person, so it can never be named as one.
 
 **What is never shown or stored.** The text of any message. Anyone's email address. Any Teams id
 — a chat's id is used for those two follow-up reads and then dropped before anything is returned.
-And **no AI line, ever**: nothing from Teams goes to Hatz.ai. The AI step is handed email threads
+And **no AI line, ever**: nothing from Teams goes to Claude. The AI step is handed email threads
 and nothing else, so a chat row has no AI line to withhold in the first place. Nor a time — see
 above.
 
@@ -265,15 +266,15 @@ a saved report of its own to send. The trend strip's figure under each weekly ti
 ## AI one-liners
 
 Every sent-email thread in the timeline can carry one AI-written line underneath its subject —
-one plain sentence describing what you actually did in that thread, written by Hatz.ai, ANS's AI
-vendor. What's sent to Hatz.ai for each thread is deliberately narrow: the subject line, the
+one plain sentence describing what you actually did in that thread, written by Claude (Anthropic), ANS's AI
+vendor. What's sent to Claude for each thread is deliberately narrow: the subject line, the
 first names of the people you sent it to, and the text you personally wrote in up to three of
 your own emails in that thread that day (newest first), each cut off at 1,500 characters. The
 quoted reply chain underneath your own text is never sent, and nothing else about that day ever
-reaches Hatz.ai — not your inbox, not anyone else's message, not your calendar, not anything from
+reaches Claude — not your inbox, not anyone else's message, not your calendar, not anything from
 Autotask, and **nothing whatsoever from Teams**: the AI step is handed email threads and nothing
 else, so no chat, chat title, participant or message count is ever part of the call. One report
-means one call to Hatz.ai covering every thread from that day at once, never one call per thread.
+means one call to Claude covering every thread from that day at once, never one call per thread.
 
 Every line that comes back is checked before you ever see it: for a money amount written as
 digits or spelled out — a dollar, euro, pound or yen sign in front of a number, or a number followed
@@ -282,21 +283,21 @@ by a currency word or code (dollars, bucks, euros, pounds, quid, cents, USD, EUR
 address, link, phone number, a long run of digits, or a credential word (password, PIN, API key,
 secret, token, and the like) followed by "is", a colon or an equals sign and then a value —
 "helped Michael with a password reset" passes, "password: Winter2026!" does not. A line that
-fails any of those checks is withheld, and so is a line Hatz.ai simply couldn't produce — missing,
+fails any of those checks is withheld, and so is a line Claude simply couldn't produce — missing,
 empty, or too long. A withheld thread shows a dashed **AI** chip with the exact reason instead of
 a summary line:
 
-- *"No AI line for this thread — Hatz.ai returned nothing usable. Subject shown instead."*
+- *"No AI line for this thread — the AI returned nothing usable. Subject shown instead."*
 - *"Line withheld by guardrail — it named an amount. Subject shown instead."*
 - *"Line withheld by guardrail — it named a pay or compensation detail. Subject shown instead."*
 - *"Line withheld by guardrail — it contained an address, number, link or credential. Subject
   shown instead."*
 
-If Hatz.ai is unavailable for the whole run, every email entry in the timeline just shows its
-subject line the way Phase 1 always did, and the report footer adds *"Hatz.ai unavailable — email
-entries show their subject."* If Hatz.ai answered but one or more individual lines were withheld
+If Claude is unavailable for the whole run, every email entry in the timeline just shows its
+subject line the way Phase 1 always did, and the report footer adds *"Claude unavailable — email
+entries show their subject."* If Claude answered but one or more individual lines were withheld
 by a guardrail, the footer instead adds *"N lines withheld by guardrail."* — and if one or more
-threads simply got nothing usable back from Hatz.ai (not a guardrail refusal, just an empty,
+threads simply got nothing usable back from Claude (not a guardrail refusal, just an empty,
 missing, or malformed answer), the footer separately adds *"N threads got no usable AI line."*;
 a run that hit both counts adds both sentences. Either way, the footer's source list ends with
 **AI ✓** (or, in red, **AI ✗** when the step didn't run this time) alongside the same ✓/✗ shown
@@ -314,14 +315,15 @@ back is kept, saved as part of the report the same as everything else.
 
 ## AI Prompt
 
-The AI line is generated by **one call per report** to Hatz.ai's Anthropic-native passthrough
-endpoint (`https://ai.hatz.ai/v1/anthropic/messages`, via the Hub's shared `hatzToolChat.js`
-transport), with a 25-second timeout, tried twice at most (about 50 seconds all told) — a stalled
-or failing first attempt gets one retry, a second failure just means the AI step didn't run this
-time. The call forces Hatz.ai to answer through a tool
-(`tool_choice`) rather than free text, with a plain-text-JSON reading of the same shape accepted
-as a fallback in case a proxy in front of Hatz.ai ever drops that instruction. Model:
-`anthropic.claude-haiku-4-5`.
+The AI line is generated by **one call per report**, sent through the Hub's own server route to
+Claude (Anthropic) — there is no AI key on your machine. The call has a 25-second timeout and is
+tried twice at most (about 51 seconds all told, one second apart): the second try happens only if
+the first one timed out, the server answered "busy" or "timed out" (503/504), or the connection
+dropped. It is never retried when Claude refuses, when a request is rejected, or when the Hub's
+monthly AI spending limit has been reached — a second try would get the same answer. A second
+failure just means the AI step didn't run this time. The call asks for **structured output** — a
+fixed JSON shape the app checks — rather than free text. Model: `claude-haiku-5-5` (Claude
+Haiku 5.5, with extended thinking turned off).
 
 **System prompt** (quoted verbatim from the shipped code):
 
@@ -343,16 +345,18 @@ as a fallback in case a proxy in front of Hatz.ai ever drops that instruction. M
 > 6. If the text is too short or unclear to summarise, restate the subject line as a sentence.
 > 7. One sentence, at most 30 words, plain text: no quotation marks, no markdown, no emoji.
 >
-> Submit every thread exactly once with the submit_lines tool, using each thread's key exactly as given.
+> Return every thread exactly once in the lines list, using each thread's key exactly as given.
 
 The **user turn** is a single JSON object shaped `{ threads: [{ key, subject, to, sent }] }` —
 one entry per email thread from that day, with a short local key (`t1`, `t2`, …) standing in for
 the thread so nothing resembling a real Graph conversation id is ever sent. Email threads are the
-only thing in it: there is no Teams field in this shape at all, so no chat can reach Hatz.ai even
-by accident. The tool Hatz.ai must
-answer through, `submit_lines`, takes a list of `{ key, line }` pairs — the prompt asks for exactly
-one per thread key, and the app keeps only the first line it gets for each key, ignoring duplicates
-and any key it never sent — with `line` documented as one plain-text sentence of at most 30 words.
+only thing in it: there is no Teams field in this shape at all, so no chat can reach Claude even
+by accident. The structured reply is a JSON object shaped `{ lines: [{ key, line }] }` — a list of
+`{ key, line }` pairs. The prompt asks for exactly one per thread key, and the app keeps only the
+first line it gets for each key, ignoring duplicates and any key it never sent — with `line`
+documented as one plain-text sentence of at most 30 words. A reply that was cut off before it
+finished, or that isn't that shape, counts as "no usable lines": the report still saves, with
+subject lines.
 
 **Guardrails**, checked against every line before it's shown, in plain words: no money amount
 written as digits or spelled out — a dollar, euro, pound or yen sign in front of a number, or a
@@ -361,7 +365,7 @@ GBP), the "3k" shorthand included; no salary, bonus, payroll, or other pay/compe
 address, link, phone number, or long run of digits; no credential word (password, PIN, API key,
 secret, token, and the like) followed by "is", a colon or an equals sign and then a value — a
 line that merely mentions one of those words in passing, with nothing that looks like a value
-after it, passes; and no line that's missing, empty, or too long. **On any failure** — Hatz.ai unreachable, a bad
+after it, passes; and no line that's missing, empty, or too long. **On any failure** — Claude unreachable, a bad
 response, or a line that doesn't pass a guardrail — the affected thread simply shows its subject
 line instead, with a note explaining why; nothing else about the report changes, and the report
 still saves.
@@ -547,7 +551,7 @@ one-liner for anything.
 
 One thing does leave Microsoft, and it's the same one thing as before: the text you wrote in the
 emails you sent — never the quoted reply chain underneath it, and never anyone else's message —
-goes to Hatz.ai, ANS's AI vendor, to be summarised into a single sentence per thread (see
+goes to Claude (Anthropic), ANS's AI vendor, to be summarised into a single sentence per thread (see
 [AI one-liners](#ai-one-liners) above for exactly what's sent). That text is not stored by Daily
 Progress; only the one screened sentence that comes back is kept. **Nothing from Teams leaves
 Microsoft** — the AI step never sees a chat — and nothing else leaves Microsoft or Autotask.
@@ -572,6 +576,19 @@ or, for someone who last acknowledged Phase 1's notice:
 > and how many messages, never what was said — with Microsoft's own Teams usage report supplying
 > your daily totals to the Hub's server, where only you can see your row.
 
+**Privacy notice v4.** The notice is now at **version 4**, raised because the AI vendor changed:
+the text of emails you sent now goes to Anthropic (the maker of Claude) instead of Hatz.ai, so
+everyone who had acknowledged an earlier version sees the notice once more — "Privacy notice ·
+updated" — and until they click **Got it, continue**, no AI line is written for them. The amber
+banner names what's new: "One thing is new: the text of emails you sent now goes to Anthropic, the
+maker of Claude, instead of Hatz.ai, to be summarised into one line each." For someone who last
+acknowledged version 2 it adds the Teams change as a second item, and for someone still on Phase
+1's notice it says the email text goes to Anthropic to be summarised, plus the Teams change. Saved
+reports written before this change keep their original label: an older report still says
+"written by Hatz.ai" because Hatz wrote those lines, while every new report says "written by
+Claude". Nothing already saved is rewritten. The descriptions of the version 3 banners above are
+kept as history; the six rows below are what the notice says now.
+
 The notice itself says, in six rows:
 
 - **What it reads** — "Your Sent Items, your calendar, your Autotask time entries, ticket notes
@@ -584,8 +601,9 @@ The notice itself says, in six rows:
 - **What ANS's own report supplies** — "Microsoft's daily Teams usage report gives the Hub your
   totals — messages posted, calls, meetings, minutes — a day or two later; the Hub's server keeps
   only your totals, and only you can see your row."
-- **What leaves Microsoft** — "The text of emails you sent goes to Hatz.ai, ANS's AI vendor, to be
-  summarised into one line each. That text is not stored — only the line."
+- **What leaves Microsoft** — "The text of emails you sent goes to Anthropic (the maker of Claude),
+  ANS's AI vendor, through the Hub's own server, to be summarised into one line each. The Hub does
+  not store that text — only the line — and Anthropic does not use it to train its models."
 - **Who can see it** — "Only you. There is no manager view, team rollup or admin view."
 
 **The totals table.** Phase 4 gives Daily Progress its first server-side table, and it holds
@@ -622,7 +640,7 @@ unavailable](#when-something-is-unavailable).
 Your acknowledgement is recorded against your Microsoft account on each computer you use Daily
 Progress on. If a second person signs in to the Hub on the same computer, they see the notice
 themselves and acknowledge it for themselves — one person's acknowledgement never speaks for
-anyone else's, and until it's given, nothing that person wrote goes to Hatz.ai. One consequence
+anyone else's, and until it's given, nothing that person wrote goes to Claude. One consequence
 of the per-account change made in an earlier build: if you acknowledged the notice before that
 change, you'll see it once more regardless, because the older record was kept per computer rather
 than per person and is no longer trusted.
@@ -704,11 +722,11 @@ rather than losing it. In **This week**, a day that couldn't be read shows its o
 
 The AI step is a fifth, independent piece with two failure states of its own, and — like the
 other four sources — neither one ever marks the whole report partial or stops it from saving.
-**Unavailable** means the AI step didn't produce anything usable this run at all: Hatz.ai couldn't
+**Unavailable** means the AI step didn't produce anything usable this run at all: Claude couldn't
 be reached or timed out, the privacy notice hasn't been acknowledged by the signed-in account on
 this machine, the signed-in account changed mid-run, or Sent Items itself was unavailable (in which case its own
 mail-unavailable note already explains why, so a second AI note isn't added on top of it). When AI
-is unavailable, every email entry shows its plain subject line, the footer adds "Hatz.ai
+is unavailable, every email entry shows its plain subject line, the footer adds "Claude
 unavailable — email entries show their subject.", and the source glyph reads **AI ✗**.
 **Withheld** is different: the AI step ran and answered, but one or more individual lines didn't
 pass a guardrail (or came back empty, missing, or too long) — those threads show a dashed **AI**
