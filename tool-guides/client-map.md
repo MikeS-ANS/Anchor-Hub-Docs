@@ -37,6 +37,8 @@ Choose where the map looks with the quick views:
 - **Colorado & Kansas**
 - **All clients**
 
+**Night or Day.** A second switch under the quick views changes the map between a dark **Night** style and a full-colour **Day** street map. Night is the default. Your choice is remembered with your filters.
+
 The Hub remembers the last one you used, along with your filters. These are remembered **per person**, so someone else signing in on the same computer gets their own. The search box is the one thing that is **not** remembered.
 
 ## Filters and search
