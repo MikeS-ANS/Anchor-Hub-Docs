@@ -50,6 +50,10 @@ Some invoice processors (Kaseya, Cytracom and Duo invoices) don't connect to tha
 - **Liongard** — reads information that Tool Inventory uses to flag things worth a look. **Reads only.**
 - **ScalePad** — reads information that Tool Inventory uses to flag things worth a look. **Reads only.**
 
+### Maps
+
+- **Azure Maps** — draws the Client Map, turns client site addresses into map pins, and works out visit-day routes. Client business addresses (and a start address you type for a route, used once and never kept) go to Microsoft's map service in our own Azure subscription. **Reads only.**
+
 ### Team & AI
 
 - **Strety** — reads Rocks and To-Dos so you can see them in the Hub. **Reads only.**

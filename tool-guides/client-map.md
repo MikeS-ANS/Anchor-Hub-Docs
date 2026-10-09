@@ -1,6 +1,6 @@
 # Client Map
 
-> **On a feature branch and not yet released to staff.** This page is published while the tool is still being built, so you won't see Client Map in your Hub yet.
+> **Coming in the next Hub release.** You won't see Client Map in your Hub until that release reaches you.
 
 Client Map puts **every active Autotask customer on a map, one pin per site**, so you can see where clients are and which ones haven't been touched in a while. It is **read-only**: nothing you do on the map changes anything in Autotask.
 
@@ -15,7 +15,7 @@ Each pin is coloured by how long it has been since that client was last touched 
 - **Red:** overdue.
 - **Red, "never touched":** no note or meeting on record at all.
 - **Muted:** **not yet synced.** The notes for that client haven't been collected yet. The card says: "The Touch Aging sync runs daily at 5:00 AM Mountain while someone has the Hub open, or an admin can run **Check for new data** in Client Touch Aging."
-- **Grey:** **not tracked.** Clients on a T&M, Other or Unclassified plan never get a touch colour or a last-touched line.
+- **Grey:** **not tracked.** Clients on a T&M, Other or Unclassified plan never get a touch colour or a last-touched line. A client an admin has excluded in [Client Touch Aging](client-touch-aging.md)'s settings is also shown as **not tracked** (grey), not "not yet synced".
 - **Blue ring:** a **dispatch visit is booked this week** at that client. "This week" is **Sunday to Saturday, the same week Who is Where uses**.
 - **Number badge on the pin:** the client's **open tickets**. "Open" means **every Autotask ticket that is not Complete**. A pin with no badge has none. When the counts can't load, no badges show at all (see the banners below).
 
@@ -37,13 +37,13 @@ Choose where the map looks with the quick views:
 - **Colorado & Kansas**
 - **All clients**
 
-The Hub remembers the last one you used, along with your filters.
+The Hub remembers the last one you used, along with your filters. These are remembered **per person**, so someone else signing in on the same computer gets their own. The search box is the one thing that is **not** remembered.
 
 ## Filters and search
 
 - **Plan-type chips** narrow the map to the plan types you pick.
 - **Account manager** shows only that person's clients.
-- **Three toggles.** **Overdue for a touch** shows overdue clients and also the never-touched ones. **Has open tickets** shows only clients with at least one open ticket. **Visit this week** shows only clients with a dispatch visit booked this week (the blue ring). A toggle **greys out** while its data is unavailable, and it is treated as off for that load. **Your saved choice is kept**, so it applies again once the data is back.
+- **Three toggles.** **Overdue for a touch** shows **overdue, due-soon and never-touched** clients. **Has open tickets** shows only clients with at least one open ticket. **Visit this week** shows only clients with a dispatch visit booked this week (the blue ring). A toggle **greys out** while its data is unavailable, and it is treated as off for that load. **Your saved choice is kept**, so it applies again once the data is back.
 - **Search** finds a client by name. When you pick one, the map zooms to it.
 
 A result count shows how many clients match what you've chosen.
@@ -80,7 +80,7 @@ Click a pin to open the client's card:
 - **Approximate location.** When Azure Maps could only place the pin at street level rather than the building, the card says so. Add a street number to the location in Autotask for an exact pin.
 - **Last touched.** Every touch-tracked client (**Total CommITment, TC Light, Block Hours and Co-Managed**) is now part of the Touch Aging note sync, not only clients in the MSC workbook. A client that has only just been covered shows **Not yet synced** until the next sync runs: daily at 5:00 AM Mountain while someone has the Hub open, or an admin's **Check for new data** in Client Touch Aging. The **first sync after this update takes longer**, because it pulls 24 months of notes once for the newly covered clients.
 - **Account manager.**
-- **Seats:** the number **contracted** in the MSC workbook, **not a live count** of users or devices.
+- **Seats:** the number **contracted** in the MSC workbook, **not a live count** of users or devices. It shows "—" when the count is missing or the workbook can't be read.
 - **Open in Autotask** to jump to the company record.
 - **Open tickets.** A count pill, then the client's open tickets, **newest first**. The count is **across all of the client's sites**, because Autotask tickets rarely carry a site. A long list scrolls. Click a ticket to open it in Autotask. With none, it says "No open tickets. Every ticket for this client is Complete."
 - **Upcoming visits.** The next 14 days from the dispatch calendar: the date and time (Denver time), who is going, and the linked ticket or task. Each visit is labelled **On-site** or **Type not set**, exactly as Who is Where labels them, and a visit this week carries a **This week** chip. This section loads from dispatch and **can take a while on the office network**.
@@ -88,9 +88,41 @@ Click a pin to open the client's card:
 
 Each of these three sections loads on its own and shows its own error with **Retry**; the others still render.
 
-## Coming in the next phases
+## Plan a visit day
 
-Not built yet: the visit-day route planner. It will be added in the next phase, and this page will be updated when it is.
+Use the planner to line up several client visits into one driving route.
+
+**Adding stops.** Open a client's card and choose **Add to visit day** (the first button at the bottom of the card). The button then becomes **Remove from visit day**. You can add **up to 10 stops**; after that the button greys out and says "Up to 10 stops". If you click another pin, choose **Visit day · N** on a client's card to reopen the planner.
+
+**The planner panel**
+
+- **Start.** The ANS office by default. Choose **Change start** to type any address; suggestions appear after 3 characters. **Use office** puts it back.
+- **End at last stop.** Turn this on if you don't need to drive back to the start.
+- **Date (optional).** Shows that day's dispatch visits faintly on the map so you can see who is already booked. It saves nothing.
+- **Stops.** Drag a stop to reorder it; the drive times recalculate for the new order.
+- **Suggested order.** With two or more stops, the planner works out a good order on its own and marks it **Suggested order**. If you reorder by hand, **Re-suggest** brings the suggestion back.
+- **Legs and Day total.** These are **typical drive times, not live traffic**. Add your time on site yourself.
+- **Copy route** copies a plain-text list of each stop with its full address and the drive time to it. **Print** gives you the list plus a picture of the map. **Clear** empties the plan.
+
+**How long the plan lasts.** The plan lives only in the open Hub session. It survives switching to another tool and coming back, but it is **gone when you sign out**. Nothing is saved to Autotask or anywhere else.
+
+**If something goes wrong.** If the route can't be worked out you'll see "Couldn't work out the route" with **Try again**; your stops are kept. If a refresh means a stop is no longer on the map, the button reads **Re-check stops** and drops the ones that are gone.
+
+## Privacy of a typed start
+
+A start address you type is used **once** to draw that route. It is **never saved or logged anywhere**: not in the Hub app, not in the Hub's service, and not in Microsoft's map service telemetry. A home address is fine. Only the map service's own spelling of the address is shown back to you.
+
+## Admin settings
+
+Admins see a gear in the Client Map header.
+
+- **Route start (ANS office).** The address visit-day routes start from by default. Edit it and Save. The suite number is dropped before the address is placed, and it has to be a real street address or Save refuses it.
+- **Map locations.** Client site addresses are checked from Autotask every hour. **Refresh locations now** runs that check on demand and shows how many sites were checked, added or updated, placed on the map, and left unplaced. If the hourly run is already going it tells you; wait and try again. After a refresh, use the header **Refresh** to see new pins.
+
+## Later
+
+Not planned for now: a **staff layer** (waiting on an HR decision), a **places layer**, and a **Home-page widget** (Hub idea #66).
+
 
 ## If the map won't load
 
