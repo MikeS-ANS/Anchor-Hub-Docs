@@ -1,7 +1,5 @@
 # Client Map
 
-> **Coming in the next Hub release.** You won't see Client Map in your Hub until that release reaches you.
-
 Client Map puts **every active Autotask customer on a map, one pin per site**, so you can see where clients are and which ones haven't been touched in a while. It is **read-only**: nothing you do on the map changes anything in Autotask.
 
 Companies come **only from Autotask**. If a company isn't a Customer in Autotask, it isn't on the map, and there is no way to add one here. Fix it in Autotask and it shows up on its own.

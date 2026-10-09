@@ -51,6 +51,7 @@
 
 ## What's New
 
+* [v4.10.0 — Client Map](whats-new/v4.10.0.md)
 * [v4.9.1 — User Audit: safer Generate and a truer AM Dashboard](whats-new/v4.9.1.md)
 * [v4.9.0 — Tool Inventory updates the service plan calculators](whats-new/v4.9.0.md)
 * [v4.8.1 — Pop-ups that answer the keyboard, and payroll totals](whats-new/v4.8.1.md)
