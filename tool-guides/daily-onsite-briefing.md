@@ -65,6 +65,7 @@ Tomorrow, This Week, Next Week and the calendar exist so teams can coordinate ah
 ## Behind the scenes
 
 The feed runs in Azure every 30 minutes on weekdays between 7:00am and 5:00pm Denver time, using the Hub's read-only Autotask access. The feed can be asked for any range up to about two months, within about a year either way of today. It never writes to Autotask. The only things it stores are which Teams post belongs to which day, two counts (on-site, untyped), and the id numbers of the service calls already on the card — so the post can be updated in place, adoption of the new statuses can be measured, and a newly added visit can be told apart from one that was already there. Nothing else about a service call is kept: the widget and the card are re-read from Autotask, and the server shares each read for two minutes so thirty people opening the Hub at once cost Autotask one read rather than thirty. The Teams post itself always comes from a fresh read. The untyped count includes only visits still open: completing a service call makes Autotask overwrite its Onsite/Remote status, so a completed call with no other clue is not held against dispatch.
+The feed now also carries each call's Autotask company id, so the Client Map can match visits to clients. There is no visible change to Who is Where or the Teams card.
 
 ---
 
