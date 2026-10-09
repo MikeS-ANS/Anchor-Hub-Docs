@@ -46,6 +46,7 @@
 * [Inventory Reports](tool-guides/inventory-reports.md)
 * [QuickBooks Connection](tool-guides/quickbooks-connection.md)
 * [Who is Where (Daily On-Site Briefing)](tool-guides/daily-onsite-briefing.md)
+* [Client Map](tool-guides/client-map.md)
 * [Tool Inventory](tool-guides/tool-inventory.md)
 
 ## What's New
