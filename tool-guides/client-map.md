@@ -47,6 +47,7 @@ The Hub remembers the last one you used, along with your filters.
 - **Search** finds a client by name. When you pick one, the map zooms to it.
 
 A result count shows how many clients match what you've chosen.
+
 ## When counts or visits are unavailable
 
 Open tickets and dispatch visits load separately, and either can fail on its own. When one does, a banner appears above the map:
@@ -55,7 +56,6 @@ Open tickets and dispatch visits load separately, and either can fail on its own
 - **"Dispatch visits unavailable right now."** Pins show no visit ring and the Visit this week filter is off. **Retry visits** reloads it.
 
 The legend swaps its open-ticket entry for "Open-ticket badges unavailable" while the counts are down.
-
 
 ## The "couldn't place" list
 
