@@ -76,7 +76,7 @@ Some invoice processors (Kaseya, Cytracom and Duo invoices) don't connect to tha
 
 ## A note on AI
 
-Features that use **Claude (Anthropic)** or **Hatz.ai** send the relevant data to them so they can write the summary, draft or answer you asked for. Where a tool's guide has an **AI Prompt** section, it shows the instructions the Hub gives the AI. The Hub keeps a record of each AI request — which feature, how many words went in and out, and who asked — never the text itself.
+Features that use **Claude (Anthropic)** or **Hatz.ai** send the relevant data to them so they can write the summary, draft or answer you asked for. Where a tool's guide has an **AI Prompt** section, it shows the instructions the Hub gives the AI. The Hub keeps a record of each AI request — which feature, how much text went in and out (counted in tokens), and who asked — never the text itself.
 
 ## Questions?
 
